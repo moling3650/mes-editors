@@ -6,6 +6,10 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      component: () => import('@/components/HelloWorld')
+    },
+    {
       path: '/editors/report',
       component: () => import('@/pages/ReportEditor')
     },
