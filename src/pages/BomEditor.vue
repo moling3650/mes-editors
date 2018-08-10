@@ -3,21 +3,24 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
-        <el-select v-model="code" filterable placeholder="请选择BOM" @change="getBom">
-          <el-option
-            v-for="item in products"
-            :key="item.bom_code"
-            :label="`${item.product_name} ${item.version_code}`"
-            :value="`${item.bom_code}__${item.version_code}`">
-          </el-option>
-        </el-select>
+        <el-cascader :options="products" filterable @change="getBom" style="width: 100%;"/>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
+      <el-col :span="6">
+        <el-card class="h600">
+          <el-table :data="bom" stripe style="width: 100%" @row-click="getBomDetail">
+            <el-table-column prop="bom_code" label="BOM" width=""/>
+            <el-table-column prop="version_code" label="版本" width="50"/>
+            <el-table-column prop="enable" label="状态" width="50"/>
+          </el-table>
+        </el-card>
+      </el-col>
+
       <el-col :span="8">
-        <div class="panel">
-          <el-tree :data="bom" :props="props" :expand-on-click-node="false"
+        <el-card class="h600 ovya">
+          <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>{{ node.label }}</span>
@@ -27,10 +30,11 @@
               </span>
             </span>
           </el-tree>
-        </div>
+        </el-card>
       </el-col>
-      <el-col :span="16">
-        <el-card>
+
+      <el-col :span="10">
+        <el-card class="h600">
           <div slot="header" class="clearfix">
             <span>{{detail.mat_name || '先选择物料'}}</span>
             <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
@@ -49,7 +53,7 @@
             <dt>数量：</dt>
             <dd>{{detail.qty}}</dd>
             <dt>消耗：</dt>
-            <dd>{{detail.wastage}}</dd>
+            <dd>{{detail.wastage || 0}}</dd>
             <dt>是否管控：</dt>
             <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
             <dt>可否替代：</dt>
@@ -78,8 +82,8 @@ export default {
       showSubstitute: false,
       versionCode: '',
       products: [],
-      code: '',
       bom: [],
+      bomDetail: [],
       detail: {},
       substitute: {},
       props: {
@@ -124,22 +128,42 @@ export default {
       children.splice(index, 1)
     },
 
-    getBom (codes) {
-      if (!codes) {
-        return
-      }
+    getBom ([typeCode, productCode]) {
+      this.bomDetail = []
       this.detail = {}
       this.substitute = {}
-      const [bomCode, version] = codes.split('__')
-      this.versionCode = version
-      apis.fetchBom(bomCode).then(data => {
+      if (!productCode) {
+        return
+      }
+      apis.fetchBom(productCode).then(data => {
         this.bom = data
+      })
+    },
+
+    getBomDetail (bom) {
+      this.versionCode = bom.version_code
+      apis.fetchBomDetail(bom.bom_code).then(data => {
+        this.bomDetail = data
       })
     }
   },
   mounted () {
     apis.fetchProducts().then(data => {
-      this.products = data
+      const products = {}
+      data.forEach(item => {
+        if (!products[item.typecode]) {
+          products[item.typecode] = {
+            value: item.typecode,
+            label: item.type_name,
+            children: []
+          }
+        }
+        products[item.typecode].children.push({
+          value: item.product_code,
+          label: item.product_name
+        })
+      })
+      this.products = Object.values(products)
     })
   }
 }
@@ -169,5 +193,11 @@ export default {
 dd {
   margin-left: 100px;
   margin-top: -20px;
+}
+.h600 {
+  height: 600px;
+}
+.ovya {
+  overflow-y: auto;
 }
 </style>
