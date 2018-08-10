@@ -30,5 +30,13 @@ export default {
               LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
               WHERE bom_code = (SELECT bom_code FROM B_Bom WHERE product_code = @productCode AND version_code = @version)`
     return execSQL(sql, { productCode, version })
+  },
+
+  fetchSubstituteMaterial (bomCode, matCode) {
+    const sql = `
+              SELECT S.mat_code, M.mat_code AS sCode, M.mat_name AS sName FROM B_MatSubstitute S
+              JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
+              WHERE S.bom_code = @bomCode AND S.mat_code = @matCode`
+    return execSQL(sql, { bomCode, matCode })
   }
 }
