@@ -11,11 +11,19 @@ function execSQL (sql, params = null) {
 export default {
   fetchProducts () {
     const sql = `
-              SELECT P.product_code, P.product_name, B.version_code, B.bom_code FROM B_Bom B
-              INNER JOIN B_Product P ON P.product_code = B.product_code`
+              SELECT DISTINCT T.typecode, T.type_name, P.product_code, P.product_name FROM B_Bom B
+              INNER JOIN B_Product P ON P.product_code = B.product_code
+              INNER JOIN B_Product_Type T ON T.typecode = P.typecode
+              ORDER BY T.typecode`
     return execSQL(sql)
   },
-  fetchBom (bomCode) {
+
+  fetchBom (productCode) {
+    const sql = 'SELECT * FROM B_Bom WHERE product_code = @productCode'
+    return execSQL(sql, { productCode })
+  },
+
+  fetchBomDetail (bomCode) {
     const sql = `
               SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
               LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
@@ -23,6 +31,7 @@ export default {
               WHERE D.bom_code = @bomCode`
     return execSQL(sql, { bomCode })
   },
+
   fetchSubBom (productCode, version) {
     const sql = `
               SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
