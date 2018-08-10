@@ -35,7 +35,7 @@
             <span>{{detail.mat_name || '先选择物料'}}</span>
             <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
           </div>
-          <dl>
+          <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
             <dd>{{detail.bom_code}}</dd>
             <dt>物料编号：</dt>
@@ -54,6 +54,12 @@
             <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
             <dt>可否替代：</dt>
             <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
+            <template v-if="showSubstitute">
+              <dt>替代料编号：</dt>
+              <dd>{{substitute.sCode}}</dd>
+              <dt>替代料名称：</dt>
+              <dd>{{substitute.sName}}</dd>
+            </template>
           </dl>
         </el-card>
       </el-col>
@@ -69,11 +75,13 @@ export default {
   name: 'BomEditor',
   data () {
     return {
+      showSubstitute: false,
       versionCode: '',
       products: [],
       code: '',
       bom: [],
       detail: {},
+      substitute: {},
       props: {
         label: 'mat_name',
         isLeaf (data, node) {
@@ -84,10 +92,20 @@ export default {
   },
   methods: {
     handleNodeClick (node) {
+      this.showSubstitute = false
       this.detail = node
+      if (node.enable_Substitute) {
+        apis.fetchSubstituteMaterial(node.bom_code, node.mat_code).then(data => {
+          this.substitute = data.length ? data.pop() : {}
+          this.showSubstitute = true
+        })
+      }
     },
 
     loadNode (node, resolve) {
+      if (!node.data.mat_code || !this.versionCode) {
+        return resolve([])
+      }
       apis.fetchSubBom(node.data.mat_code, this.versionCode).then(data => resolve(data))
     },
 
@@ -110,6 +128,8 @@ export default {
       if (!codes) {
         return
       }
+      this.detail = {}
+      this.substitute = {}
       const [bomCode, version] = codes.split('__')
       this.versionCode = version
       apis.fetchBom(bomCode).then(data => {
@@ -133,7 +153,7 @@ export default {
   height: 600px;
   border: 1px solid #333;
   border-radius: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .row {
   margin: 15px 0;
