@@ -18,12 +18,12 @@
         </el-card>
       </el-col>
 
-      <el-col :span="8">
-        <el-card class="h600 ovya">
+      <el-col :span="10">
+        <el-card class="h600 ova">
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span>{{ node.label }}</span>
+              <span :style="{color: data.mat_type ? 'green' : 'blue'}">{{ node.label }}</span>
               <span>
                 <el-button type="text" size="mini" @click="() => append(data)">Append</el-button>
                 <el-button type="text" size="mini" @click="() => remove(node, data)">Delete</el-button>
@@ -33,7 +33,7 @@
         </el-card>
       </el-col>
 
-      <el-col :span="10">
+      <el-col :span="8">
         <el-card class="h600">
           <div slot="header" class="clearfix">
             <span>{{detail.mat_name || '先选择物料'}}</span>
@@ -141,6 +141,8 @@ export default {
     },
 
     getBomDetail (bom) {
+      this.detail = {}
+      this.substitute = {}
       this.versionCode = bom.version_code
       apis.fetchBomDetail(bom.bom_code).then(data => {
         this.bomDetail = data
@@ -190,6 +192,9 @@ export default {
 .clearfix:after {
   clear: both
 }
+dt {
+  font-weight: bold;
+}
 dd {
   margin-left: 100px;
   margin-top: -20px;
@@ -197,7 +202,7 @@ dd {
 .h600 {
   height: 600px;
 }
-.ovya {
-  overflow-y: auto;
+.ova {
+  overflow: auto;
 }
 </style>
