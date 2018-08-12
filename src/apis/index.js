@@ -28,7 +28,8 @@ export default {
               SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
               LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
               LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
-              WHERE D.bom_code = @bomCode`
+              WHERE D.bom_code = @bomCode
+              ORDER BY D.mat_type`
     return execSQL(sql, { bomCode })
   },
 
@@ -37,7 +38,8 @@ export default {
               SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
               LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
               LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
-              WHERE bom_code = (SELECT bom_code FROM B_Bom WHERE product_code = @productCode AND version_code = @version)`
+              WHERE bom_code = (SELECT bom_code FROM B_Bom WHERE product_code = @productCode AND version_code = @version)
+              ORDER BY D.mat_type`
     return execSQL(sql, { productCode, version })
   },
 
