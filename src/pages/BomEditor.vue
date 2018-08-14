@@ -5,6 +5,9 @@
       <el-col :span="6">
         <el-cascader :options="products" filterable @change="getBom" style="width: 100%;"/>
       </el-col>
+      <el-col :span="6">
+        <el-button @click="openForm">open</el-button>
+      </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
@@ -95,6 +98,41 @@ export default {
     }
   },
   methods: {
+    openForm () {
+      this.$showForm({
+        formItems: [
+          {
+            value: 'report_code',
+            label: '报表编号'
+          },
+          {
+            value: 'report_name',
+            label: '报表名称'
+          },
+          {
+            value: 'query_type',
+            label: '是否必填'
+          }
+        ],
+        formData: {
+          report_code: '',
+          report_name: '',
+          query_type: 1,
+          query_sql: ''
+        },
+        rules: {
+          report_code: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' }
+          ]
+        }
+      }).$on('submit', this.submitForm)
+    },
+
+    submitForm (form, done) {
+      console.log(form)
+      done()
+    },
+
     handleNodeClick (node) {
       this.showSubstitute = false
       this.detail = node
