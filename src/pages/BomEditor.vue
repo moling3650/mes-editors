@@ -103,15 +103,20 @@ export default {
         formItems: [
           {
             value: 'report_code',
-            label: '报表编号'
+            label: '报表编号',
+            component: 'el-input'
           },
           {
             value: 'report_name',
-            label: '报表名称'
+            label: '报表名称',
+            component: 'el-input'
           },
           {
             value: 'query_type',
-            label: '是否必填'
+            label: '是否必填',
+            component: 'el-switch',
+            activeValue: 1,
+            inactiveValue: 0
           }
         ],
         formData: {

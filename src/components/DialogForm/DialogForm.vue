@@ -3,7 +3,9 @@
     <el-dialog title="提示" :visible.sync="visible" :before-close="close" @closed="handleClosed">
       <el-form :model="form" :rules="rules" label-width="100px" ref="form">
         <el-form-item v-for="item in formItems" :key="item.value" :label="item.label" :prop="item.value">
-          <el-input v-model="form[item.value]"></el-input>
+          <component :is="item.component" v-model="form[item.value]"
+            :active-value="item.activeValue"
+            :inactive-value="item.inactiveValue"></component>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
