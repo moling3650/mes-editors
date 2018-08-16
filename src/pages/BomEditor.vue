@@ -6,17 +6,17 @@
         <el-cascader :options="products" filterable @change="getBom" style="width: 100%;"/>
       </el-col>
       <el-col :span="6">
-        <el-button @click="openForm">open</el-button>
+        <el-button @click="openBomForm">open</el-button>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
         <el-card class="h600">
-          <el-table :data="bom" stripe style="width: 100%" @row-click="getBomDetail">
+          <el-table :data="bom" stripe style="width: 100%" @row-dblclick="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
-            <el-table-column prop="enable" label="状态" width="50"/>
+            <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
           </el-table>
         </el-card>
       </el-col>
@@ -77,6 +77,7 @@
 
 <script>
 import apis from '@/apis'
+import bomForm from '../form/bom'
 
 export default {
   name: 'BomEditor',
@@ -98,42 +99,26 @@ export default {
     }
   },
   methods: {
-    openForm () {
-      this.$showForm({
-        formItems: [
-          {
-            value: 'report_code',
-            label: '报表编号',
-            component: 'el-input'
-          },
-          {
-            value: 'report_name',
-            label: '报表名称',
-            component: 'el-input'
-          },
-          {
-            value: 'query_type',
-            label: '是否必填',
-            component: 'el-switch',
-            activeValue: 1,
-            inactiveValue: 0
+    toState (row, column, cellValue, index) {
+      return ['禁用', '启用'][cellValue] || '未知'
+    },
+    openBomForm () {
+      apis.fetchProducts().then(products => {
+        const options = products.map(p => {
+          return {
+            value: p.product_code,
+            label: p.product_name
           }
-        ],
-        formData: {
-          report_code: '',
-          report_name: '',
-          query_type: 1,
-          query_sql: ''
-        },
-        rules: {
-          report_code: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' }
-          ]
+        })
+        const index = bomForm.formItems.findIndex(item => item.value === 'product_code')
+        if (~index) {
+          bomForm.formItems[index].options = options
         }
-      }).$on('submit', this.submitForm)
+        this.$showForm(bomForm).$on('submit', this.submitBomForm)
+      })
     },
 
-    submitForm (form, done) {
+    submitBomForm (form, done) {
       console.log(form)
       done()
     },
