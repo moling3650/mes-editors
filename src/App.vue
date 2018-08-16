@@ -11,6 +11,9 @@ export default {
 </script>
 
 <style>
+.w100p {
+  width: 100%;
+}
 .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
