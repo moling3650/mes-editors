@@ -4,6 +4,7 @@
       <el-form :model="form" :rules="rules" label-width="100px" ref="form">
         <el-form-item v-for="item in formItems" :key="item.value" :label="item.label" :prop="item.value">
           <component :is="item.component" v-model="form[item.value]"
+            :options="item.options"
             :active-value="item.activeValue"
             :inactive-value="item.inactiveValue"></component>
         </el-form-item>
