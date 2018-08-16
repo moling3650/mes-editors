@@ -49,5 +49,10 @@ export default {
               JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
               WHERE S.bom_code = @bomCode AND S.mat_code = @matCode`
     return execSQL(sql, { bomCode, matCode })
+  },
+
+  validateBomCode (bomCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Bom WHERE bom_code = @bomCode'
+    return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
   }
 }
