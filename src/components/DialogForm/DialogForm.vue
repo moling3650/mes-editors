@@ -1,6 +1,6 @@
 <template>
   <div id="DialogForm">
-    <el-dialog title="提示" :visible.sync="visible" :before-close="close" @closed="handleClosed">
+    <el-dialog :title="title" :visible.sync="visible" :before-close="close" @closed="handleClosed" top="10vh">
       <el-form :model="form" :rules="rules" label-width="100px" ref="form">
         <el-form-item v-for="item in formItems" :key="item.value" :label="item.label" :prop="item.value">
           <component :is="item.component" v-model="form[item.value]"
@@ -20,6 +20,10 @@
 export default {
   name: 'DialogForm',
   props: {
+    title: {
+      type: String,
+      default: '表单'
+    },
     formItems: {
       type: Array,
       required: true
