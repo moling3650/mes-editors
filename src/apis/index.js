@@ -9,6 +9,48 @@ function execSQL (sql, params = null) {
 }
 
 export default {
+  addBom (bom) {
+    bom.create_time = new Date()
+    const sql = `
+          INSERT INTO B_Bom
+               ( bom_code
+               , version_code
+               , product_code
+               , base_qty
+               , designator
+               , discription
+               , enable
+               , create_time
+               , is_split)
+          VALUES
+               ( @bom_code
+               , @version_code
+               , @product_code
+               , @base_qty
+               , @designator
+               , @discription
+               , @enable
+               , @create_time
+               , @is_split)`
+    return execSQL(sql, bom)
+  },
+
+  updateBom (bom) {
+    const sql = `
+          UPDATE B_Bom
+            SET bom_code = @bom_code
+            ,  version_code = @version_code
+            ,  product_code = @product_code
+            ,  base_qty = @base_qty
+            ,  designator = @designator
+            ,  discription = @discription
+            ,  enable = @enable
+            ,  create_time = @create_time
+            ,  is_split = @is_split
+          WHERE bom_id = @bom_id`
+    return execSQL(sql, bom)
+  },
+
   fetchProducts () {
     const sql = `
               SELECT DISTINCT T.typecode, T.type_name, P.product_code, P.product_name FROM B_Bom B
