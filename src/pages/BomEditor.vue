@@ -3,20 +3,25 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
-        <el-cascader :options="products" filterable @change="getBom" style="width: 100%;"/>
+        <el-cascader v-model="product" :options="products" filterable @change="getBom" style="width: 100%;"/>
       </el-col>
       <el-col :span="6">
-        <el-button @click="openBomForm">open</el-button>
+        <el-button @click="openBomForm">添加Bom</el-button>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
         <el-card class="h600">
-          <el-table :data="bom" stripe style="width: 100%" @row-dblclick="getBomDetail">
+          <el-table :data="bomList" stripe style="width: 100%" @row-dblclick="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
+            <el-table-column fixed="right" label="操作" width="50">
+              <template slot-scope="scope">
+                <el-button @click="editBomForm(scope.row)" type="text" size="small">编辑</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -40,7 +45,7 @@
         <el-card class="h600">
           <div slot="header" class="clearfix">
             <span>{{detail.mat_name || '先选择物料'}}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+            <el-button v-show="detail.mat_name" style="float: right; padding: 3px 0" type="text">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
@@ -61,12 +66,6 @@
             <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
             <dt>可否替代：</dt>
             <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
-            <template v-if="showSubstitute">
-              <dt>替代料编号：</dt>
-              <dd>{{substitute.sCode}}</dd>
-              <dt>替代料名称：</dt>
-              <dd>{{substitute.sName}}</dd>
-            </template>
           </dl>
         </el-card>
       </el-col>
@@ -77,7 +76,7 @@
 
 <script>
 import apis from '@/apis'
-import bomForm from '../form/bom'
+import getBomForm from '../form/bom'
 
 export default {
   name: 'BomEditor',
@@ -85,8 +84,9 @@ export default {
     return {
       showSubstitute: false,
       versionCode: '',
+      product: [],
       products: [],
-      bom: [],
+      bomList: [],
       bomDetail: [],
       detail: {},
       substitute: {},
@@ -99,28 +99,32 @@ export default {
     }
   },
   methods: {
+    editBomForm (row) {
+      getBomForm(row, 'edit').then(form => this.$showForm(form).$on('submit', this.submitBomForm))
+    },
+
     toState (row, column, cellValue, index) {
       return ['禁用', '启用'][cellValue] || '未知'
     },
+
     openBomForm () {
-      apis.fetchProducts().then(products => {
-        const options = products.map(p => {
-          return {
-            value: p.product_code,
-            label: p.product_name
-          }
-        })
-        const index = bomForm.formItems.findIndex(item => item.value === 'product_code')
-        if (~index) {
-          bomForm.formItems[index].options = options
-        }
-        this.$showForm(bomForm).$on('submit', this.submitBomForm)
-      })
+      const bom = this.product.length ? { product_code: this.product[1] } : null
+      getBomForm(bom, 'add').then(form => this.$showForm(form).$on('submit', this.submitBomForm))
     },
 
     submitBomForm (form, done) {
-      console.log(form)
-      done()
+      if (form.bom_id) {
+        apis.updateBom(form).then(_ => {
+          const index = this.bomList.findIndex(bom => bom.bom_id === form.bom_id)
+          ~index && this.bomList.splice(index, 1, form)
+          done()
+        })
+      } else {
+        apis.addBom(form).then(_ => {
+          this.getBom([null, form.product_code])
+          done()
+        })
+      }
     },
 
     handleNodeClick (node) {
@@ -164,7 +168,7 @@ export default {
         return
       }
       apis.fetchBom(productCode).then(data => {
-        this.bom = data
+        this.bomList = data
       })
     },
 
