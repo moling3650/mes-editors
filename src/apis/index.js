@@ -9,6 +9,11 @@ function execSQL (sql, params = null) {
 }
 
 export default {
+  deleteBom (bom) {
+    const sql = `DELETE B_Bom_Detail WHERE bom_code = @bom_code;DELETE B_Bom WHERE bom_id = @bom_id`
+    return execSQL(sql, bom)
+  },
+
   addBom (bom) {
     bom.create_time = new Date()
     const sql = `
