@@ -19,7 +19,10 @@
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
             <el-table-column fixed="right" label="操作" width="50">
               <template slot-scope="scope">
-                <el-button @click="editBomForm(scope.row)" type="text" size="small">编辑</el-button>
+                <el-button-group>
+                  <el-button @click="editBomForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+                  <el-button @click="deleteBomForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                </el-button-group>
               </template>
             </el-table-column>
           </el-table>
@@ -99,6 +102,27 @@ export default {
     }
   },
   methods: {
+    addBomDetailForm (row) {
+
+    },
+
+    deleteBomForm (row) {
+      this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        console.log('ok')
+        apis.deleteBom(row).then(_ => {
+          const index = this.bomList.findIndex(b => b.bom_id === row.bom_id)
+          ~index && this.bomList.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
+    },
+
     editBomForm (row) {
       getBomForm(row, 'edit').then(form => this.$showForm(form).$on('submit', this.submitBomForm))
     },
