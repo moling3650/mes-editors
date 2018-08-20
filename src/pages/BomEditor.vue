@@ -6,7 +6,7 @@
         <el-cascader v-model="product" :options="products" filterable @change="getBom" style="width: 100%;"/>
       </el-col>
       <el-col :span="6">
-        <el-button @click="openBomForm">添加Bom</el-button>
+        <el-button type="success" icon="el-icon-plus" @click="openBomForm">添加Bom</el-button>
       </el-col>
     </el-row>
 
@@ -17,7 +17,7 @@
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
-            <el-table-column fixed="right" label="操作" width="50">
+            <el-table-column fixed="right" label="操作" width="78" align="center">
               <template slot-scope="scope">
                 <el-button-group>
                   <el-button @click="editBomForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
@@ -31,13 +31,17 @@
 
       <el-col :span="10">
         <el-card class="h600 ova">
+          <div slot="header" class="clearfix">
+            <span>BOM清单： {{ bomCode }}</span>
+            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" size="medium">添加BOM明细</el-button>
+          </div>
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span :style="{color: data.mat_type ? 'green' : 'blue'}">{{ node.label }}</span>
               <span>
-                <el-button type="text" size="mini" @click="() => append(data)">Append</el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)">Delete</el-button>
+                <el-button class="edit" type="text" icon="el-icon-edit" @click.stop="() => append(data)">编辑</el-button>
+                <el-button class="delete" type="text" icon="el-icon-delete" @click.stop="() => remove(node, data)">删除</el-button>
               </span>
             </span>
           </el-tree>
@@ -47,8 +51,8 @@
       <el-col :span="8">
         <el-card class="h600">
           <div slot="header" class="clearfix">
-            <span>{{detail.mat_name || '先选择物料'}}</span>
-            <el-button v-show="detail.mat_name" style="float: right; padding: 3px 0" type="text">添加替代料</el-button>
+            <span>物料明细</span>
+            <el-button v-show="detail.mat_name" class="fl-r p3-0" type="text">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
@@ -86,6 +90,7 @@ export default {
   data () {
     return {
       showSubstitute: false,
+      bomCode: '',
       versionCode: '',
       product: [],
       products: [],
@@ -185,6 +190,7 @@ export default {
     },
 
     getBom ([typeCode, productCode]) {
+      this.bomCode = ''
       this.bomDetail = []
       this.detail = {}
       this.substitute = {}
@@ -199,6 +205,7 @@ export default {
     getBomDetail (bom) {
       this.detail = {}
       this.substitute = {}
+      this.bomCode = bom.bom_code
       this.versionCode = bom.version_code
       apis.fetchBomDetail(bom.bom_code).then(data => {
         this.bomDetail = data
@@ -260,5 +267,37 @@ dd {
 }
 .ova {
   overflow: auto;
+}
+.fl-r {
+  float: right;
+}
+.p3-0 {
+  padding: 3px 0%;
+}
+.edit, .delete {
+  padding: 3px 5px;
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+.edit {
+  color: #409eff;
+  background: #ecf5ff;
+  border-color: #b3d8ff;
+}
+.edit:hover {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.delete {
+  color: #f56c6c;
+  background: #fef0f0;
+  border-color: #fbc4c4
+}
+.delete:hover {
+  color: #fff;
+  background-color: #f56c6c;
+  border-color: #f56c6c;
 }
 </style>
