@@ -13,7 +13,7 @@
     <el-row :gutter="20" class="row">
       <el-col :span="6">
         <el-card class="h600">
-          <el-table :data="bomList" stripe style="width: 100%" @row-dblclick="getBomDetail">
+          <el-table :data="bomList" stripe style="width: 100%" @row-click="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
@@ -33,15 +33,15 @@
         <el-card class="h600 ova">
           <div slot="header" class="clearfix">
             <span>BOM清单： {{ bomCode }}</span>
-            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" size="medium">添加BOM明细</el-button>
+            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" size="medium" @click="addBomDetail">添加BOM明细</el-button>
           </div>
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span :style="{color: data.mat_type ? 'green' : 'blue'}">{{ node.label }}</span>
               <span>
-                <el-button class="edit" type="text" icon="el-icon-edit" @click.stop="() => append(data)">编辑</el-button>
-                <el-button class="delete" type="text" icon="el-icon-delete" @click.stop="() => remove(node, data)">删除</el-button>
+                <el-button class="edit" type="text" icon="el-icon-edit" @click.stop="() => editBomDetail(node, data)">编辑</el-button>
+                <el-button class="delete" type="text" icon="el-icon-delete" @click.stop="() => deleteBomDetail(node, data)">删除</el-button>
               </span>
             </span>
           </el-tree>
@@ -84,6 +84,7 @@
 <script>
 import apis from '@/apis'
 import getBomForm from '../form/bom'
+import getBomDetailForm from '../form/bomDetail'
 
 export default {
   name: 'BomEditor',
@@ -107,8 +108,33 @@ export default {
     }
   },
   methods: {
-    addBomDetailForm (row) {
+    editBomDetail (node, row) {
+      getBomDetailForm(row, 'edit').then(form => this.$showForm(form).$on('submit', (form, done) => {
+        this.submitBomDetailForm(form, () => {
+          const children = node.parent.childNodes
+          const index = children.findIndex(c => c.data.bom_detail_id === form.bom_detail_id)
+          if (~index) {
+            this.$set(children[index], 'data', form)
+            this.$message.success('编辑成功!')
+          } else {
+            this.$message.danger('编辑失败!')
+          }
+          done()
+        })
+      }))
+    },
 
+    addBomDetail (row) {
+      getBomDetailForm({ bom_code: this.bomCode }, 'add').then(form => this.$showForm(form).$on('submit', this.submitBomDetailForm))
+    },
+
+    submitBomDetailForm (form, done) {
+      if (form.bom_detail_id) {
+        apis.updateBomDetail(form).then(_ => {
+          done()
+        })
+      } else {
+      }
     },
 
     deleteBomForm (row) {
@@ -117,7 +143,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        console.log('ok')
         apis.deleteBom(row).then(_ => {
           const index = this.bomList.findIndex(b => b.bom_id === row.bom_id)
           ~index && this.bomList.splice(index, 1)
@@ -174,19 +199,21 @@ export default {
       apis.fetchSubBom(node.data.mat_code, this.versionCode).then(data => resolve(data))
     },
 
-    append (data) {
-      const newChild = { id: 1000, mat_code: 'testtest', children: [] }
-      if (!data.children) {
-        this.$set(data, 'children', [])
-      }
-      data.children.push(newChild)
-    },
-
-    remove (node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
+    deleteBomDetail (node, data) {
+      this.$confirm('此操作将永久删除该BOM明细, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        apis.deleteBomDetail(data).then(_ => {
+          const children = node.parent.childNodes
+          const index = children.findIndex(c => c.data.bom_detail_id === data.bom_detail_id)
+          ~index && children.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
     },
 
     getBom ([typeCode, productCode]) {
