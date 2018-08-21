@@ -17,4 +17,7 @@ export default {
 .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
+.el-table .cell {
+  cursor: pointer;
+}
 </style>
