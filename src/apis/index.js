@@ -9,6 +9,27 @@ function execSQL (sql, params = null) {
 }
 
 export default {
+  updateBomDetail (bomDetail) {
+    const sql = `
+          UPDATE B_Bom_Detail
+            SET bom_code = @bom_code
+            ,  mat_code = @mat_code
+            ,  mat_type = @mat_type
+            ,  qty = @qty
+            ,  base_qty = @base_qty
+            ,  wastage = @wastage
+            ,  enable_Substitute = @enable_Substitute
+            ,  enable_beyond = @enable_beyond
+            ,  be_ctrl = @be_ctrl
+          WHERE bom_detail_id = @bom_detail_id`
+    return execSQL(sql, bomDetail)
+  },
+
+  deleteBomDetail (bomDetail) {
+    const sql = `DELETE B_Bom_Detail WHERE bom_detail_id = @bom_detail_id`
+    return execSQL(sql, bomDetail)
+  },
+
   deleteBom (bom) {
     const sql = `DELETE B_Bom_Detail WHERE bom_code = @bom_code;DELETE B_Bom WHERE bom_id = @bom_id`
     return execSQL(sql, bom)
