@@ -40,7 +40,7 @@ export default function getBomForm (form = null, type = 'add') {
           label: '产品',
           component: 'ex-select',
           options,
-          disabled: !!(type === 'add' && form && form.product_code)
+          disabled: !!(form && form.product_code)
         },
         {
           value: 'base_qty',
