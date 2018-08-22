@@ -9,6 +9,37 @@ function execSQL (sql, params = null) {
 }
 
 export default {
+  addBomDetail (bomDetail) {
+    const sql = `
+          INSERT INTO B_Bom_Detail
+            ( bom_code
+            , mat_code
+            , mat_type
+            , qty
+            , base_qty
+            , wastage
+            , enable_Substitute
+            , enable_beyond
+            , be_ctrl)
+          VALUES
+            ( @bom_code
+            , @mat_code
+            , @mat_type
+            , @qty
+            , @base_qty
+            , @wastage
+            , @enable_Substitute
+            , @enable_beyond
+            , @be_ctrl);
+          SELECT TOP(1) *,
+            CASE WHEN mat_type = 1 THEN (SELECT TOP(1) M.mat_name FROM B_Material M WHERE mat_code = M.mat_code)
+                 WHEN mat_type = 0 THEN (SELECT TOP(1) P.product_name FROM B_Product P WHERE mat_code = P.product_code)
+               ELSE mat_code END AS mat_name
+            FROM B_Bom_Detail
+          ORDER BY bom_detail_id DESC`
+    return execSQL(sql, bomDetail).then(bds => bds.pop())
+  },
+
   updateBomDetail (bomDetail) {
     const sql = `
           UPDATE B_Bom_Detail
@@ -57,8 +88,9 @@ export default {
                , @discription
                , @enable
                , @create_time
-               , @is_split)`
-    return execSQL(sql, bom)
+               , @is_split);
+          SELECT TOP (1) * FROM B_Bom ORDER BY bom_id DESC`
+    return execSQL(sql, bom).then(bs => bs.pop())
   },
 
   updateBom (bom) {
@@ -75,6 +107,16 @@ export default {
             ,  is_split = @is_split
           WHERE bom_id = @bom_id`
     return execSQL(sql, bom)
+  },
+
+  fetchProductOptions () {
+    const sql = 'SELECT product_code AS value, product_name AS label FROM B_Product'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
+  fetchMaterialOptions () {
+    const sql = 'SELECT mat_code AS value, mat_name AS label FROM B_Material'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
   },
 
   fetchProducts () {
