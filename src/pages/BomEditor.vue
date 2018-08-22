@@ -20,8 +20,8 @@
             <el-table-column fixed="right" label="操作" width="78" align="center">
               <template slot-scope="scope">
                 <el-button-group>
-                  <el-button @click="editBomForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-                  <el-button @click="deleteBomForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                  <el-button @click.stop="editBomForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+                  <el-button @click.stop="deleteBomForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
                 </el-button-group>
               </template>
             </el-table-column>
