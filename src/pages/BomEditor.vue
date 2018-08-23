@@ -13,7 +13,7 @@
     <el-row :gutter="20" class="row">
       <el-col :span="6">
         <el-card class="h600">
-          <el-table :data="bomList" stripe class="w100p" @row-click="getBomDetail">
+          <el-table :data="bomList" stripe class="w100p" highlight-current-row @row-click="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
@@ -32,7 +32,7 @@
       <el-col :span="10">
         <el-card class="h600 ova">
           <div slot="header" class="clearfix">
-            <span>BOM清单： {{ bomCode }}</span>
+            <span class="card-header">BOM清单： {{ bomCode }}</span>
             <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加BOM明细</el-button>
           </div>
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
@@ -51,7 +51,7 @@
       <el-col :span="8">
         <el-card class="h350">
           <div slot="header" class="clearfix">
-            <span>物料明细</span>
+            <span class="card-header">物料明细</span>
             <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstituteForm">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
@@ -416,5 +416,10 @@ dd {
   color: #fff;
   background-color: #f56c6c;
   border-color: #f56c6c;
+}
+.card-header {
+  font-size: 14px;
+  font-weight: bold;
+  color: #909399;
 }
 </style>
