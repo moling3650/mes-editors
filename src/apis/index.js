@@ -31,12 +31,13 @@ export default {
             , @enable_Substitute
             , @enable_beyond
             , @be_ctrl);
-          SELECT TOP(1) *,
-            CASE WHEN mat_type = 1 THEN (SELECT TOP(1) M.mat_name FROM B_Material M WHERE mat_code = M.mat_code)
-                 WHEN mat_type = 0 THEN (SELECT TOP(1) P.product_name FROM B_Product P WHERE mat_code = P.product_code)
+          SELECT TOP(1) D.*,
+            CASE WHEN mat_type = 1 THEN (SELECT TOP(1) M.mat_name FROM B_Material M WHERE D.mat_code = M.mat_code)
+                 WHEN mat_type = 0 THEN (SELECT TOP(1) P.product_name FROM B_Product P WHERE D.mat_code = P.product_code)
                ELSE mat_code END AS mat_name
-            FROM B_Bom_Detail
-          ORDER BY bom_detail_id DESC`
+            FROM B_Bom_Detail D
+            WHERE D.bom_code = @bom_code AND D.mat_code = @mat_code
+            ORDER BY bom_detail_id DESC`
     return execSQL(sql, bomDetail).then(bds => bds.pop())
   },
 
