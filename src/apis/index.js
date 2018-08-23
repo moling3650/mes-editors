@@ -10,11 +10,32 @@ function execSQL (sql, params = null) {
 
 export default {
   addSubstitute (substitute) {
-
+    const sql = `
+          INSERT INTO B_MatSubstitute
+            ( bom_code
+            , mat_code
+            , Substitute_mat_code)
+          VALUES
+            ( @bom_code
+            , @mat_code
+            , @Substitute_mat_code);
+          SELECT TOP(1) S.*, M.mat_name AS Substitute_mat_name
+          FROM B_MatSubstitute S
+          JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
+          WHERE bom_code = @bom_code AND Substitute_mat_code = @Substitute_mat_code`
+    return execSQL(sql, substitute).then(substitutes => substitutes.pop())
   },
 
   updateSubstitute (substitute) {
-
+    const sql = `
+          UPDATE B_MatSubstitute
+            SET Substitute_mat_code = @Substitute_mat_code
+          WHERE id = @id;
+          SELECT TOP(1) S.*, M.mat_name AS Substitute_mat_name
+          FROM B_MatSubstitute S
+          JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
+          WHERE bom_code = @bom_code AND Substitute_mat_code = @Substitute_mat_code`
+    return execSQL(sql, substitute).then(substitutes => substitutes.pop())
   },
 
   deleteSubstitute (substitute) {
