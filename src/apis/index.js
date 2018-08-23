@@ -9,6 +9,19 @@ function execSQL (sql, params = null) {
 }
 
 export default {
+  addSubstitute (substitute) {
+
+  },
+
+  updateSubstitute (substitute) {
+
+  },
+
+  deleteSubstitute (substitute) {
+    const sql = 'DELETE FROM B_MatSubstitute WHERE id = @id'
+    return execSQL(sql, substitute)
+  },
+
   addBomDetail (bomDetail) {
     const sql = `
           INSERT INTO B_Bom_Detail
@@ -156,7 +169,8 @@ export default {
 
   fetchSubstituteMaterial (bomCode, matCode) {
     const sql = `
-              SELECT S.mat_code, M.mat_code AS sCode, M.mat_name AS sName FROM B_MatSubstitute S
+              SELECT S.*, M.mat_name AS Substitute_mat_name
+              FROM B_MatSubstitute S
               JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
               WHERE S.bom_code = @bomCode AND S.mat_code = @matCode`
     return execSQL(sql, { bomCode, matCode })
