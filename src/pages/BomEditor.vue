@@ -33,7 +33,7 @@
         <el-card class="h600 ova">
           <div slot="header" class="clearfix">
             <span>BOM清单： {{ bomCode }}</span>
-            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" size="medium" @click="addBomDetail">添加BOM明细</el-button>
+            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加BOM明细</el-button>
           </div>
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
@@ -49,7 +49,7 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card class="h600">
+        <el-card class="h350">
           <div slot="header" class="clearfix">
             <span>物料明细</span>
             <el-button v-show="detail.mat_name" class="fl-r p3-0" type="text">添加替代料</el-button>
@@ -71,9 +71,17 @@
             <dd>{{detail.wastage || 0}}</dd>
             <dt>是否管控：</dt>
             <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
+            <dt>能否超越：</dt>
+            <dd>{{detail.enable_beyond === 1 ? '是' : '否'}}</dd>
             <dt>可否替代：</dt>
             <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
           </dl>
+        </el-card>
+
+        <el-card class="h250">
+          <div slot="header" class="clearfix">
+            <span>替代料</span>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -115,6 +123,7 @@ export default {
           const index = children.findIndex(c => c.data.bom_detail_id === form.bom_detail_id)
           if (~index) {
             this.$set(children[index], 'data', form)
+            this.detail = form
             this.$message.success('编辑成功!')
           } else {
             this.$message.danger('编辑失败!')
@@ -125,15 +134,27 @@ export default {
     },
 
     addBomDetail (row) {
-      getBomDetailForm({ bom_code: this.bomCode }, 'add').then(form => this.$showForm(form).$on('submit', this.submitBomDetailForm))
+      this.$confirm('选择物料类型', '提示', {
+        confirmButtonText: '半成品',
+        cancelButtonText: '物料',
+        type: 'warning'
+      }).then(_ => 0)
+        .catch(_ => 1)
+        .then(matType => getBomDetailForm({ bom_code: this.bomCode, mat_type: matType }, 'add'))
+        .then(form => this.$showForm(form).$on('submit', (form, done) => {
+          return apis.addBomDetail(form).then(bd => {
+            console.log(bd)
+            this.bomDetail.push(bd)
+            done()
+          })
+        }))
     },
 
     submitBomDetailForm (form, done) {
       if (form.bom_detail_id) {
-        apis.updateBomDetail(form).then(_ => {
-          done()
-        })
+        apis.updateBomDetail(form).then(_ => done())
       } else {
+        apis.addBomDetail(form).then(_ => done())
       }
     },
 
@@ -146,6 +167,10 @@ export default {
         apis.deleteBom(row).then(_ => {
           const index = this.bomList.findIndex(b => b.bom_id === row.bom_id)
           ~index && this.bomList.splice(index, 1)
+          this.bomCode = ''
+          this.bomDetail = []
+          this.detail = {}
+          this.substitute = {}
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
@@ -209,6 +234,7 @@ export default {
           const children = node.parent.childNodes
           const index = children.findIndex(c => c.data.bom_detail_id === data.bom_detail_id)
           ~index && children.splice(index, 1)
+          this.detail = {}
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
@@ -291,6 +317,15 @@ dd {
 }
 .h600 {
   height: 600px;
+}
+.h350 {
+  height: 350px;
+}
+.h300 {
+  height: 300px;
+}
+.h250 {
+  height: 250px;
 }
 .ova {
   overflow: auto;
