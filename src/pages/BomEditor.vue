@@ -3,7 +3,7 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
-        <el-cascader v-model="product" :options="products" filterable @change="getBom" style="width: 100%;"/>
+        <el-cascader v-model="product" :options="products" filterable @change="getBom" class="w100p"/>
       </el-col>
       <el-col :span="6">
         <el-button type="success" icon="el-icon-plus" @click="openBomForm">添加Bom</el-button>
@@ -13,7 +13,7 @@
     <el-row :gutter="20" class="row">
       <el-col :span="6">
         <el-card class="h600">
-          <el-table :data="bomList" stripe style="width: 100%" @row-click="getBomDetail">
+          <el-table :data="bomList" stripe class="w100p" @row-click="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
             <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
@@ -52,7 +52,7 @@
         <el-card class="h350">
           <div slot="header" class="clearfix">
             <span>物料明细</span>
-            <el-button v-show="detail.mat_name" class="fl-r p3-0" type="text">添加替代料</el-button>
+            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstituteForm">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
@@ -79,9 +79,18 @@
         </el-card>
 
         <el-card class="h250">
-          <div slot="header" class="clearfix">
-            <span>替代料</span>
-          </div>
+          <el-table :data="substitutes" stripe class="w100p">
+            <el-table-column prop="Substitute_mat_code" label="替代料编号"/>
+            <el-table-column prop="Substitute_mat_name" label="替代料名称"/>
+            <el-table-column fixed="right" label="操作" width="78" align="center">
+              <template slot-scope="scope">
+                <el-button-group>
+                  <el-button @click.stop="editSubstituteForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+                  <el-button @click.stop="deleteSubstituteForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                </el-button-group>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </el-col>
     </el-row>
@@ -93,6 +102,7 @@
 import apis from '@/apis'
 import getBomForm from '../form/bom'
 import getBomDetailForm from '../form/bomDetail'
+import getSubstituteForm from '../form/substitute'
 
 export default {
   name: 'BomEditor',
@@ -106,7 +116,7 @@ export default {
       bomList: [],
       bomDetail: [],
       detail: {},
-      substitute: {},
+      substitutes: [],
       props: {
         label: 'mat_name',
         isLeaf (data, node) {
@@ -116,6 +126,49 @@ export default {
     }
   },
   methods: {
+    addSubstituteForm () {
+      const formData = {
+        bom_code: this.detail.bom_code,
+        mat_code: this.detail.mat_code
+      }
+      getSubstituteForm(formData, 'add', this.detail.mat_type).then(form => this.$showForm(form).$on('submit', this.submitSubstituteForm))
+    },
+
+    editSubstituteForm (row) {
+      getSubstituteForm(row, 'edit', this.detail.mat_type).then(form => this.$showForm(form).$on('submit', this.submitSubstituteForm))
+    },
+
+    submitSubstituteForm (form, done) {
+      if (form.id) {
+        apis.updateSubstitute(form).then(substitute => {
+          const index = this.substitutes.findIndex(s => s.id === substitute.id)
+          ~index && this.substitutes.splice(index, 1, substitute)
+          done()
+        })
+      } else {
+        apis.addSubstitute(form).then(substitute => {
+          this.substitutes.push(substitute)
+          done()
+        })
+      }
+    },
+
+    deleteSubstituteForm (row) {
+      this.$confirm('此操作将永久删除该替代料, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        apis.deleteSubstitute(row).then(_ => {
+          const index = this.substitutes.findIndex(s => s.id === row.id)
+          ~index && this.substitutes.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
+    },
+
     editBomDetail (node, row) {
       getBomDetailForm(row, 'edit').then(form => this.$showForm(form).$on('submit', (form, done) => {
         this.submitBomDetailForm(form, () => {
@@ -137,17 +190,19 @@ export default {
       this.$confirm('选择物料类型', '提示', {
         confirmButtonText: '半成品',
         cancelButtonText: '物料',
+        distinguishCancelAndClose: true,
         type: 'warning'
       }).then(_ => 0)
-        .catch(_ => 1)
+        .catch(action => action === 'cancel' ? 1 : Promise.reject(new Error('cancel')))
         .then(matType => getBomDetailForm({ bom_code: this.bomCode, mat_type: matType }, 'add'))
         .then(form => this.$showForm(form).$on('submit', (form, done) => {
-          return apis.addBomDetail(form).then(bd => {
-            console.log(bd)
-            this.bomDetail.push(bd)
+          return apis.addBomDetail(form).then(detail => {
+            this.bomDetail.push(detail)
+            this.$message.success('添加成功!')
             done()
           })
         }))
+        .catch(_ => this.$message.info('已取消添加!'))
     },
 
     submitBomDetailForm (form, done) {
@@ -170,7 +225,7 @@ export default {
           this.bomCode = ''
           this.bomDetail = []
           this.detail = {}
-          this.substitute = {}
+          this.substitutes = []
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
@@ -207,12 +262,11 @@ export default {
     },
 
     handleNodeClick (node) {
-      this.showSubstitute = false
+      this.substitutes = []
       this.detail = node
       if (node.enable_Substitute) {
         apis.fetchSubstituteMaterial(node.bom_code, node.mat_code).then(data => {
-          this.substitute = data.length ? data.pop() : {}
-          this.showSubstitute = true
+          this.substitutes = data
         })
       }
     },
@@ -235,6 +289,7 @@ export default {
           const index = children.findIndex(c => c.data.bom_detail_id === data.bom_detail_id)
           ~index && children.splice(index, 1)
           this.detail = {}
+          this.substitutes = []
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
@@ -246,7 +301,7 @@ export default {
       this.bomCode = ''
       this.bomDetail = []
       this.detail = {}
-      this.substitute = {}
+      this.substitutes = []
       if (!productCode) {
         return
       }
@@ -257,7 +312,7 @@ export default {
 
     getBomDetail (bom) {
       this.detail = {}
-      this.substitute = {}
+      this.substitutes = []
       this.bomCode = bom.bom_code
       this.versionCode = bom.version_code
       apis.fetchBomDetail(bom.bom_code).then(data => {
