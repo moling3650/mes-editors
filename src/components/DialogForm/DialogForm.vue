@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     reset () {
-
+      this.form = JSON.parse(JSON.stringify(this.formData))
     },
     submit () {
       this.$refs.form.validate(valid => {
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted () {
-    this.form = JSON.parse(JSON.stringify(this.formData))
+    this.reset()
   }
 }
 </script>
