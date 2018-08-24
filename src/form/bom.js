@@ -28,12 +28,14 @@ export default function getBomForm (form = null, type = 'add') {
           value: 'bom_code',
           label: 'BOM编号',
           component: 'el-input',
-          disabled: type === 'edit'
+          disabled: type === 'edit',
+          span: 12
         },
         {
           value: 'version_code',
           label: '版本',
-          component: 'el-input'
+          component: 'el-input',
+          span: 12
         },
         {
           value: 'product_code',
@@ -43,19 +45,16 @@ export default function getBomForm (form = null, type = 'add') {
           disabled: !!(form && form.product_code)
         },
         {
-          value: 'base_qty',
-          label: '耗料基数',
-          component: 'el-input-number'
-        },
-        {
           value: 'designator',
           label: '标志符',
-          component: 'el-input'
+          component: 'el-input',
+          span: 12
         },
         {
           value: 'discription',
           label: '描述',
-          component: 'el-input'
+          component: 'el-input',
+          span: 12
         },
         {
           value: 'enable',

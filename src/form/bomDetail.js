@@ -30,14 +30,17 @@ export default function getBomDetailForm (form = null, type = 'add') {
           disabled: type === 'edit'
         },
         {
-          value: 'qty',
-          label: '耗料数量',
-          component: 'el-input-number'
+          value: 'base_qty',
+          label: '消耗基数',
+          component: 'el-input-number',
+          span: 12,
+          disabled: true
         },
         {
-          value: 'base_qty',
-          label: '耗料基数',
-          component: 'el-input-number'
+          value: 'qty',
+          label: '消耗数量',
+          component: 'el-input-number',
+          span: 12
         },
         {
           value: 'wastage',
@@ -49,21 +52,24 @@ export default function getBomDetailForm (form = null, type = 'add') {
           label: '能否替代',
           component: 'el-switch',
           activeValue: 1,
-          inactiveValue: 0
+          inactiveValue: 0,
+          span: 8
         },
         {
           value: 'enable_beyond',
           label: '能否超越',
           component: 'el-switch',
           activeValue: 1,
-          inactiveValue: 0
+          inactiveValue: 0,
+          span: 8
         },
         {
           value: 'be_ctrl',
           label: '是否可控',
           component: 'el-switch',
           activeValue: 1,
-          inactiveValue: 0
+          inactiveValue: 0,
+          span: 8
         }
       ],
       formData: Object.assign({
