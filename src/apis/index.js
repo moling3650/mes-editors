@@ -65,13 +65,13 @@ export default {
             , @enable_Substitute
             , @enable_beyond
             , @be_ctrl);
-          SELECT TOP(1) D.*,
-            CASE WHEN mat_type = 1 THEN (SELECT TOP(1) M.mat_name FROM B_Material M WHERE D.mat_code = M.mat_code)
-                 WHEN mat_type = 0 THEN (SELECT TOP(1) P.product_name FROM B_Product P WHERE D.mat_code = P.product_code)
-               ELSE mat_code END AS mat_name
-            FROM B_Bom_Detail D
-            WHERE D.bom_code = @bom_code AND D.mat_code = @mat_code
-            ORDER BY bom_detail_id DESC`
+          SELECT TOP(1) D.*
+            , ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name
+            , ISNULL(P.unit, M.unit) AS unit
+          FROM B_Bom_Detail D
+          LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
+          LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
+          WHERE D.bom_code = @bom_code AND D.mat_code = @mat_code`
     return execSQL(sql, bomDetail).then(bds => bds.pop())
   },
 
@@ -170,7 +170,10 @@ export default {
 
   fetchBomDetail (bomCode) {
     const sql = `
-              SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
+              SELECT D.*
+                , ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name
+                , ISNULL(P.unit, M.unit) AS unit
+              FROM B_Bom_Detail D
               LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
               LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
               WHERE D.bom_code = @bomCode
@@ -180,7 +183,10 @@ export default {
 
   fetchSubBom (productCode, version) {
     const sql = `
-              SELECT ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name, D.* FROM B_Bom_Detail D
+              SELECT D.*
+                , ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name
+                , ISNULL(P.unit, M.unit) AS unit
+              FROM B_Bom_Detail D
               LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
               LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
               WHERE bom_code = (SELECT bom_code FROM B_Bom WHERE product_code = @productCode AND version_code = @version)
