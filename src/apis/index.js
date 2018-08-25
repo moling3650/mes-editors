@@ -145,13 +145,13 @@ export default {
   },
 
   fetchProductOptions () {
-    const sql = 'SELECT product_code AS value, product_name AS label FROM B_Product'
-    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+    const sql = 'SELECT product_code AS value, product_name AS label, unit FROM B_Product'
+    return execSQL(sql).then(opts => opts.map(({value, label, unit}) => ({value, label: `${label} / ${value}`, unit})))
   },
 
   fetchMaterialOptions () {
-    const sql = 'SELECT mat_code AS value, mat_name AS label FROM B_Material'
-    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+    const sql = 'SELECT mat_code AS value, mat_name AS label, unit FROM B_Material'
+    return execSQL(sql).then(opts => opts.map(({value, label, unit}) => ({value, label: `${label} / ${value}`, unit})))
   },
 
   fetchProducts () {
