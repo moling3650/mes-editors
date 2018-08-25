@@ -9,7 +9,9 @@
                 :options="item.options"
                 :active-value="item.activeValue"
                 :inactive-value="item.inactiveValue"
-                :disabled="item.disabled"></component>
+                :disabled="item.disabled"
+                :unit="item.unit"
+                @change="$emit(`update:${item.value}`, form[item.value], item, formItems)"></component>
             </el-form-item>
           </el-col>
         </el-row>
