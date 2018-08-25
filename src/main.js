@@ -4,11 +4,13 @@ import App from '@/App'
 import router from '@/router'
 import DialogForm from '@/components/DialogForm'
 import ExSelect from '@/components/ExSelect'
+import ExInputNumber from '@/components/ExInputNumber'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 Vue.use(DialogForm)
 Vue.use(ExSelect)
+Vue.use(ExInputNumber)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
