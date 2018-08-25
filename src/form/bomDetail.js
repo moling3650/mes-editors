@@ -6,6 +6,8 @@ export default function getBomDetailForm (form = null, type = 'add') {
   }
   const apiType = form.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
   return apis[apiType]().then(options => {
+    const material = form.mat_code ? options.find(o => o.value === form.mat_code) : null
+    const unit = material ? material.unit : ''
     return {
       title: `${type === 'add' ? '新建' : '编辑'}BOM明细表单`,
       formItems: [
@@ -32,20 +34,23 @@ export default function getBomDetailForm (form = null, type = 'add') {
         {
           value: 'base_qty',
           label: '消耗基数',
-          component: 'el-input-number',
+          component: 'ex-input-number',
           span: 12,
-          disabled: true
+          disabled: true,
+          unit
         },
         {
           value: 'qty',
           label: '消耗数量',
-          component: 'el-input-number',
-          span: 12
+          component: 'ex-input-number',
+          span: 12,
+          unit
         },
         {
           value: 'wastage',
           label: '损耗率',
-          component: 'el-input-number'
+          component: 'ex-input-number',
+          unit: '%'
         },
         {
           value: 'enable_Substitute',
@@ -78,7 +83,7 @@ export default function getBomDetailForm (form = null, type = 'add') {
         mat_code: '',
         qty: 1,
         base_qty: 1,
-        wastage: 1,
+        wastage: 0,
         enable_Substitute: 1,
         enable_beyond: 1,
         be_ctrl: 1
@@ -87,7 +92,7 @@ export default function getBomDetailForm (form = null, type = 'add') {
         bom_code: [{ required: true, trigger: 'blur' }],
         mat_type: [{ required: true, trigger: 'blur' }],
         mat_code: [{ required: true, trigger: 'blur' }],
-        qty: [],
+        qty: [{ required: true, trigger: 'blur' }],
         base_qty: [],
         wastage: [],
         enable_Substitute: [],
