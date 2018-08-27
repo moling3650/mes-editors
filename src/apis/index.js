@@ -154,13 +154,29 @@ export default {
     return execSQL(sql).then(opts => opts.map(({value, label, unit}) => ({value, label: `${label} / ${value}`, unit})))
   },
 
-  fetchProducts () {
+  fetchProductOptions () {
     const sql = `
               SELECT DISTINCT T.typecode, T.type_name, P.product_code, P.product_name FROM B_Bom B
               INNER JOIN B_Product P ON P.product_code = B.product_code
               INNER JOIN B_Product_Type T ON T.typecode = P.typecode
               ORDER BY T.typecode`
-    return execSQL(sql)
+    return execSQL(sql).then(data => {
+      const products = {}
+      data.forEach(item => {
+        if (!products[item.typecode]) {
+          products[item.typecode] = {
+            value: item.typecode,
+            label: item.type_name,
+            children: []
+          }
+        }
+        products[item.typecode].children.push({
+          value: item.product_code,
+          label: item.product_name
+        })
+      })
+      return Object.values(products)
+    })
   },
 
   fetchBom (productCode) {

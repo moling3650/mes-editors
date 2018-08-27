@@ -340,22 +340,8 @@ export default {
     }
   },
   mounted () {
-    apis.fetchProducts().then(data => {
-      const products = {}
-      data.forEach(item => {
-        if (!products[item.typecode]) {
-          products[item.typecode] = {
-            value: item.typecode,
-            label: item.type_name,
-            children: []
-          }
-        }
-        products[item.typecode].children.push({
-          value: item.product_code,
-          label: item.product_name
-        })
-      })
-      this.products = Object.values(products)
+    apis.fetchProductOptions().then(options => {
+      this.products = options
     })
   }
 }
