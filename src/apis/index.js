@@ -1,4 +1,5 @@
 import execSQL from '@/apis/executeSQL'
+import formulaApis from '@/apis/formula'
 
 export default {
   addSubstitute (substitute) {
@@ -214,5 +215,6 @@ export default {
   validateBomCode (bomCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Bom WHERE bom_code = @bomCode'
     return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
-  }
+  },
+  ...formulaApis
 }
