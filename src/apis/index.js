@@ -154,7 +154,7 @@ export default {
     return execSQL(sql).then(opts => opts.map(({value, label, unit}) => ({value, label: `${label} / ${value}`, unit})))
   },
 
-  fetchProductOptions () {
+  fetchProductCascaderOptions () {
     const sql = `
               SELECT DISTINCT T.typecode, T.type_name, P.product_code, P.product_name FROM B_Bom B
               INNER JOIN B_Product P ON P.product_code = B.product_code

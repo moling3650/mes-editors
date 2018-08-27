@@ -340,7 +340,7 @@ export default {
     }
   },
   mounted () {
-    apis.fetchProductOptions().then(options => {
+    apis.fetchProductCascaderOptions().then(options => {
       this.products = options
     })
   }
