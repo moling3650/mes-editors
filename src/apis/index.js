@@ -216,5 +216,11 @@ export default {
     const sql = 'SELECT COUNT(*) AS c FROM B_Bom WHERE bom_code = @bomCode'
     return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
   },
+
+  validateFormulaCode (formulaCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Formula WHERE formula_code = @formulaCode'
+    return execSQL(sql, { formulaCode }).then(data => data[0].c === 0)
+  },
+
   ...formulaApis
 }
