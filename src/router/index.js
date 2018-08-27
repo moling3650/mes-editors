@@ -16,6 +16,10 @@ export default new Router({
     {
       path: '/editors/bom',
       component: () => import('@/pages/BomEditor')
+    },
+    {
+      path: '/editors/formula',
+      component: () => import('@/pages/FormulaEditor')
     }
   ]
 })
