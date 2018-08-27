@@ -1,12 +1,4 @@
-import request from '@/apis/request'
-
-function execSQL (sql, params = null) {
-  return request.post('/DataAPI/ReportData.ashx?method=executeQuery', {
-    query: sql,
-    queryParams: params,
-    isProcedure: false
-  })
-}
+import execSQL from '@/apis/executeSQL'
 
 export default {
   addSubstitute (substitute) {
