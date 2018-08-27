@@ -171,10 +171,12 @@ export default {
 
     editBomDetail (node, row) {
       getBomDetailForm(row, 'edit').then(form => this.$showForm(form).$on('submit', (form, done) => {
+        form.wastage = form.wastage / 100
         this.submitBomDetailForm(form, () => {
           const children = node.parent.childNodes
           const index = children.findIndex(c => c.data.bom_detail_id === form.bom_detail_id)
           if (~index) {
+            form.wastage = form.wastage * 100
             this.$set(children[index], 'data', form)
             this.detail = form
             this.$message.success('编辑成功!')
@@ -196,11 +198,18 @@ export default {
         .catch(action => action === 'cancel' ? 1 : Promise.reject(new Error('cancel')))
         .then(matType => getBomDetailForm({ bom_code: this.bomCode, mat_type: matType }, 'add'))
         .then(form => this.$showForm(form).$on('submit', (form, done) => {
+          form.wastage = form.wastage / 100
           return apis.addBomDetail(form).then(detail => {
+            detail.wastage = detail.wastage * 100
             this.bomDetail.push(detail)
             this.$message.success('添加成功!')
             done()
           })
+        }).$on('update:mat_code', (matCode, item, formItems) => {
+          const material = item.options.find(o => o.value === matCode)
+          const unit = material.unit
+          formItems[3].unit = unit
+          formItems[4].unit = unit
         }))
         .catch(_ => this.$message.info('已取消添加!'))
     },
@@ -275,7 +284,13 @@ export default {
       if (!node.data.mat_code || !this.versionCode) {
         return resolve([])
       }
-      apis.fetchSubBom(node.data.mat_code, this.versionCode).then(data => resolve(data))
+      apis.fetchSubBom(node.data.mat_code, this.versionCode).then(data => {
+        data.map(item => {
+          item.wastage = item.wastage * 100
+          return item
+        })
+        return resolve(data)
+      })
     },
 
     deleteBomDetail (node, data) {
@@ -316,6 +331,10 @@ export default {
       this.bomCode = bom.bom_code
       this.versionCode = bom.version_code
       apis.fetchBomDetail(bom.bom_code).then(data => {
+        data.map(item => {
+          item.wastage = item.wastage * 100
+          return item
+        })
         this.bomDetail = data
       })
     }
