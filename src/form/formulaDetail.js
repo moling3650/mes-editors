@@ -26,7 +26,7 @@ export default function getFormulaDetailForm (form = null, type = 'add', options
       {
         value: 'feed_idx',
         label: '加料顺序',
-        component: 'ex-input-number'
+        component: 'el-input-number'
       },
       {
         value: 'feed_qty',

@@ -77,7 +77,7 @@ export default function getFormulaForm (form = null, type = 'add') {
     }, form),
     rules: {
       bom_code: [{ required: true, message: '请输入BOM编号', trigger: 'blur' }],
-      formula_code: type === 'edit' ? [{ required: true }] : [{ required: true, validator: checkFormulaCode, trigger: 'blur' }],
+      formula_code: type === 'add' ? [{ required: true, validator: checkFormulaCode, trigger: 'blur' }] : [{ required: true }],
       formula_name: [{ required: true, message: '请输入配方名称', trigger: 'blur' }]
     }
   })
