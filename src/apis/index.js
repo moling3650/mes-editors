@@ -172,6 +172,21 @@ export default {
     })
   },
 
+  fetchBomMaterialOptions (bomCode) {
+    const sql = `
+    SELECT D.mat_code AS value
+      , CASE
+          WHEN D.mat_type = 0 THEN P.product_name
+        WHEN D.mat_type = 1 THEN M.mat_name
+        ELSE NULL
+      END AS label
+    FROM B_Bom_Detail D
+    LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
+    LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
+    WHERE D.bom_code = @bomCode`
+    return execSQL(sql, { bomCode }).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
   fetchBom (productCode) {
     const sql = 'SELECT * FROM B_Bom WHERE product_code = @productCode'
     return execSQL(sql, { productCode })
