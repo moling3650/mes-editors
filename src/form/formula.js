@@ -27,36 +27,41 @@ export default function getFormulaForm (form = null, type = 'add') {
         value: 'formula_code',
         label: '配方编号',
         component: 'el-input',
-        disabled: type === 'edit',
+        disabled: type !== 'add',
         span: 12
       },
       {
         value: 'formula_name',
         label: '配方名称',
         component: 'el-input',
+        disabled: type === 'view',
         span: 12
       },
       {
         value: 'base_qty',
         label: '耗料基数',
-        component: 'ex-input-number'
+        component: 'ex-input-number',
+        disabled: type === 'view'
       },
       {
         value: 'designator',
         label: '标志符',
         component: 'el-input',
+        disabled: type === 'view',
         span: 12
       },
       {
         value: 'description',
         label: '描述',
         component: 'el-input',
+        disabled: type === 'view',
         span: 12
       },
       {
         value: 'enable',
         label: '是否启用',
         component: 'el-switch',
+        disabled: type === 'view',
         activeValue: 1,
         inactiveValue: 0
       }
