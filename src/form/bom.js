@@ -14,7 +14,7 @@ function checkBomCode (rule, value, callback) {
 }
 
 export default function getBomForm (form = null, type = 'add') {
-  return apis.fetchProducts().then(products => {
+  return apis.fetchProductOptions().then(products => {
     const options = products.map(p => {
       return {
         value: p.product_code,
