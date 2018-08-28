@@ -93,7 +93,7 @@ export default {
     },
     // 操作配方表
     viewFormula (formula) {
-      getFormulaForm(formula, 'view').then(form => this.$showForm(form))
+      getFormulaForm(formula, 'view').then(form => this.$showForm(form).$on('submit', (_, close) => close()))
     },
     addFormula () {
       getFormulaForm({ bom_code: this.bomCode }).then(form => this.$showForm(form).$on('submit', (formula, close) => {
