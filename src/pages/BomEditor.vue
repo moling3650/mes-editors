@@ -52,7 +52,7 @@
         <el-card class="h350">
           <div slot="header" class="card-header clearfix">
             <span class="card-header">物料明细</span>
-            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstituteForm">添加替代料</el-button>
+            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
@@ -85,8 +85,8 @@
             <el-table-column fixed="right" label="操作" width="78" align="center">
               <template slot-scope="scope">
                 <el-button-group>
-                  <el-button @click.stop="editSubstituteForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-                  <el-button @click.stop="deleteSubstituteForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                  <el-button @click.stop="editSubstitute(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+                  <el-button @click.stop="deleteSubstitute(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
                 </el-button-group>
               </template>
             </el-table-column>
@@ -133,34 +133,38 @@ export default {
     }
   },
   methods: {
-    addSubstituteForm () {
+    addSubstitute () {
       const formData = {
         bom_code: this.detail.bom_code,
         mat_code: this.detail.mat_code
       }
-      getSubstituteForm(formData, 'add', this.detail.mat_type).then(form => this.$showForm(form).$on('submit', this.submitSubstituteForm))
+      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
+      apis[optionsApi]()
+        .then(options => getSubstituteForm(formData, 'add', options))
+        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
+          apis.addSubstitute(substitute).then(substitute => {
+            this.substitutes.push(substitute)
+            this.$message.success('添加成功!')
+            close()
+          })
+        }))
     },
 
-    editSubstituteForm (row) {
-      getSubstituteForm(row, 'edit', this.detail.mat_type).then(form => this.$showForm(form).$on('submit', this.submitSubstituteForm))
+    editSubstitute (substitute) {
+      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
+      apis[optionsApi]()
+        .then(options => getSubstituteForm(substitute, 'edit', options))
+        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
+          apis.updateSubstitute(form).then(substitute => {
+            const index = this.substitutes.findIndex(s => s.id === substitute.id)
+            ~index && this.substitutes.splice(index, 1, substitute)
+            this.$message.success('修改成功!')
+            close()
+          })
+        }))
     },
 
-    submitSubstituteForm (form, done) {
-      if (form.id) {
-        apis.updateSubstitute(form).then(substitute => {
-          const index = this.substitutes.findIndex(s => s.id === substitute.id)
-          ~index && this.substitutes.splice(index, 1, substitute)
-          done()
-        })
-      } else {
-        apis.addSubstitute(form).then(substitute => {
-          this.substitutes.push(substitute)
-          done()
-        })
-      }
-    },
-
-    deleteSubstituteForm (row) {
+    deleteSubstitute (row) {
       this.$confirm('此操作将永久删除该替代料, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
