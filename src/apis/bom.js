@@ -8,7 +8,6 @@ export default {
   },
 
   addBom (bom) {
-    bom.create_time = new Date()
     const sql = `
           INSERT INTO B_Bom
             ( bom_code
