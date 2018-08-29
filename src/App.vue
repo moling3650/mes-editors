@@ -17,6 +17,9 @@ export default {
 .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
+.el-card__header, .el-card__body {
+  padding: 9px 20px;
+}
 .el-table .cell {
   cursor: pointer;
 }
@@ -95,5 +98,9 @@ dd {
   font-size: 14px;
   font-weight: bold;
   color: #909399;
+}
+.thcell .cell {
+  color: #416da3;
+  background-color: #b8cfee;
 }
 </style>
