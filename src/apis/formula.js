@@ -21,7 +21,7 @@ export default {
             , designator
             , description
             , enable
-            , create_time)
+            , create_date)
           VALUES
             ( @bom_code
             , @formula_code
@@ -30,7 +30,7 @@ export default {
             , @designator
             , @description
             , @enable
-            , @create_time);
+            , @create_date);
           SELECT TOP (1) * FROM B_Formula
             WHERE bom_code = @bom_code AND formula_code = @formula_code`
     return execSQL(sql, formula).then(data => data.pop())

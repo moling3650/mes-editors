@@ -3,10 +3,10 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="6">
-        <el-cascader v-model="product" :options="products" filterable @change="getBom" class="w100p"/>
+        <el-cascader v-model="product" :options="products" placeholder="请选择产品" filterable @change="getBom" class="w100p"/>
       </el-col>
       <el-col :span="6">
-        <el-button type="success" icon="el-icon-plus" @click="openBomForm">添加Bom</el-button>
+        <el-button type="success" icon="el-icon-plus" @click="addBom">添加Bom</el-button>
       </el-col>
     </el-row>
 
@@ -20,8 +20,8 @@
             <el-table-column fixed="right" label="操作" width="78" align="center">
               <template slot-scope="scope">
                 <el-button-group>
-                  <el-button @click.stop="editBomForm(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-                  <el-button @click.stop="deleteBomForm(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                  <el-button @click.stop="editBom(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+                  <el-button @click.stop="deleteBom(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
                 </el-button-group>
               </template>
             </el-table-column>
@@ -125,6 +125,13 @@ export default {
       }
     }
   },
+  computed: {
+    productOptions () {
+      const options = []
+      this.products.forEach(item => options.push(...item.children))
+      return options
+    }
+  },
   methods: {
     addSubstituteForm () {
       const formData = {
@@ -222,14 +229,46 @@ export default {
       }
     },
 
-    deleteBomForm (row) {
+    toState (row, column, cellValue, index) {
+      return ['禁用', '启用'][cellValue] || '未知'
+    },
+
+    addBom () {
+      const [, productCode] = this.product
+      if (!productCode) {
+        return void this.$message.info('请先选择产品')
+      }
+      getBomForm({product_code: productCode}, 'add', this.productOptions)
+        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
+          bom.create_time = new Date()
+          apis.addBom(bom).then(bom => {
+            this.bomList.push(bom)
+            this.$message.success('添加成功')
+            close()
+          })
+        }))
+    },
+
+    editBom (row) {
+      getBomForm(row, 'edit', this.productOptions)
+        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
+          apis.updateBom(bom).then(bom => {
+            const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
+            ~index && this.bomList.splice(index, 1, bom)
+            this.$message.success('修改成功')
+            close()
+          })
+        }))
+    },
+
+    deleteBom (bom) {
       this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteBom(row).then(_ => {
-          const index = this.bomList.findIndex(b => b.bom_id === row.bom_id)
+        apis.deleteBom(bom).then(_ => {
+          const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
           ~index && this.bomList.splice(index, 1)
           this.bomCode = ''
           this.bomDetail = []
@@ -240,34 +279,6 @@ export default {
       }).catch(_ => {
         this.$message.info('已取消删除')
       })
-    },
-
-    editBomForm (row) {
-      getBomForm(row, 'edit').then(form => this.$showForm(form).$on('submit', this.submitBomForm))
-    },
-
-    toState (row, column, cellValue, index) {
-      return ['禁用', '启用'][cellValue] || '未知'
-    },
-
-    openBomForm () {
-      const bom = this.product.length ? { product_code: this.product[1] } : null
-      getBomForm(bom, 'add').then(form => this.$showForm(form).$on('submit', this.submitBomForm))
-    },
-
-    submitBomForm (form, done) {
-      if (form.bom_id) {
-        apis.updateBom(form).then(_ => {
-          const index = this.bomList.findIndex(bom => bom.bom_id === form.bom_id)
-          ~index && this.bomList.splice(index, 1, form)
-          done()
-        })
-      } else {
-        apis.addBom(form).then(_ => {
-          this.getBom([null, form.product_code])
-          done()
-        })
-      }
     },
 
     handleNodeClick (node) {
