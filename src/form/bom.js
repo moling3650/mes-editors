@@ -14,6 +14,9 @@ function checkBomCode (rule, value, callback) {
 }
 
 export default function getBomForm (form = null, type = 'add', options) {
+  if (!options) {
+    return void console.error('缺少产品的Options')
+  }
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}BOM表单`,
     formItems: [
