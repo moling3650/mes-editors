@@ -13,10 +13,15 @@ export default {
             ( @bom_code
             , @mat_code
             , @Substitute_mat_code);
-          SELECT TOP(1) S.*, M.mat_name AS Substitute_mat_name
+
+          SELECT TOP(1) S.*
+            , CASE
+                WHEN EXISTS(SELECT * FROM B_Material WHERE mat_code = S.Substitute_mat_code) THEN (SELECT TOP(1) mat_name FROM B_Material WHERE mat_code = S.Substitute_mat_code)
+                WHEN EXISTS(SELECT * FROM B_Product WHERE product_code = S.Substitute_mat_code) THEN (SELECT TOP(1) product_name FROM B_Product WHERE product_code = S.Substitute_mat_code)
+              ELSE NULL
+            END AS Substitute_mat_name
           FROM B_MatSubstitute S
-          JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
-          WHERE bom_code = @bom_code AND Substitute_mat_code = @Substitute_mat_code`
+          WHERE S.bom_code = @bom_code AND S.Substitute_mat_code = @Substitute_mat_code`
     return execSQL(sql, substitute).then(data => data.pop())
   },
 
@@ -25,9 +30,13 @@ export default {
           UPDATE B_MatSubstitute
             SET Substitute_mat_code = @Substitute_mat_code
           WHERE id = @id;
-          SELECT TOP(1) S.*, M.mat_name AS Substitute_mat_name
+          SELECT TOP(1) S.*
+            , CASE
+                WHEN EXISTS(SELECT * FROM B_Material WHERE mat_code = S.Substitute_mat_code) THEN (SELECT TOP(1) mat_name FROM B_Material WHERE mat_code = S.Substitute_mat_code)
+                WHEN EXISTS(SELECT * FROM B_Product WHERE product_code = S.Substitute_mat_code) THEN (SELECT TOP(1) product_name FROM B_Product WHERE product_code = S.Substitute_mat_code)
+              ELSE NULL
+            END AS Substitute_mat_name
           FROM B_MatSubstitute S
-          JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
           WHERE bom_code = @bom_code AND Substitute_mat_code = @Substitute_mat_code`
     return execSQL(sql, substitute).then(data => data.pop())
   },
@@ -102,9 +111,13 @@ export default {
 
   fetchSubstituteMaterial (bomCode, matCode) {
     const sql = `
-          SELECT S.*, M.mat_name AS Substitute_mat_name
+          SELECT S.*
+            , CASE
+                WHEN EXISTS(SELECT * FROM B_Material WHERE mat_code = S.Substitute_mat_code) THEN (SELECT TOP(1) mat_name FROM B_Material WHERE mat_code = S.Substitute_mat_code)
+                WHEN EXISTS(SELECT * FROM B_Product WHERE product_code = S.Substitute_mat_code) THEN (SELECT TOP(1) product_name FROM B_Product WHERE product_code = S.Substitute_mat_code)
+              ELSE NULL
+            END AS Substitute_mat_name
           FROM B_MatSubstitute S
-          JOIN B_Material M ON M.mat_code = S.Substitute_mat_code
           WHERE S.bom_code = @bomCode AND S.mat_code = @matCode`
     return execSQL(sql, { bomCode, matCode })
   },
