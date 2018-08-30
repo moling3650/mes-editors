@@ -17,8 +17,14 @@ export default {
 .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
-.el-card__header, .el-card__body {
+#app .el-card__header, #app .el-card__body {
   padding: 9px 20px;
+}
+#app .el-card__header {
+  background-color: #dceafc;
+}
+#app .el-button--text {
+  padding: 0 2px;
 }
 .el-table .cell {
   cursor: pointer;
@@ -97,10 +103,10 @@ dd {
 .card-header {
   font-size: 14px;
   font-weight: bold;
-  color: #909399;
+  color: #416da3;
 }
 .thcell .cell {
-  color: #416da3;
-  background-color: #b8cfee;
+  color: #fff;
+  background-color: #409eff;
 }
 </style>
