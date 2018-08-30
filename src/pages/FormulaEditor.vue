@@ -11,7 +11,7 @@
       <el-col :span="5">
         <el-card class="h600">
           <div slot="header" class="card-header clearfix">
-            <span class="card-header">配方</span>
+            <span class="card-header">BOM</span>
           </div>
           <el-table :data="bomList" stripe size="mini" header-cell-class-name="thcell" class="w100p" highlight-current-row @row-click="getFormula">
             <el-table-column prop="bom_code" label="BOM"/>

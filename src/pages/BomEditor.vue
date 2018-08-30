@@ -2,17 +2,18 @@
   <div id="BomEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="8">
         <el-cascader v-model="product" :options="products" placeholder="请选择产品" filterable @change="getBom" class="w100p"/>
-      </el-col>
-      <el-col :span="6">
-        <el-button type="success" icon="el-icon-plus" @click="addBom">添加Bom</el-button>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="8">
         <el-card class="h600">
+          <div slot="header" class="card-header clearfix">
+            <span class="card-header">BOM</span>
+            <el-button :disabled="!product.length" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBom">添加BOM</el-button>
+          </div>
           <el-table :data="bomList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="getBomDetail">
             <el-table-column prop="bom_code" label="BOM" width=""/>
             <el-table-column prop="version_code" label="版本" width="50"/>
@@ -29,11 +30,11 @@
         </el-card>
       </el-col>
 
-      <el-col :span="10">
+      <el-col :span="8">
         <el-card class="h600 ova">
           <div slot="header" class="card-header clearfix">
             <span class="card-header">BOM清单： {{ bomCode }}</span>
-            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加BOM明细</el-button>
+            <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail">添加BOM明细</el-button>
           </div>
           <el-tree :data="bomDetail" :props="props" :expand-on-click-node="false"
             node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
@@ -52,7 +53,6 @@
         <el-card class="h350">
           <div slot="header" class="card-header clearfix">
             <span class="card-header">物料明细</span>
-            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
           </div>
           <dl v-show="detail.mat_code">
             <dt>BOM编号：</dt>
@@ -79,10 +79,14 @@
         </el-card>
 
         <el-card class="h250">
+          <div slot="header" class="card-header clearfix">
+            <span class="card-header">替代料</span>
+            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
+          </div>
           <el-table :data="substitutes" stripe header-cell-class-name="thcell" size="mini" class="w100p">
             <el-table-column prop="Substitute_mat_code" label="替代料编号"/>
             <el-table-column prop="Substitute_mat_name" label="替代料名称"/>
-            <el-table-column fixed="right" label="操作" width="78" align="center">
+            <el-table-column fixed="right" label="操作" width="80" align="center">
               <template slot-scope="scope">
                 <el-button-group>
                   <el-button @click.stop="editSubstitute(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
@@ -133,6 +137,7 @@ export default {
     }
   },
   methods: {
+    // 操作替代料
     addSubstitute () {
       const formData = {
         bom_code: this.detail.bom_code,
@@ -164,14 +169,14 @@ export default {
         }))
     },
 
-    deleteSubstitute (row) {
+    deleteSubstitute (substitute) {
       this.$confirm('此操作将永久删除该替代料, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteSubstitute(row).then(_ => {
-          const index = this.substitutes.findIndex(s => s.id === row.id)
+        apis.deleteSubstitute(substitute).then(_ => {
+          const index = this.substitutes.findIndex(s => s.id === substitute.id)
           ~index && this.substitutes.splice(index, 1)
           this.$message.success('删除成功!')
         })
@@ -180,23 +185,26 @@ export default {
       })
     },
 
-    editBomDetail (node, row) {
-      getBomDetailForm(row, 'edit').then(form => this.$showForm(form).$on('submit', (form, done) => {
-        form.wastage = form.wastage / 100
-        this.submitBomDetailForm(form, () => {
-          const children = node.parent.childNodes
-          const index = children.findIndex(c => c.data.bom_detail_id === form.bom_detail_id)
-          if (~index) {
-            form.wastage = form.wastage * 100
-            this.$set(children[index], 'data', form)
-            this.detail = form
-            this.$message.success('编辑成功!')
-          } else {
-            this.$message.danger('编辑失败!')
-          }
-          done()
-        })
-      }))
+    editBomDetail (node, bomDetail) {
+      const optionsApi = bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
+      apis[optionsApi]()
+        .then(options => getBomDetailForm(bomDetail, 'add', options))
+        .then(form => this.$showForm(form).$on('submit', (bomDetail, close) => {
+          bomDetail.wastage = bomDetail.wastage / 100
+          apis.updateBomDetail(bomDetail).then(bomDetail => {
+            const children = node.parent.childNodes
+            const index = children.findIndex(c => c.data.bom_detail_id === bomDetail.bom_detail_id)
+            if (~index) {
+              bomDetail.wastage = bomDetail.wastage * 100
+              this.$set(children[index], 'data', bomDetail)
+              this.detail = bomDetail
+              this.$message.success('编辑成功!')
+            } else {
+              this.$message.danger('编辑失败!')
+            }
+            close()
+          })
+        }))
     },
 
     addBomDetail (row) {
@@ -207,14 +215,17 @@ export default {
         type: 'warning'
       }).then(_ => 0)
         .catch(action => action === 'cancel' ? 1 : Promise.reject(new Error('cancel')))
-        .then(matType => getBomDetailForm({ bom_code: this.bomCode, mat_type: matType }, 'add'))
-        .then(form => this.$showForm(form).$on('submit', (form, done) => {
-          form.wastage = form.wastage / 100
-          return apis.addBomDetail(form).then(detail => {
+        .then(matType => {
+          const optionsApi = matType ? 'fetchMaterialOptions' : 'fetchProductOptions'
+          return apis[optionsApi]().then(options => getBomDetailForm({ bom_code: this.bomCode, mat_type: matType }, 'add', options))
+        })
+        .then(form => this.$showForm(form).$on('submit', (bomDetail, close) => {
+          bomDetail.wastage = bomDetail.wastage / 100
+          apis.addBomDetail(bomDetail).then(detail => {
             detail.wastage = detail.wastage * 100
             this.bomDetail.push(detail)
             this.$message.success('添加成功!')
-            done()
+            close()
           })
         }).$on('update:mat_code', (matCode, item, formItems) => {
           const material = item.options.find(o => o.value === matCode)
@@ -222,7 +233,6 @@ export default {
           formItems[3].unit = unit
           formItems[4].unit = unit
         }))
-        .catch(_ => this.$message.info('已取消添加!'))
     },
 
     submitBomDetailForm (form, done) {
@@ -365,8 +375,5 @@ export default {
 <style scoped>
 #BomEditor {
   margin: 5px;
-}
-.card-header {
-
 }
 </style>
