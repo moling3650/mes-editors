@@ -1,5 +1,3 @@
-import apis from '@/apis'
-
 export default function getSubstituteForm (form = null, type = 'add', options) {
   if (!options) {
     return void console.error('必须先设置物料的Options')
