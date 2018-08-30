@@ -7,7 +7,7 @@ const request = axios.create({
 
 request.interceptors.response.use(function (res) {
   // 对响应数据做点什么
-  if (res.data.error) {
+  if (res.data && res.data.error) {
     Message.error(res.data.message)
   }
   return res.data
