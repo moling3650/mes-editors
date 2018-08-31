@@ -50,52 +50,9 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card class="h350">
-          <div slot="header" class="card-header clearfix">
-            <span class="card-header">物料明细</span>
-          </div>
-          <dl v-show="detail.mat_code">
-            <dt>BOM编号：</dt>
-            <dd>{{detail.bom_code}}</dd>
-            <dt>物料编号：</dt>
-            <dd>{{detail.mat_code}}</dd>
-            <dt>物料名称：</dt>
-            <dd>{{detail.mat_name}}</dd>
-            <dt>物料类型：</dt>
-            <dd>{{detail.mat_type === 1 ? '原材料' : '半成品'}}</dd>
-            <dt>消耗基数：</dt>
-            <dd>{{detail.base_qty}} {{detail.unit}}</dd>
-            <dt>消耗数量：</dt>
-            <dd>{{detail.qty}} {{detail.unit}}</dd>
-            <dt>损耗率：</dt>
-            <dd>{{detail.wastage || 0}} %</dd>
-            <dt>是否管控：</dt>
-            <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
-            <dt>能否超越：</dt>
-            <dd>{{detail.enable_beyond === 1 ? '是' : '否'}}</dd>
-            <dt>可否替代：</dt>
-            <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
-          </dl>
-        </el-card>
+        <BomDetailCard :detail="detail"></BomDetailCard>
+        <SubstituteCard :detail="detail"></SubstituteCard>
 
-        <el-card class="h250">
-          <div slot="header" class="card-header clearfix">
-            <span class="card-header">替代料</span>
-            <el-button :disabled="!detail.enable_Substitute" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
-          </div>
-          <el-table :data="substitutes" stripe header-cell-class-name="thcell" size="mini" class="w100p">
-            <el-table-column prop="Substitute_mat_code" label="替代料编号"/>
-            <el-table-column prop="Substitute_mat_name" label="替代料名称"/>
-            <el-table-column fixed="right" label="操作" width="80" align="center">
-              <template slot-scope="scope">
-                <el-button-group>
-                  <el-button @click.stop="editSubstitute(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-                  <el-button @click.stop="deleteSubstitute(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
-                </el-button-group>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
       </el-col>
     </el-row>
 
@@ -104,15 +61,19 @@
 
 <script>
 import apis from '@/apis'
-import getBomForm from '../form/bom'
-import getBomDetailForm from '../form/bomDetail'
-import getSubstituteForm from '../form/substitute'
+import getBomForm from '@/form/bom'
+import getBomDetailForm from '@/form/bomDetail'
+import BomDetailCard from '@/components/Cards/BomDetailCard'
+import SubstituteCard from '@/components/Cards/SubstituteCard'
 
 export default {
   name: 'BomEditor',
+  components: {
+    BomDetailCard,
+    SubstituteCard
+  },
   data () {
     return {
-      showSubstitute: false,
       bomCode: '',
       versionCode: '',
       product: [],
@@ -120,7 +81,6 @@ export default {
       bomList: [],
       bomDetail: [],
       detail: {},
-      substitutes: [],
       props: {
         label: 'mat_name',
         isLeaf (data, node) {
@@ -137,53 +97,6 @@ export default {
     }
   },
   methods: {
-    // 操作替代料
-    addSubstitute () {
-      const formData = {
-        bom_code: this.detail.bom_code,
-        mat_code: this.detail.mat_code
-      }
-      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
-      apis[optionsApi]()
-        .then(options => getSubstituteForm(formData, 'add', options))
-        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
-          apis.addSubstitute(substitute).then(substitute => {
-            this.substitutes.push(substitute)
-            this.$message.success('添加成功!')
-            close()
-          })
-        }))
-    },
-
-    editSubstitute (substitute) {
-      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
-      apis[optionsApi]()
-        .then(options => getSubstituteForm(substitute, 'edit', options))
-        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
-          apis.updateSubstitute(form).then(substitute => {
-            const index = this.substitutes.findIndex(s => s.id === substitute.id)
-            ~index && this.substitutes.splice(index, 1, substitute)
-            this.$message.success('修改成功!')
-            close()
-          })
-        }))
-    },
-
-    deleteSubstitute (substitute) {
-      this.$confirm('此操作将永久删除该替代料, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(_ => {
-        apis.deleteSubstitute(substitute).then(_ => {
-          const index = this.substitutes.findIndex(s => s.id === substitute.id)
-          ~index && this.substitutes.splice(index, 1)
-          this.$message.success('删除成功!')
-        })
-      }).catch(_ => {
-        this.$message.info('已取消删除')
-      })
-    },
 
     editBomDetail (node, bomDetail) {
       const optionsApi = bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
@@ -233,14 +146,6 @@ export default {
           formItems[3].unit = unit
           formItems[4].unit = unit
         }))
-    },
-
-    submitBomDetailForm (form, done) {
-      if (form.bom_detail_id) {
-        apis.updateBomDetail(form).then(_ => done())
-      } else {
-        apis.addBomDetail(form).then(_ => done())
-      }
     },
 
     toState (row, column, cellValue, index) {
@@ -296,13 +201,7 @@ export default {
     },
 
     handleNodeClick (node) {
-      this.substitutes = []
       this.detail = node
-      if (node.enable_Substitute) {
-        apis.fetchSubstituteMaterial(node.bom_code, node.mat_code).then(data => {
-          this.substitutes = data
-        })
-      }
     },
 
     loadNode (node, resolve) {

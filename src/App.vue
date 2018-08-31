@@ -14,7 +14,7 @@ export default {
 .w100p {
   width: 100%;
 }
-.el-tree-node__content {
+#app .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
 #app .el-card__header, #app .el-card__body {
@@ -74,28 +74,28 @@ dd {
 .p3-0 {
   padding: 3px 0%;
 }
-.edit, .delete {
+#app .edit, #app .delete {
   padding: 3px 5px;
   border: 1px solid;
   border-radius: 5px;
   margin: 0 5px;
 }
-.edit {
+#app .edit {
   color: #409eff;
   background: #ecf5ff;
   border-color: #b3d8ff;
 }
-.edit:hover {
+#app .edit:hover {
   color: #fff;
   background-color: #409eff;
   border-color: #409eff;
 }
-.delete {
+#app .delete {
   color: #f56c6c;
   background: #fef0f0;
   border-color: #fbc4c4
 }
-.delete:hover {
+#app .delete:hover {
   color: #fff;
   background-color: #f56c6c;
   border-color: #f56c6c;
