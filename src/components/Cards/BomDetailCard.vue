@@ -1,0 +1,46 @@
+<template>
+  <el-card class="h350">
+    <div slot="header" class="card-header clearfix">
+      <span class="card-header">物料明细</span>
+    </div>
+    <dl v-show="detail.mat_code">
+      <dt>BOM编号：</dt>
+      <dd>{{detail.bom_code}}</dd>
+      <dt>物料编号：</dt>
+      <dd>{{detail.mat_code}}</dd>
+      <dt>物料名称：</dt>
+      <dd>{{detail.mat_name}}</dd>
+      <dt>物料类型：</dt>
+      <dd>{{detail.mat_type === 1 ? '原材料' : '半成品'}}</dd>
+      <dt>消耗基数：</dt>
+      <dd>{{detail.base_qty}} {{detail.unit}}</dd>
+      <dt>消耗数量：</dt>
+      <dd>{{detail.qty}} {{detail.unit}}</dd>
+      <dt>损耗率：</dt>
+      <dd>{{detail.wastage || 0}} %</dd>
+      <dt>是否管控：</dt>
+      <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
+      <dt>能否超越：</dt>
+      <dd>{{detail.enable_beyond === 1 ? '是' : '否'}}</dd>
+      <dt>可否替代：</dt>
+      <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
+    </dl>
+  </el-card>
+</template>
+
+<script>
+export default {
+  name: 'BomDetailCard',
+  props: {
+    detail: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>

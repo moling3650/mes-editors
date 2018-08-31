@@ -50,33 +50,7 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card class="h350">
-          <div slot="header" class="card-header clearfix">
-            <span class="card-header">物料明细</span>
-          </div>
-          <dl v-show="detail.mat_code">
-            <dt>BOM编号：</dt>
-            <dd>{{detail.bom_code}}</dd>
-            <dt>物料编号：</dt>
-            <dd>{{detail.mat_code}}</dd>
-            <dt>物料名称：</dt>
-            <dd>{{detail.mat_name}}</dd>
-            <dt>物料类型：</dt>
-            <dd>{{detail.mat_type === 1 ? '原材料' : '半成品'}}</dd>
-            <dt>消耗基数：</dt>
-            <dd>{{detail.base_qty}} {{detail.unit}}</dd>
-            <dt>消耗数量：</dt>
-            <dd>{{detail.qty}} {{detail.unit}}</dd>
-            <dt>损耗率：</dt>
-            <dd>{{detail.wastage || 0}} %</dd>
-            <dt>是否管控：</dt>
-            <dd>{{detail.be_ctrl === 1 ? '是' : '否'}}</dd>
-            <dt>能否超越：</dt>
-            <dd>{{detail.enable_beyond === 1 ? '是' : '否'}}</dd>
-            <dt>可否替代：</dt>
-            <dd>{{detail.enable_Substitute === 1 ? '是' : '否'}}</dd>
-          </dl>
-        </el-card>
+        <BomDetailCard :detail="detail"></BomDetailCard>
 
         <el-card class="h250">
           <div slot="header" class="card-header clearfix">
@@ -104,12 +78,15 @@
 
 <script>
 import apis from '@/apis'
-import getBomForm from '../form/bom'
-import getBomDetailForm from '../form/bomDetail'
-import getSubstituteForm from '../form/substitute'
+import getBomForm from '@/form/bom'
+import getBomDetailForm from '@/form/bomDetail'
+import BomDetailCard from '@/components/Cards/BomDetailCard'
 
 export default {
   name: 'BomEditor',
+  components: {
+    BomDetailCard,
+  },
   data () {
     return {
       showSubstitute: false,
@@ -233,14 +210,6 @@ export default {
           formItems[3].unit = unit
           formItems[4].unit = unit
         }))
-    },
-
-    submitBomDetailForm (form, done) {
-      if (form.bom_detail_id) {
-        apis.updateBomDetail(form).then(_ => done())
-      } else {
-        apis.addBomDetail(form).then(_ => done())
-      }
     },
 
     toState (row, column, cellValue, index) {
