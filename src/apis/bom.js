@@ -58,7 +58,7 @@ export default {
   },
 
   // 操作BOM明细
-  fetchBomDetail (bomCode) {
+  fetchBomDetailListByBom (bom) {
     const sql = `
           SELECT D.*
             , ISNULL(ISNULL(P.product_name, M.mat_name), D.mat_code) AS mat_name
@@ -66,9 +66,9 @@ export default {
           FROM B_Bom_Detail D
           LEFT JOIN B_Product P ON P.product_code = D.mat_code AND D.mat_type = 0
           LEFT JOIN B_Material M ON M.mat_code = D.mat_code AND D.mat_type = 1
-          WHERE D.bom_code = @bomCode
+          WHERE D.bom_code = @bom_code
           ORDER BY D.mat_type`
-    return execSQL(sql, { bomCode })
+    return execSQL(sql, bom)
   },
 
   addBomDetail (bomDetail) {
