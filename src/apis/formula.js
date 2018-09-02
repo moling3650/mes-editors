@@ -6,7 +6,7 @@ export default {
     return execSQL(sql, formula)
   },
 
-  fetchFormulaByBom (bom) {
+  fetchFormulaListByBom (bom) {
     const sql = 'SELECT * FROM B_Formula WHERE bom_code = @bom_code'
     return execSQL(sql, bom)
   },
