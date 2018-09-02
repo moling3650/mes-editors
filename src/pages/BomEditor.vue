@@ -13,12 +13,12 @@
       </el-col>
 
       <el-col :span="8">
-        <BomDetailTreeCard :bomCode="bomCode" :version="versionCode" :bomDetail.sync="detail"/>
+        <BomDetailTreeCard :bomCode="bomCode" :version="versionCode" :bomDetail.sync="bomDetail"/>
       </el-col>
 
       <el-col :span="8">
-        <BomDetailCard :detail="detail"/>
-        <SubstituteCard :detail="detail"/>
+        <BomDetailCard :bomDetail="bomDetail"/>
+        <SubstituteCard :bomDetail="bomDetail"/>
       </el-col>
     </el-row>
 
@@ -46,7 +46,7 @@ export default {
       productCode: '',
       bomCode: '',
       versionCode: '',
-      detail: {}
+      bomDetail: {}
     }
   },
   computed: {
@@ -62,13 +62,13 @@ export default {
       this.productCode = productCode || ''
       this.bomCode = ''
       this.versionCode = ''
-      this.detail = {}
+      this.bomDetail = {}
     },
 
     handleBomChange (bom) {
       this.bomCode = bom.bom_code
       this.versionCode = bom.version_code
-      this.detail = {}
+      this.bomDetail = {}
     }
 
   },

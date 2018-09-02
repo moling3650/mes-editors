@@ -26,14 +26,14 @@ import getSubstituteForm from '@/form/substitute'
 export default {
   name: 'SubstituteCard',
   props: {
-    detail: {
+    bomDetail: {
       type: Object,
       required: true
     }
   },
   computed: {
     disabled () {
-      return !this.detail.enable_Substitute
+      return !this.bomDetail.enable_Substitute
     }
   },
   data () {
@@ -42,9 +42,9 @@ export default {
     }
   },
   watch: {
-    'detail.mat_code' (value, oldValue) {
+    'bomDetail.mat_code' (value, oldValue) {
       this.substitutes = []
-      if (this.detail.enable_Substitute) {
+      if (this.bomDetail.enable_Substitute) {
         this.fetchSubstitutes()
       }
     }
@@ -52,17 +52,17 @@ export default {
   methods: {
     // 操作替代料
     fetchSubstitutes () {
-      apis.fetchSubstituteMaterial(this.detail.bom_code, this.detail.mat_code).then(data => {
+      apis.fetchSubstituteMaterial(this.bomDetail.bom_code, this.bomDetail.mat_code).then(data => {
         this.substitutes = data
       })
     },
 
     addSubstitute () {
       const formData = {
-        bom_code: this.detail.bom_code,
-        mat_code: this.detail.mat_code
+        bom_code: this.bomDetail.bom_code,
+        mat_code: this.bomDetail.mat_code
       }
-      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
+      const optionsApi = this.bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
       apis[optionsApi]()
         .then(options => getSubstituteForm(formData, 'add', options))
         .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
@@ -75,7 +75,7 @@ export default {
     },
 
     editSubstitute (row) {
-      const optionsApi = this.detail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
+      const optionsApi = this.bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
       apis[optionsApi]()
         .then(options => getSubstituteForm(row, 'edit', options))
         .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
