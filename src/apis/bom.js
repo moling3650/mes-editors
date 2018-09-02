@@ -2,9 +2,9 @@ import execSQL from '@/apis/executeSQL'
 
 export default {
   // 操作BOM
-  fetchBom (productCode) {
-    const sql = 'SELECT * FROM B_Bom WHERE product_code = @productCode'
-    return execSQL(sql, { productCode })
+  fetchBomListByProduct (product) {
+    const sql = 'SELECT * FROM B_Bom WHERE product_code = @product_code'
+    return execSQL(sql, product)
   },
 
   addBom (bom) {
