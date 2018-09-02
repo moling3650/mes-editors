@@ -1,7 +1,7 @@
 import execSQL from '@/apis/executeSQL'
 
 export default {
-  fetchDetailByFormula (formula) {
+  fetchDetailListByFormula (formula) {
     const sql = 'SELECT * FROM B_Formula_Detail WHERE formula_code = @formula_code'
     return execSQL(sql, formula)
   },

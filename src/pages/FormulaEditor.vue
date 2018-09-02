@@ -27,7 +27,7 @@
             <span class="card-header">{{ bomCode ? `BOM(${bomCode})的配方` : '请先选择BOM' }}</span>
             <el-button :disabled="!bomCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addFormula">添加配方</el-button>
           </div>
-          <el-table :data="formulaList" stripe size="mini" header-cell-class-name="thcell" class="w100p" highlight-current-row @row-click="getFormulaDetail">
+          <el-table :data="formulaList" stripe size="mini" header-cell-class-name="thcell" class="w100p" highlight-current-row @row-click="handleFormulaChange">
             <el-table-column prop="formula_code" label="配方编号"/>
             <el-table-column prop="formula_name" label="配方名称"/>
             <el-table-column prop="designator" label="标识符"/>
@@ -46,26 +46,7 @@
       </el-col>
 
       <el-col :span="11">
-        <el-card class="h600 ova">
-          <div slot="header" class="clearfix">
-            <span class="card-header">{{ formulaCode ? `配方(${formulaCode})的明细` : '请先选择配方' }}</span>
-            <el-button :disabled="!formulaCode" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addFormulaDetail">添加配方项</el-button>
-          </div>
-          <el-table :data="formulaDetailList" stripe size="mini" header-cell-class-name="thcell" class="w100p">
-            <el-table-column prop="formula_item" label="配方项"/>
-            <el-table-column prop="material_code" label="物料"/>
-            <el-table-column prop="feed_idx" label="加料顺序"/>
-            <el-table-column prop="feed_qty" label="加料数量"/>
-            <el-table-column fixed="right" label="操作" width="84" align="center">
-              <template slot-scope="scope">
-                <el-button-group>
-                  <el-button @click.stop="editFormulaDetail(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-                  <el-button @click.stop="deleteFormulaDetail(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
-                </el-button-group>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
+        <FormulaDetailCard :formulaCode="formulaCode" :bomMaterials="bomMaterials"></FormulaDetailCard>
       </el-col>
     </el-row>
   </div>
@@ -74,10 +55,13 @@
 <script>
 import apis from '@/apis'
 import getFormulaForm from '@/form/formula'
-import getFormulaDetailForm from '@/form/formulaDetail'
+import FormulaDetailCard from '@/components/Cards/FormulaDetailCard'
 
 export default {
   name: 'FormulaEditor',
+  components: {
+    FormulaDetailCard
+  },
   data () {
     return {
       products: [],
@@ -86,11 +70,13 @@ export default {
       bomCode: '',
       formulaCode: '',
       formulaList: [],
-      formulaDetailList: [],
       bomMaterials: []
     }
   },
   methods: {
+    handleFormulaChange (row) {
+      this.formulaCode = row.formula_code
+    },
     toState (row, column, cellValue, index) {
       return ['禁用', '启用'][cellValue] || '未知'
     },
@@ -135,55 +121,6 @@ export default {
           this.$message.info(err.message || '已取消删除')
         })
     },
-    // 操作配方明细表
-    addFormulaDetail () {
-      getFormulaDetailForm({formula_code: this.formulaCode}, 'add', this.bomMaterials)
-        .then(form => this.$showForm(form).$on('submit', (formulaDetail, close) => {
-          formulaDetail.create_date = new Date()
-          apis.addFormulaDetail(formulaDetail).then(formulaDetail => {
-            this.formulaDetailList.push(formulaDetail)
-            this.$message.success('添加成功!')
-            close()
-          })
-        }))
-    },
-    editFormulaDetail (formulaDetail) {
-      getFormulaDetailForm(formulaDetail, 'edit', this.bomMaterials)
-        .then(form => this.$showForm(form).$on('submit', (formulaDetail, close) => {
-          apis.updateFormulaDetail(formulaDetail).then(formulaDetail => {
-            const index = this.formulaDetailList.findIndex(f => f.ID === formulaDetail.ID)
-            ~index && this.formulaDetailList.splice(index, 1, formulaDetail)
-            this.$message.success('修改成功!')
-            close()
-          })
-        }))
-    },
-    deleteFormulaDetail (formulaDetail) {
-      this.$confirm('此操作将永久删除该配方明细, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(_ => apis.deleteFormulaDetail(formulaDetail))
-        .then(_ => {
-          const index = this.formulaDetailList.findIndex(f => f.ID === formulaDetail.ID)
-          ~index && this.formulaDetailList.splice(index, 1)
-          this.$message.success('删除成功!')
-        })
-        .catch(_ => {
-          this.$message.info('已取消删除')
-        })
-    },
-
-    getFormulaDetail (formula) {
-      if (this.formulaCode === formula.formula_code) {
-        return
-      }
-      this.formulaCode = formula.formula_code
-      apis.fetchDetailByFormula(formula).then(data => {
-        this.formulaDetailList = data
-      })
-    },
 
     getFormula (bom) {
       if (this.bomCode === bom.bom_code) {
@@ -204,7 +141,7 @@ export default {
         return
       }
       this._claerBom()
-      apis.fetchBom(productCode).then(data => {
+      apis.fetchBomListByProduct({ product_code: productCode }).then(data => {
         this.bomList = data
       })
     },
