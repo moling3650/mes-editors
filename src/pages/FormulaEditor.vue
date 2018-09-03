@@ -15,11 +15,12 @@
       <el-col :span="8">
         <FormulaCard :bomCode="bomCode" @change="handleFormulaChange"></FormulaCard>
       </el-col>
-
+      <!-- FormulaDetail -->
       <el-col :span="10">
         <FormulaDetailCard :formulaCode="formulaCode" :bomMaterials="bomMaterials"></FormulaDetailCard>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
@@ -86,4 +87,7 @@ export default {
 </script>
 
 <style scoped>
+#FormulaEditor {
+  margin: 5px;
+}
 </style>
