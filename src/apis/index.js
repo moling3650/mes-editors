@@ -1,6 +1,7 @@
 import execSQL from '@/apis/executeSQL'
 import bomApis from '@/apis/bom'
 import formulaApis from '@/apis/formula'
+import reportApis from '@/apis/report'
 
 export default {
   addSubstitute (substitute) {
@@ -133,5 +134,6 @@ export default {
   },
 
   ...bomApis,
-  ...formulaApis
+  ...formulaApis,
+  ...reportApis
 }
