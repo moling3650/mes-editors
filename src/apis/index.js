@@ -2,6 +2,7 @@ import execSQL from '@/apis/executeSQL'
 import bomApis from '@/apis/bom'
 import formulaApis from '@/apis/formula'
 import reportApis from '@/apis/report'
+import processFlowApis from '@/apis/processFlow'
 
 export default {
   addSubstitute (substitute) {
@@ -135,5 +136,6 @@ export default {
 
   ...bomApis,
   ...formulaApis,
-  ...reportApis
+  ...reportApis,
+  ...processFlowApis
 }
