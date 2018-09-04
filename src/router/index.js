@@ -20,6 +20,10 @@ export default new Router({
     {
       path: '/editors/formula',
       component: () => import('@/pages/FormulaEditor')
+    },
+    {
+      path: '/editors/control_point',
+      component: () => import('@/pages/ControlPointEditor')
     }
   ]
 })
