@@ -3,6 +3,7 @@ import bomApis from '@/apis/bom'
 import formulaApis from '@/apis/formula'
 import reportApis from '@/apis/report'
 import processFlowApis from '@/apis/processFlow'
+import controlPointApis from '@/apis/controlPoint'
 
 export default {
   addSubstitute (substitute) {
@@ -137,5 +138,6 @@ export default {
   ...bomApis,
   ...formulaApis,
   ...reportApis,
-  ...processFlowApis
+  ...processFlowApis,
+  ...controlPointApis
 }
