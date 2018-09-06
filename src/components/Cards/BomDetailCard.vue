@@ -1,7 +1,7 @@
 <template>
   <el-card class="h350">
-    <div slot="header" class="card-header clearfix">
-      <span class="card-header">物料明细</span>
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">物料明细</span>
     </div>
     <dl v-show="bomDetail.mat_code">
       <dt>BOM编号：</dt>
@@ -43,4 +43,21 @@ export default {
 </script>
 
 <style scoped>
+dl {
+  margin-top: 0;
+}
+dt, dd {
+  color: #000;
+  font-size: 16px;
+}
+dt {
+  font-weight: normal;
+}
+dd {
+  margin-left: 100px;
+  margin-top: -25px;
+}
+dt {
+  line-height: 2;
+}
 </style>

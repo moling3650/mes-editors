@@ -1,7 +1,7 @@
 <template>
   <el-card class="h600">
-    <div slot="header" class="card-header clearfix">
-      <span class="card-header">工艺流程的工序</span>
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">工艺流程的工序</span>
     </div>
     <el-table :data="flowDetailList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickProcess">
       <el-table-column prop="process_code" label="工序编号"/>

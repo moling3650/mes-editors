@@ -1,7 +1,7 @@
 <template>
   <el-card class="h600 ova">
     <div slot="header" class="clearfix">
-      <span class="card-header">{{ formulaCode ? `配方(${formulaCode})的明细` : '请先选择配方' }}</span>
+      <span class="card-header--text">{{ formulaCode ? `配方(${formulaCode})的明细` : '请先选择配方' }}</span>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addFormulaDetail">添加配方项</el-button>
     </div>
     <el-table :data="formulaDetailList" stripe size="mini" header-cell-class-name="thcell" class="w100p">

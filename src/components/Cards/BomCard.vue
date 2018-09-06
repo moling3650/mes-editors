@@ -1,7 +1,7 @@
 <template>
   <el-card class="h600">
-    <div slot="header" class="card-header clearfix">
-      <span class="card-header">BOM</span>
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">BOM</span>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBom">添加BOM</el-button>
     </div>
     <el-table :data="bomList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickBom">

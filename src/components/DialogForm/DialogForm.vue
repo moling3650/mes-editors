@@ -83,4 +83,8 @@ export default {
 </script>
 
 <style scoped>
+#DialogForm .el-input__inner {
+  border: 10px solid #bfc0c1;
+  border-radius: 0;
+}
 </style>

@@ -11,8 +11,15 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: "Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB",Arial,sans-serif;
+}
 .w100p {
   width: 100%;
+}
+#app .el-input__inner {
+  border: 1px solid #bfc0c1;
+  border-radius: 0;
 }
 #app .el-tree-node__content {
   border-bottom: 1px solid #333;
@@ -21,7 +28,39 @@ export default {
   padding: 9px 20px;
 }
 #app .el-card__header {
-  background-color: #dceafc;
+  position: relative;
+  /*background-color: #dceafc;*/
+}
+#app .el-card__header:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 18.6px;
+  left: 0;
+  background-color: #d4e2f4;
+}
+#app .el-card__header:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 18.6px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #c2d6f0;
+}
+#app .card-header--text {
+  position: relative;
+  z-index: 1;
+  color: #04408c;
+  font-size: 14px;
+}
+#app .el-card__header .el-button--text {
+  position: relative;
+  z-index: 1;
+  padding-top: 3px;
 }
 #app .el-button--text {
   padding: 0 2px;
@@ -45,13 +84,6 @@ export default {
 }
 .clearfix:after {
   clear: both
-}
-dt {
-  font-weight: bold;
-}
-dd {
-  margin-left: 100px;
-  margin-top: -20px;
 }
 .h600 {
   height: 600px;
@@ -100,13 +132,15 @@ dd {
   background-color: #f56c6c;
   border-color: #f56c6c;
 }
-.card-header {
-  font-size: 14px;
-  font-weight: bold;
-  color: #416da3;
-}
 .thcell .cell {
-  color: #fff;
-  background-color: #409eff;
+  color: #04408c;
+  font-size: 12px;
+  font-weight: normal;
+  background-color: #efefef;
+}
+#app .el-card {
+  border: 1px solid #8db3e3;
+  border-radius: 0;
+  box-sizing: border-box;
 }
 </style>

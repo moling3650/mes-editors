@@ -1,13 +1,13 @@
 <template>
-  <el-card class="h600 ova">
-    <div slot="header" class="card-header clearfix">
-      <span class="card-header">BOM清单： {{ bomCode }}</span>
+  <el-card class="h600">
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">BOM清单： {{ bomCode }}</span>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail">添加BOM明细</el-button>
     </div>
     <el-tree :data="bomDetailList" :props="props" :expand-on-click-node="false"
       node-key="id" :load="loadNode" lazy @node-click="handleNodeClick">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span :style="{color: data.mat_type ? 'green' : 'blue'}">{{ node.label }}</span>
+        <span :style="{color: data.mat_type ? 'green' : '#0263a5'}">{{ node.label }}</span>
         <span>
           <el-button class="edit" type="text" icon="el-icon-edit" @click.stop="() => editBomDetail(node, data)">编辑</el-button>
           <el-button class="delete" type="text" icon="el-icon-delete" @click.stop="() => deleteBomDetail(node, data)">删除</el-button>

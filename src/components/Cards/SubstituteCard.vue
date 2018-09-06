@@ -1,7 +1,7 @@
 <template>
   <el-card class="h250">
-    <div slot="header" class="card-header clearfix">
-      <span class="card-header">替代料</span>
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">替代料</span>
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
     </div>
     <el-table :data="substitutes" stripe header-cell-class-name="thcell" size="mini" class="w100p">
