@@ -12,11 +12,11 @@
         <BomCard :productCode="productCode" :productOptions="productOptions" @change="handleBomChange"/>
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="10">
         <BomDetailTreeCard :bomCode="bomCode" :version="versionCode" :bomDetail.sync="bomDetail"/>
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="6">
         <BomDetailCard :bomDetail="bomDetail"/>
         <SubstituteCard :bomDetail="bomDetail"/>
       </el-col>

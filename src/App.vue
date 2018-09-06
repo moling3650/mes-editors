@@ -30,6 +30,10 @@ export default {
 #app .el-card__body {
   padding: 0;
 }
+#app .h600 .el-card__body {
+  height: 560px;
+  overflow: auto;
+}
 #app .el-card__header {
   position: relative;
   /*background-color: #dceafc;*/

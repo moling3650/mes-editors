@@ -1,5 +1,5 @@
 <template>
-  <el-card class="h350">
+  <el-card class="h300">
     <div slot="header" class="clearfix">
       <span class="card-header--text">物料明细</span>
     </div>

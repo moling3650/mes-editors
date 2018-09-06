@@ -1,5 +1,5 @@
 <template>
-  <el-card class="h250">
+  <el-card class="h300">
     <div slot="header" class="clearfix">
       <span class="card-header--text">替代料</span>
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
