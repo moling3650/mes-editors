@@ -45,10 +45,11 @@ export default {
 <style scoped>
 dl {
   margin-top: 0;
+  padding: 9px 15px;
 }
 dt, dd {
   color: #000;
-  font-size: 16px;
+  font-size: 14px;
 }
 dt {
   font-weight: normal;

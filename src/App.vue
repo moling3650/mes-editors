@@ -24,8 +24,11 @@ export default {
 #app .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
-#app .el-card__header, #app .el-card__body {
+#app .el-card__header {
   padding: 9px 20px;
+}
+#app .el-card__body {
+  padding: 0;
 }
 #app .el-card__header {
   position: relative;
@@ -49,13 +52,14 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #c2d6f0;
+  border-top: 1px solid #abc7ec;
+  background: linear-gradient(#acc8ec, #caddf3);
 }
 #app .card-header--text {
   position: relative;
   z-index: 1;
   color: #04408c;
-  font-size: 14px;
+  font-size: 16px;
 }
 #app .el-card__header .el-button--text {
   position: relative;
