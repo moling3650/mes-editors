@@ -24,6 +24,10 @@ export default new Router({
     {
       path: '/editors/control_point',
       component: () => import('@/pages/ControlPointEditor')
+    },
+    {
+      path: '/editors/machine',
+      component: () => import('@/pages/MachineEditor')
     }
   ]
 })
