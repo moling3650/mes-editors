@@ -24,6 +24,11 @@ export default {
 #app .el-tree-node__content {
   border-bottom: 1px solid #333;
 }
+#app .el-card {
+  border: 1px solid #8db3e3;
+  border-radius: 0;
+  box-sizing: border-box;
+}
 #app .el-card__header {
   padding: 9px 20px;
 }
@@ -35,10 +40,10 @@ export default {
   overflow: auto;
 }
 #app .el-card__header {
-  position: relative;
-  /*background-color: #dceafc;*/
+  background-color: #d4e2f4;
+  border-bottom: 1px solid #8db3e3;
 }
-#app .el-card__header:before {
+/*#app .el-card__header:before {
   content: '';
   display: block;
   position: absolute;
@@ -58,7 +63,7 @@ export default {
   left: 0;
   border-top: 1px solid #abc7ec;
   background: linear-gradient(#acc8ec, #caddf3);
-}
+}*/
 #app .card-header--text {
   position: relative;
   z-index: 1;
@@ -145,10 +150,5 @@ export default {
   font-size: 12px;
   font-weight: normal;
   background-color: #efefef;
-}
-#app .el-card {
-  border: 1px solid #8db3e3;
-  border-radius: 0;
-  box-sizing: border-box;
 }
 </style>
