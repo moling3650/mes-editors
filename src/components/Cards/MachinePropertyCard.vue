@@ -59,7 +59,7 @@ export default{
     },
 
     getMachinePropertyList (kindId) {
-      apis.fetchMachineKindListByType({ type_id: kindId }).then(data => {
+      apis.getMachinePropertyListByKind({ kind_id: kindId }).then(data => {
         this.getMachinePropertyList = data
       })
     },
