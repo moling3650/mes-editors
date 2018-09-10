@@ -29,10 +29,6 @@ export default{
     kindId: {
       type: [Number, String],
       required: true
-    // },
-    // typeOptions: {
-    //   type: Array,
-    //   required: true
     }
   },
   computed: {
@@ -65,7 +61,7 @@ export default{
     },
 
     addMachineProperty () {
-      getMachineKindForm({type_id: this.typeId}, 'add', this.typeOptions)
+      getMachinePropertyForm({kind_id: this.kindId}, 'add')
         .then(form => this.$showForm(form).$on('submit', (machineKind, close) => {
           apis.addMachineKind(machineKind).then(machineKind => {
             this.machineKindList.push(machineKind)
