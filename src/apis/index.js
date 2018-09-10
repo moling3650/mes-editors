@@ -6,6 +6,7 @@ import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
 import machineTypeApis from '@/apis/machineType'
 import machineKindApis from '@/apis/machineKind'
+import machinePropertyApis from '@/apis/machineProperty'
 
 export default {
   addSubstitute (substitute) {
@@ -143,5 +144,6 @@ export default {
   ...processFlowApis,
   ...controlPointApis,
   ...machineTypeApis,
-  ...machineKindApis
+  ...machineKindApis,
+  ...machinePropertyApis
 }

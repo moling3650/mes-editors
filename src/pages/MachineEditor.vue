@@ -6,9 +6,11 @@
         <MachineTypeCard @change="handleMachineTypeChange"></MachineTypeCard>
       </el-col>
       <el-col :span="8">
-        <MachineKindCard :typeId="typeId"></MachineKindCard>
+        <MachineKindCard :typeId="typeId" @change="handleMachineKindChange"></MachineKindCard>
       </el-col>
-      <el-col :span="8"></el-col>
+      <el-col :span="8">
+        <MachinePropertyCard :kindId="kindId"></MachinePropertyCard>
+      </el-col>
     </el-row>
 
   </div>
@@ -17,21 +19,28 @@
 <script>
 import MachineTypeCard from '@/components/Cards/MachineTypeCard'
 import MachineKindCard from '@/components/Cards/MachineKindCard'
+import MachinePropertyCard from '@/components/Cards/MachinePropertyCard'
 
 export default {
   name: 'MachineEditor',
   components: {
     MachineTypeCard,
-    MachineKindCard
+    MachineKindCard,
+    MachinePropertyCard
   },
   data () {
     return {
-      typeId: ''
+      typeId: '',
+      kindId: ''
     }
   },
   methods: {
     handleMachineTypeChange (machineType) {
       this.typeId = machineType.type_id
+    },
+
+    handleMachineKindChange (machineKind) {
+      this.kindId = machineKind.kind_id
     }
   }
 }

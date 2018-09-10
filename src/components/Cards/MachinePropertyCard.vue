@@ -5,7 +5,7 @@
       <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineProperty">添加类别属性</el-button>
     </div>
     <el-table :data="machinePropertyList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineProperty">
-      <el-table-column prop="kind_name" label="属性名称"/>
+      <el-table-column prop="ppt_name" label="属性名称"/>
       <el-table-column prop="description" label="属性说明"/>
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
@@ -21,8 +21,7 @@
 
 <script>
 import apis from '@/apis'
-import getMachineKindForm from '@/form/machineKind'
-import getMachinePropertyForm form '@/form/MachineProperty'
+import getMachinePropertyForm from '@/form/machineProperty'
 
 export default{
   name: 'MachinePropertyCard',
@@ -47,7 +46,7 @@ export default{
   },
   data () {
     return {
-      getMachinePropertyList: []
+      machinePropertyList: []
     }
   },
   methods: {
@@ -57,7 +56,7 @@ export default{
 
     getMachinePropertyList (kindId) {
       apis.getMachinePropertyListByKind({ kind_id: kindId }).then(data => {
-        this.getMachinePropertyList = data
+        this.machinePropertyList = data
       })
     },
 
