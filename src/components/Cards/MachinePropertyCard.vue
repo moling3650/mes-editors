@@ -62,38 +62,38 @@ export default{
 
     addMachineProperty () {
       getMachinePropertyForm({kind_id: this.kindId}, 'add')
-        .then(form => this.$showForm(form).$on('submit', (machineKind, close) => {
-          apis.addMachineKind(machineKind).then(machineKind => {
-            this.machineKindList.push(machineKind)
-            this.$emit('change', machineKind)
+        .then(form => this.$showForm(form).$on('submit', (machineProperty, close) => {
+          apis.addMachineProperty(machineProperty).then(machineProperty => {
+            this.machinePropertyList.push(machineProperty)
+            this.$emit('change', machineProperty)
             this.$message.success('添加成功')
             close()
           })
         }))
     },
 
-    editMachineKind (machineKind) {
-      getMachineKindForm(machineKind, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (machineKind, close) => {
-          apis.updateMachineKind(machineKind).then(machineKind => {
-            const index = this.machineKindList.findIndex(b => b.kind_id === machineKind.kind_id)
-            ~index && this.machineKindList.splice(index, 1, machineKind)
-            this.$emit('change', machineKind)
+    editMachineProperty (machineProperty) {
+      getMachinePropertyForm(machineProperty, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (machineProperty, close) => {
+          apis.updateMachineProperty(machineProperty).then(machineProperty => {
+            const index = this.machinePropertyList.findIndex(b => b.ppt_id === machineProperty.ppt_id)
+            ~index && this.machinePropertyList.splice(index, 1, machineProperty)
+            this.$emit('change', machineProperty)
             this.$message.success('修改成功')
             close()
           })
         }))
     },
 
-    deleteMachineKind (machineKind) {
-      this.$confirm('此操作将永久删除该设备类别, 是否继续?', '提示', {
+    deleteMachineProperty (machineProperty) {
+      this.$confirm('此操作将永久删除该类别属性, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteMachineKind(machineKind).then(_ => {
-          const index = this.machineKindList.findIndex(b => b.kind_id === machineKind.kind_id)
-          ~index && this.machineKindList.splice(index, 1)
+        apis.deleteMachineProperty(machineProperty).then(_ => {
+          const index = this.machinePropertyList.findIndex(b => b.ppt_id === machineProperty.ppt_id)
+          ~index && this.machinePropertyList.splice(index, 1)
           this.$emit('change', {})
           this.$message.success('删除成功!')
         })
