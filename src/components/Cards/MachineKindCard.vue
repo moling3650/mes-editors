@@ -54,8 +54,8 @@ export default{
     }
   },
   methods: {
-    handleClickMachineKind () {
-
+    handleClickMachineKind (machineKind) {
+      this.$emit('change', machineKind)
     },
 
     getMachineKindList (typeId) {

@@ -22,9 +22,10 @@
 <script>
 import apis from '@/apis'
 import getMachineKindForm from '@/form/machineKind'
+import getMachinePropertyForm form '@/form/MachineProperty'
 
 export default{
-  name: 'MachineKindCard',
+  name: 'MachinePropertyCard',
   props: {
     kindId: {
       type: [Number, String],
@@ -50,7 +51,7 @@ export default{
     }
   },
   methods: {
-    handleClickMachineKind () {
+    handleClickMachineProperty () {
 
     },
 
