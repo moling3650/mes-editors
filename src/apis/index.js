@@ -4,6 +4,8 @@ import formulaApis from '@/apis/formula'
 import reportApis from '@/apis/report'
 import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
+import machineTypeApis from '@/apis/machineType'
+import machineKindApis from '@/apis/machineKind'
 
 export default {
   addSubstitute (substitute) {
@@ -139,5 +141,7 @@ export default {
   ...formulaApis,
   ...reportApis,
   ...processFlowApis,
-  ...controlPointApis
+  ...controlPointApis,
+  ...machineTypeApis,
+  ...machineKindApis
 }
