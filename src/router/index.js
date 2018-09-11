@@ -28,6 +28,10 @@ export default new Router({
     {
       path: '/editors/machine',
       component: () => import('@/pages/MachineEditor')
+    },
+    {
+      path: '/editors/machine_type',
+      component: () => import('@/pages/MachineTypeEditor')
     }
   ]
 })
