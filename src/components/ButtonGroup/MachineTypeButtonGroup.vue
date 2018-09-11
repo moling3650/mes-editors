@@ -13,7 +13,7 @@
 
 <script>
 import apis from '@/apis'
-import getReportForm from '@/form/machineType'
+import getMachineTypeForm from '@/form/machineType'
 
 export default {
   name: 'ReportButtonGroup',
@@ -96,18 +96,18 @@ export default {
 </script>
 
 <style scoped>
-#ReportButtonGroup {
+#MachineTypeButtonGroup {
   position: relative;
 }
 
 .select-wrap {
-  margin-right: 220px;
+  margin-right: 250px;
 }
 
 .button-group {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 240px;
 }
 </style>
