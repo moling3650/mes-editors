@@ -1,19 +1,19 @@
 <template>
   <div id="MachineTypeButtonGroup">
     <div class="select-wrap">
-      <ex-select :options="machineTypeOptions" :value="typeId" clearable placeholder="请选择设备类型" @change="handleReportChange"/>
+      <ex-select :options="machineTypeOptions" :value="typeId" clearable placeholder="请选择设备类型" @change="handleMachineTypeChange"/>
     </div>
     <el-button-group class="button-group">
-      <el-button @click="addReport" type="primary" icon="el-icon-plus">报表</el-button>
-      <el-button :disabled="disabled" @click="editReport" icon="el-icon-edit" type="primary"></el-button>
-      <el-button :disabled="disabled" @click="deleteReport" icon="el-icon-delete" type="primary"></el-button>
+      <el-button @click="addMachineType" type="primary" icon="el-icon-plus">设备类型</el-button>
+      <el-button :disabled="disabled" @click="editMachineType" icon="el-icon-edit" type="primary"></el-button>
+      <el-button :disabled="disabled" @click="deleteMachineType" icon="el-icon-delete" type="primary"></el-button>
     </el-button-group>
   </div>
 </template>
 
 <script>
 import apis from '@/apis'
-import getReportForm from '@/form/report'
+import getReportForm from '@/form/machineType'
 
 export default {
   name: 'ReportButtonGroup',
@@ -42,50 +42,44 @@ export default {
     }
   },
   methods: {
-    handleReportChange (typeId) {
+    handleMachineTypeChange (typeId) {
       this.$emit('update:typeId', typeId)
     },
 
-    addReport () {
-      getReportForm(null, 'add').then(form => this.$showForm(form).$on('submit', (report, close) => {
-        if (!report.query_sql.trim()) {
-          report.query_sql = `SELECT * FROM ${report.report_code}`
-        }
-        apis.addReport(report).then(report => {
-          this.reports.push(report)
+    addMachineType () {
+      getMachineTypeForm(null, 'add').then(form => this.$showForm(form).$on('submit', (machineType, close) => {
+        apis.addMachineType(machineType).then(machineType => {
+          this.machineTypes.push(machineType)
           this.$message.success('添加成功!')
-          this.$emit('update:reportCode', report.report_code)
+          this.$emit('update:typeId', machineType.type_id)
           close()
         })
       }))
     },
 
-    editReport () {
-      const report = this.reports.find(r => r.report_code === this.reportCode)
-      getReportForm(report, 'edit').then(form => this.$showForm(form).$on('submit', (report, close) => {
-        if (!report.query_sql.trim()) {
-          report.query_sql = `SELECT * FROM ${report.report_code}`
-        }
-        apis.updateReport(report).then(report => {
-          const index = this.reports.findIndex(r => r.report_code === report.report_code)
-          ~index && this.reports.splice(index, 1, report)
+    editMachineType () {
+      const machineType = this.machineTypes.find(r => r.type_id === this.typeId)
+      getMachineTypeForm(machineType, 'edit').then(form => this.$showForm(form).$on('submit', (machineType, close) => {
+        apis.editMachineType(machineType).then(machineType => {
+          const index = this.machineTypes.findIndex(r => r.type_id === machineType.type_id)
+          ~index && this.machineTypes.splice(index, 1, machineType)
           this.$message.success('修改成功!')
-          this.$emit('update:reportCode', report.report_code)
+          this.$emit('update:typeId', machineType.type_id)
           close()
         })
       }))
     },
 
-    deleteReport () {
-      this.$confirm('此操作将永久删除该报表, 是否继续?', '提示', {
+    deleteMachineType () {
+      this.$confirm('此操作将永久删除该类型, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteReport({ report_code: this.reportCode }).then(_ => {
-          const index = this.reports.findIndex(r => r.report_code === this.reportCode)
-          ~index && this.reports.splice(index, 1)
-          this.$emit('update:reportCode', '')
+        apis.deleteMachineType({ type_id: this.typeId }).then(_ => {
+          const index = this.machineTypes.findIndex(r => r.type_id === this.typeId)
+          ~index && this.machineTypes.splice(index, 1)
+          this.$emit('update:typeId', '')
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
@@ -94,8 +88,8 @@ export default {
     }
   },
   mounted () {
-    apis.fetchReports().then(reports => {
-      this.reports = reports
+    apis.fetchMachineTypeList().then(machineTypes => {
+      this.machineTypes = machineTypes
     })
   }
 }

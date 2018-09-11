@@ -2,7 +2,7 @@
   <div id="MachineTypeEditor">
     <el-row :gutter="20" class="row">
       <el-col :span="8">
-        <MachineTypeButtonGroup :reportCode.sync="reportCode"></MachineTypeButtonGroup>
+        <MachineTypeButtonGroup :typeId.sync="typeId"></MachineTypeButtonGroup>
       </el-col>
 
     </el-row>
@@ -19,7 +19,7 @@ export default {
   },
   data () {
     return {
-      reportCode: ''
+      typeId: ''
     }
   }
 }
