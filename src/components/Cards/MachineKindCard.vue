@@ -2,19 +2,13 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备类别管理</span>
+      <el-button type="primary" :disabled="kindDisabeld" icon="el-icon-edit" size="mini" @click="editMachineKind(selectMachineKind)"></el-button>
+      <el-button type="danger" :disabled="kindDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineKind(selectMachineKind)"></el-button>
       <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineKind">添加类别</el-button>
     </div>
     <el-table :data="machineKindList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineKind">
       <el-table-column prop="kind_name" label="类别名称"/>
       <el-table-column prop="description" label="说明"/>
-      <el-table-column fixed="right" label="操作" width="80" align="center">
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button @click.stop="editMachineKind(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteMachineKind(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
-          </el-button-group>
-        </template>
-      </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -38,11 +32,15 @@ export default{
   computed: {
     disabled () {
       return !this.typeId
+    },
+    kindDisabeld (){
+      return !this.selectMachineKind.kind_id
     }
   },
   watch: {
     typeId (value, oldValue) {
       this.machineKindList = []
+      this.selectMachineKind = {}
       if (value) {
         this.getMachineKindList(value)
       }
@@ -50,11 +48,13 @@ export default{
   },
   data () {
     return {
-      machineKindList: []
+      machineKindList: [],
+      selectMachineKind: {}
     }
   },
   methods: {
     handleClickMachineKind (machineKind) {
+      this.selectMachineKind = machineKind
       this.$emit('change', machineKind)
     },
 

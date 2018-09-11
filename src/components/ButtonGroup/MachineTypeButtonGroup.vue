@@ -19,7 +19,7 @@ export default {
   name: 'ReportButtonGroup',
   props: {
     typeId: {
-      type: String,
+      type: [Number, String],
       required: true
     }
   },
