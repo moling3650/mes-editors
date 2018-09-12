@@ -102,12 +102,14 @@ export default {
             children: []
           }
         }
-        Kinds[item.type_id].children.push({
-          value: item.kind_id,
-          label: item.kind_name
-        })
+        if (item.kind_id) {
+          Kinds[item.type_id].children.push({
+            value: item.kind_id,
+            label: item.kind_name
+          })
+        }
       })
-      return new Object.value(Kinds)
+      return Object.values(Kinds)
     })
   },
 

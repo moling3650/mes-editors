@@ -32,6 +32,10 @@ export default new Router({
     {
       path: '/editors/machine_type',
       component: () => import('@/pages/MachineTypeEditor')
+    },
+    {
+      path: '/editors/machine_model',
+      component: () => import('@/pages/MachineModelEditor')
     }
   ]
 })
