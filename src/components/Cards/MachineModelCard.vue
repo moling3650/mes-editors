@@ -66,9 +66,9 @@ export default {
       })
     },
 
-    addBom () {
-      if (!this.productCode) {
-        return void this.$message.info('请先选择产品')
+    addMachineModel () {
+      if (!this.kindId) {
+        return void this.$message.info('请先选择类别')
       }
       getBomForm({product_code: this.productCode}, 'add', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (bom, close) => {
