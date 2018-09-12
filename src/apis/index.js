@@ -159,6 +159,10 @@ export default {
     return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
   },
 
+  validataModelCode (modelCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Machine_Model WHERE model_code = @modelCode'
+  },
+
   validateFormulaCode (formulaCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Formula WHERE formula_code = @formulaCode'
     return execSQL(sql, { formulaCode }).then(data => data[0].c === 0)
