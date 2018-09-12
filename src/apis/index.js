@@ -6,6 +6,7 @@ import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
 import machineTypeApis from '@/apis/machineType'
 import machineKindApis from '@/apis/machineKind'
+import machineModelApis from '@/apis/machineModel'
 import machinePropertyApis from '@/apis/machineProperty'
 
 export default {
@@ -161,6 +162,7 @@ export default {
 
   validataModelCode (modelCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Machine_Model WHERE model_code = @modelCode'
+    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
   },
 
   validateFormulaCode (formulaCode) {
@@ -175,5 +177,6 @@ export default {
   ...controlPointApis,
   ...machineTypeApis,
   ...machineKindApis,
-  ...machinePropertyApis
+  ...machinePropertyApis,
+  ...machineModelApis
 }

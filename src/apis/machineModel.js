@@ -7,22 +7,22 @@ export default {
     return execSQL(sql, kind)
   },
 
-  addMchineModel (machineModel) {
+  addMachineModel (machineModel) {
     const sql = `
           INSERT INTO B_Machine_Model
             ( model_code
             , kind_id
             , manufacturer
             , made_in
-            , discription)
+            , description)
           VALUES
             ( @model_code
             , @kind_id
             , @manufacturer
             , @made_in
-            , @discription);
+            , @description);
 
-          SELECT TOP (1) * FROM B_Machine_Model WHERE id = @id`
+          SELECT TOP (1) * FROM B_Machine_Model WHERE model_code = @model_code`
     return execSQL(sql, machineModel).then(data => data.pop())
   },
 
@@ -32,7 +32,7 @@ export default {
             SET model_code = @model_code
             , manufacturer = @manufacturer
             , made_in = @made_in
-            , discription = @discription
+            , description = @description
           WHERE id = @id;
 
           SELECT TOP (1) * FROM B_Machine_Model WHERE id = @id`
@@ -43,3 +43,4 @@ export default {
     const sql = `DELETE B_Machine_Model WHERE id = @id`
     return execSQL(sql, machineModel)
   }
+}

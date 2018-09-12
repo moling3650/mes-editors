@@ -4,11 +4,11 @@ function checkModelCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('型号编号不能为空'))
   }
-  apis.validateBomCode(value).then(valid => {
+  apis.validataModelCode(value).then(valid => {
     if (valid) {
       callback()
     } else {
-      callback(new Error('Bom编号已存在'))
+      callback(new Error('型号编号已存在'))
     }
   })
 }
@@ -40,7 +40,7 @@ export default function getMachineModelForm (form = null, type = 'add', options)
         span: 12
       },
       {
-        value: 'discription',
+        value: 'description',
         label: '描述',
         component: 'el-input',
         span: 12
@@ -50,7 +50,7 @@ export default function getMachineModelForm (form = null, type = 'add', options)
       model_code: '',
       manufacturer: '',
       made_in: '',
-      discription: ''
+      description: ''
     }, form),
     rules: {
       model_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]

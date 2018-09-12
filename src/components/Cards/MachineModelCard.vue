@@ -2,27 +2,22 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备型号列表</span>
+      <el-button type="primary" :disabled="modelDisabeld" icon="el-icon-edit" size="mini" @click="editMachineModel(selectMachineModel)"></el-button>
+        <el-button type="danger" :disabled="modelDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineModel(selectMachineModel)"></el-button>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineModel">添加型号</el-button>
     </div>
-    <el-table :data="bomList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickBom">
-      <el-table-column prop="bom_code" label="BOM"/>
-      <el-table-column prop="version_code" label="版本" width="50"/>
-      <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
-      <el-table-column fixed="right" label="操作" width="80" align="center">
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button @click.stop="editBom(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteBom(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
-          </el-button-group>
-        </template>
-      </el-table-column>
+    <el-table :data="machineModelList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineModel">
+      <el-table-column prop="model_code" label="型号编号" width="80"/>
+      <el-table-column prop="manufacturer" label="制造商" width="80"/>
+      <el-table-column prop="made_in" label="产地" width="50"/>
+      <el-table-column prop="description" label="说明"/>
     </el-table>
   </el-card>
 </template>
 
 <script>
 import apis from '@/apis'
-import getBomForm from '@/form/bom'
+import getMachineModelForm from '@/form/machineModel'
 
 export default {
   name: 'MachineModelCard',
@@ -31,7 +26,7 @@ export default {
       type: [Number, String],
       required: true
     },
-    productOptions: {
+    kindOptions: {
       type: Array,
       required: true
     }
@@ -39,26 +34,27 @@ export default {
   computed: {
     disabled () {
       return !this.kindId
+    },
+    modelDisabeld () {
+      return !this.selectMachineModel.id
     }
   },
   data () {
     return {
-      machineModelList: []
+      machineModelList: [],
+      selectMachineModel: {}
     }
   },
   watch: {
     kindId (value, oldValue) {
       this.machineModelList = []
+      this.selectMachineModel = {}
       if (value) {
         this.getMachineModelList(value)
       }
     }
   },
   methods: {
-
-    toState (row, column, cellValue, index) {
-      return ['禁用', '启用'][cellValue] || '未知'
-    },
 
     getMachineModelList (kindId) {
       apis.fetchMachineModelListByKind({ kind_id: kindId }).then(data => {
@@ -70,40 +66,40 @@ export default {
       if (!this.kindId) {
         return void this.$message.info('请先选择类别')
       }
-      getMachineModelForm({kind_id: this.kindId}, 'add', this.productOptions)
-        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
-          bom.create_time = new Date()
-          apis.addBom(bom).then(bom => {
-            this.bomList.push(bom)
-            this.$emit('change', bom)
+      getMachineModelForm({kind_id: this.kindId}, 'add', this.kindOptions)
+        .then(form => this.$showForm(form).$on('submit', (machineModel, close) => {
+          machineModel.kind_id = this.kindId
+          apis.addMachineModel(machineModel).then(machineModel => {
+            this.machineModelList.push(machineModel)
+            this.$emit('change', machineModel)
             this.$message.success('添加成功')
             close()
           })
         }))
     },
 
-    editBom (row) {
-      getBomForm(row, 'edit', this.productOptions)
-        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
-          apis.updateBom(bom).then(bom => {
-            const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
-            ~index && this.bomList.splice(index, 1, bom)
-            this.$emit('change', bom)
+    editMachineModel (row) {
+      getMachineModelForm(row, 'edit', this.kindOptions)
+        .then(form => this.$showForm(form).$on('submit', (machineModel, close) => {
+          apis.updateMachineModel(machineModel).then(machineModel => {
+            const index = this.machineModelList.findIndex(b => b.id === machineModel.id)
+            ~index && this.machineModelList.splice(index, 1, machineModel)
+            this.$emit('change', machineModel)
             this.$message.success('修改成功')
             close()
           })
         }))
     },
 
-    deleteBom (bom) {
-      this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
+    deleteMachineModel (machineModel) {
+      this.$confirm('此操作将永久删除该型号, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteBom(bom).then(_ => {
-          const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
-          ~index && this.bomList.splice(index, 1)
+        apis.deleteMachineModel(machineModel).then(_ => {
+          const index = this.machineModelList.findIndex(b => b.id === machineModel.id)
+          ~index && this.machineModelList.splice(index, 1)
           this.$emit('change', {})
           this.$message.success('删除成功!')
         })
@@ -112,8 +108,9 @@ export default {
       })
     },
 
-    handleClickBom (bom) {
-      this.$emit('change', bom)
+    handleClickMachineModel (machineModel) {
+      this.selectMachineModel = machineModel
+      this.$emit('change', machineModel)
     }
   }
 }
