@@ -2,19 +2,13 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">类别属性管理</span>
+      <el-button @click="editMachineProperty(selectMachineProperty)" :disabled="propertyDisabled" type="primary" icon="el-icon-edit" size="mini"></el-button>
+      <el-button @click="deleteMachineProperty(selectMachineProperty)" :disabled="propertyDisabled" type="danger" icon="el-icon-delete" size="mini"></el-button>
       <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineProperty">添加类别属性</el-button>
     </div>
     <el-table :data="machinePropertyList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineProperty">
       <el-table-column prop="ppt_name" label="属性名称"/>
       <el-table-column prop="description" label="属性说明"/>
-      <el-table-column fixed="right" label="操作" width="80" align="center">
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button @click.stop="editMachineProperty(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteMachineProperty(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
-          </el-button-group>
-        </template>
-      </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -31,14 +25,17 @@ export default{
       required: true
     }
   },
+
   computed: {
-    disabled () {
-      return !this.kindId
+    propertyDisabled () {
+      return !this.selectMachineProperty.ppt_id
     }
   },
   watch: {
     kindId (value, oldValue) {
+      console.log(value)
       this.machinePropertyList = []
+      this.selectMachineProperty = {}
       if (value) {
         this.getMachinePropertyList(value)
       }
@@ -46,12 +43,14 @@ export default{
   },
   data () {
     return {
-      machinePropertyList: []
+      machinePropertyList: [],
+      selectMachineProperty: {}
     }
   },
   methods: {
-    handleClickMachineProperty () {
-
+    handleClickMachineProperty (machineProperty) {
+      this.selectMachineProperty = machineProperty
+      this.$emit('change', machineProperty)
     },
 
     getMachinePropertyList (kindId) {

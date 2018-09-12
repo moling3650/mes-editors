@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     handleMachineTypeChange (typeId) {
-      this.$emit('update:typeId', typeId)
+      this.$emit('change', {type_id: typeId})
     },
 
     addMachineType () {
@@ -51,7 +51,7 @@ export default {
         apis.addMachineType(machineType).then(machineType => {
           this.machineTypes.push(machineType)
           this.$message.success('添加成功!')
-          this.$emit('update:typeId', machineType.type_id)
+          this.$emit('change', machineType)
           close()
         })
       }))
@@ -64,7 +64,7 @@ export default {
           const index = this.machineTypes.findIndex(r => r.type_id === machineType.type_id)
           ~index && this.machineTypes.splice(index, 1, machineType)
           this.$message.success('修改成功!')
-          this.$emit('update:typeId', machineType.type_id)
+          this.$emit('change', machineType)
           close()
         })
       }))
@@ -79,7 +79,7 @@ export default {
         apis.deleteMachineType({ type_id: this.typeId }).then(_ => {
           const index = this.machineTypes.findIndex(r => r.type_id === this.typeId)
           ~index && this.machineTypes.splice(index, 1)
-          this.$emit('update:typeId', '')
+          this.$emit('change', {})
           this.$message.success('删除成功!')
         })
       }).catch(_ => {

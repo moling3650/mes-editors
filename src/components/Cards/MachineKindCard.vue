@@ -2,13 +2,13 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备类别管理</span>
-      <el-button type="primary" :disabled="kindDisabeld" icon="el-icon-edit" size="mini" @click="editMachineKind(selectMachineKind)"></el-button>
-      <el-button type="danger" :disabled="kindDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineKind(selectMachineKind)"></el-button>
-      <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineKind">添加类别</el-button>
+        <el-button type="primary" :disabled="kindDisabeld" icon="el-icon-edit" size="mini" @click="editMachineKind(selectMachineKind)"></el-button>
+        <el-button type="danger" :disabled="kindDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineKind(selectMachineKind)"></el-button>
+        <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineKind">添加类别</el-button>
     </div>
     <el-table :data="machineKindList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineKind">
       <el-table-column prop="kind_name" label="类别名称"/>
-      <el-table-column prop="description" label="说明"/>
+      <el-table-column prop="description" label="类别说明"/>
     </el-table>
   </el-card>
 </template>
@@ -33,7 +33,7 @@ export default{
     disabled () {
       return !this.typeId
     },
-    kindDisabeld (){
+    kindDisabeld () {
       return !this.selectMachineKind.kind_id
     }
   },

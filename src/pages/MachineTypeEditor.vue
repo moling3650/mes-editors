@@ -2,7 +2,7 @@
   <div id="MachineTypeEditor">
     <el-row :gutter="20" class="row">
       <el-col :span="8">
-        <MachineTypeButtonGroup :typeId.sync="typeId" @change="handleMachineTypeChange"></MachineTypeButtonGroup>
+        <MachineTypeButtonGroup :typeId="typeId" @change="handleMachineTypeChange"></MachineTypeButtonGroup>
       </el-col>
 
     </el-row>
@@ -33,12 +33,14 @@ export default {
   data () {
     return {
       typeId: '',
-      kindId: ''
+      kindId: '',
+      machineProperty: {}
     }
   },
   methods: {
     handleMachineTypeChange (machineType) {
       this.typeId = machineType.type_id
+      this.kindId = ''
     },
 
     handleMachineKindChange (machineKind) {
