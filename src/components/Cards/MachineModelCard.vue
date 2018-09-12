@@ -27,7 +27,7 @@ import getBomForm from '@/form/bom'
 export default {
   name: 'MachineModelCard',
   props: {
-    kingId: {
+    kindId: {
       type: [Number, String],
       required: true
     },
@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     disabled () {
-      return !this.kingId
+      return !this.kindId
     }
   },
   data () {
@@ -47,7 +47,7 @@ export default {
     }
   },
   watch: {
-    kingId (value, oldValue) {
+    kindId (value, oldValue) {
       this.machineModelList = []
       if (value) {
         this.getMachineModelList(value)
@@ -60,8 +60,8 @@ export default {
       return ['禁用', '启用'][cellValue] || '未知'
     },
 
-    getMachineModelList (kingId) {
-      apis.fetchBomListByProduct({ product_code: productCode }).then(data => {
+    getMachineModelList (kindId) {
+      apis.fetchMachineModelListByKind({ kind_id: kindId }).then(data => {
         this.machineModelList = data
       })
     },
