@@ -87,6 +87,30 @@ export default {
     })
   },
 
+  fetchMchineTypeKindOptions () {
+    const sql = `
+          SELECT DISTINCT B.type_id,B.type_name,k.kind_id,K.kind_name FROM B_Machine_Type B
+          LEFT JOIN B_Machine_Kinds K ON B.type_id = K.type_id
+          ORDER BY K.kind_id`
+    return execSQL(sql).then(data => {
+      const Kinds = {}
+      data.forEach(item => {
+        if (!Kinds[item.type_id]) {
+          Kinds[item.type_id] = {
+            value: item.type_id,
+            label: item.type_name,
+            children: []
+          }
+        }
+        Kinds[item.type_id].children.push({
+          value: item.kind_id,
+          label: item.kind_name
+        })
+      })
+      return new Object.value(Kinds)
+    })
+  },
+
   fetchBomMaterialOptions (bomCode) {
     const sql = `
           SELECT D.mat_code AS value
