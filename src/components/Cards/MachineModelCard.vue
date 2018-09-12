@@ -70,7 +70,7 @@ export default {
       if (!this.kindId) {
         return void this.$message.info('请先选择类别')
       }
-      getBomForm({product_code: this.productCode}, 'add', this.productOptions)
+      getMachineModelForm({kind_id: this.kindId}, 'add', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (bom, close) => {
           bom.create_time = new Date()
           apis.addBom(bom).then(bom => {
