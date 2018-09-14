@@ -8,6 +8,7 @@ import machineTypeApis from '@/apis/machineType'
 import machineKindApis from '@/apis/machineKind'
 import machineModelApis from '@/apis/machineModel'
 import machinePropertyApis from '@/apis/machineProperty'
+import machineApis from '@/apis/machine'
 
 export default {
   addSubstitute (substitute) {
@@ -165,6 +166,11 @@ export default {
     return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
   },
 
+  validataMachineCode (machineCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Machine WHERE machine_code = @machineCode'
+    return execSQL(sql, { machineCode }).then(data => data[0].c === 0)
+  },
+
   validateFormulaCode (formulaCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Formula WHERE formula_code = @formulaCode'
     return execSQL(sql, { formulaCode }).then(data => data[0].c === 0)
@@ -178,5 +184,6 @@ export default {
   ...machineTypeApis,
   ...machineKindApis,
   ...machinePropertyApis,
-  ...machineModelApis
+  ...machineModelApis,
+  ...machineApis
 }

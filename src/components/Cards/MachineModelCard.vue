@@ -7,7 +7,7 @@
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineModel">添加型号</el-button>
     </div>
     <el-table :data="machineModelList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineModel">
-      <el-table-column prop="model_code" label="型号编号" width="80"/>
+      <el-table-column prop="model_code" label="型号编号" width="100"/>
       <el-table-column prop="manufacturer" label="制造商" width="80"/>
       <el-table-column prop="made_in" label="产地" width="50"/>
       <el-table-column prop="description" label="说明"/>
