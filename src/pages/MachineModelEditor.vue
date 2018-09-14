@@ -13,7 +13,11 @@
       </el-col>
 
       <el-col :span="8">
-        <MachineCard :modelCode="modelCode" />
+        <MachineCard :modelCode="modelCode" @change="handleMachineChange" />
+      </el-col>
+
+      <el-col :span="8">
+        <MachinePropertyDetailCard :machineCode="machineCode" />
       </el-col>
     </el-row>
 
@@ -24,18 +28,21 @@
 import apis from '@/apis'
 import MachineModelCard from '@/components/Cards/MachineModelCard'
 import MachineCard from '@/components/Cards/MachineCard'
+import MachinePropertyDetailCard from '@/components/Cards/MachinePropertyDetailCard'
 
 export default {
   name: 'MachineModelEditor',
   components: {
     MachineModelCard,
-    MachineCard
+    MachineCard,
+    MachinePropertyDetailCard
   },
   data () {
     return {
       kinds: [],
       id: '',
-      modelCode: ''
+      modelCode: '',
+      machineCode: ''
     }
   },
   computed: {
@@ -48,14 +55,17 @@ export default {
   methods: {
     handleKindChange ([typeId, kindId]) {
       this.id = kindId
+      this.modelCode = ''
+      this.machineCode = ''
     },
 
     handleMachineModelChange (machineModel) {
+      this.machineCode = ''
       this.modelCode = machineModel.model_code
     },
 
-    handleMachineChange () {
-
+    handleMachineChange (machine) {
+      this.machineCode = machine.machine_code
     }
 
   },

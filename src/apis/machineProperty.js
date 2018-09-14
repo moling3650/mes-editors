@@ -1,10 +1,19 @@
 import execSQL from '@/apis/executeSQL'
 
 export default {
+  fetchPropertyListByMachineCode (machineCode) {
+    const sql = `
+          SELECT P.ppt_id,P.ppt_name, M.machine_code, D.ppt_val FROM B_Machine_Type_Property P
+          JOIN B_Machine_Model MM ON MM.kind_id = P.kind_id
+          JOIN B_Machine M ON M.model_code = MM.model_code
+          LEFT JOIN B_Machine_Property_Detail D ON D.ppt_id = P.ppt_id
+          WHERE M.machine_code = @machineCode`
+    return execSQL(sql, { machineCode })
+  },
   // 操作BOM
-  getMachinePropertyListByKind (kindId) {
+  getMachinePropertyListByKind (kind) {
     const sql = 'SELECT * FROM B_Machine_Type_Property WHERE kind_id = @kind_id'
-    return execSQL(sql, kindId)
+    return execSQL(sql, kind)
   },
 
   addMachineProperty (machineProperty) {
