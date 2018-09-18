@@ -12,11 +12,21 @@ export default {
           INSERT INTO B_Machine
             ( machine_code
             , machine_name
-            , model_code)
+            , model_code
+            , simple_name
+            , arrivaldate
+            , userdepartment
+            , ws_code
+            , description)
           VALUES
             ( @machine_code
             , @machine_name
-            , @model_code);
+            , @model_code
+            , @simple_name
+            , @arrivaldate
+            , @userdepartment
+            , @ws_code
+            , @description);
 
           SELECT TOP (1) * FROM B_Machine WHERE machine_code = @machine_code`
     return execSQL(sql, machine).then(data => data.pop())

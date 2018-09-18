@@ -176,6 +176,16 @@ export default {
     return execSQL(sql, { formulaCode }).then(data => data[0].c === 0)
   },
 
+  fetchDepartmentOptions () {
+    const sql = 'SELECT depart_code as value, depart_name as label FROM S_Department'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
+  fetchWSCodeOptions () {
+    const sql = 'SELECT ws_code AS value, ws_name AS label FROM B_WorkShop'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
   ...bomApis,
   ...formulaApis,
   ...reportApis,

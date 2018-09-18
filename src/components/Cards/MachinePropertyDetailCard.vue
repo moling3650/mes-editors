@@ -11,10 +11,11 @@
       </template>
     </dl>
   </el-card>
+</template>
 
 <script>
 import apis from '@/apis'
-
+import getMachinePropertyDetailForm from '@/form/machinePropertyDetail'
 export default {
   name: 'MachinePropertyDetailCard',
   props: {
@@ -40,20 +41,21 @@ export default {
     }
   },
 
-   methods: {
-     addMachinePropertyDetail () {
-      // getMachineKindForm({type_id: this.typeId}, 'add', this.typeOptions)
-      //   .then(form => this.$showForm(form).$on('submit', (machineKind, close) => {
-      //     apis.addMachineKind(machineKind).then(machineKind => {
-      //       this.machineKindList.push(machineKind)
-      //       this.$emit('change', machineKind)
-      //       this.$message.success('添加成功')
-      //       close()
-      //     })
-      //   }))
+  methods: {
+
+    addMachinePropertyDetail () {
+      getMachinePropertyDetailForm({machine_Code: this.machineCode}, 'add')
+        .then(form => this.$showForm(form).$on('submit', (machinePropertyDetail, close) => {
+          apis.addMachinePropertyDetail(machinePropertyDetail).then(machinePropertyDetail => {
+            this.propertyList.push(machinePropertyDetail)
+            this.$emit('change', machinePropertyDetail)
+            this.$message.success('添加成功')
+            close()
+          })
+        }))
     }
 
-   }
+  }
 }
 </script>
 
@@ -71,7 +73,7 @@ dt {
 }
 dd {
   margin-left: 100px;
-  margin-top: -25px;
+/*  margin-top: -25px;*/
 }
 dt {
   line-height: 2;

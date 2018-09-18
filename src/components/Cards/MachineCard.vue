@@ -23,6 +23,14 @@ export default{
     modelCode: {
       type: String,
       required: true
+    },
+    DepartmentOptions: {
+      type: Array,
+      required: true
+    },
+    WSCodeOptions: {
+      type: Array,
+      required: true
     }
   },
 
@@ -60,7 +68,7 @@ export default{
     },
 
     addMachine () {
-      getMachineForm({model_code: this.modelCode}, 'add')
+      getMachineForm({model_code: this.modelCode}, 'add', this.DepartmentOptions, this.WSCodeOptions)
         .then(form => this.$showForm(form).$on('submit', (machine, close) => {
           apis.addMachine(machine).then(machine => {
             this.machineList.push(machine)

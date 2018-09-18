@@ -13,7 +13,7 @@
       </el-col>
 
       <el-col :span="8">
-        <MachineCard :modelCode="modelCode" @change="handleMachineChange" />
+        <MachineCard :modelCode="modelCode" @change="handleMachineChange" :DepartmentOptions="departments" :WSCodeOptions="wscodes" />
       </el-col>
 
       <el-col :span="8">
@@ -42,7 +42,9 @@ export default {
       kinds: [],
       id: '',
       modelCode: '',
-      machineCode: ''
+      machineCode: '',
+      departments: [],
+      wscodes: []
     }
   },
   computed: {
@@ -72,6 +74,14 @@ export default {
   mounted () {
     apis.fetchMchineTypeKindOptions().then(options => {
       this.kinds = options
+    })
+
+    apis.fetchDepartmentOptions().then(options => {
+      this.departments = options
+    })
+
+    apis.fetchWSCodeOptions().then(options => {
+      this.wscodes = options
     })
   }
 }
