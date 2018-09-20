@@ -7,8 +7,25 @@
       <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachine">添加设备</el-button>
     </div>
     <el-table :data="machineList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachine">
-      <el-table-column prop="machine_code" label="设备编号"/>
-      <el-table-column prop="machine_name" label="设备名称"/>
+      <el-table-column label="设备编号">
+        <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.machine_code }}</span>
+      </template>
+      </el-table-column>
+      <el-table-column prop="machine_name" label="设备名称">
+        <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>编号: {{ scope.row.machine_code }}</p>
+          <p>名称: {{ scope.row.machine_name }}</p>
+          <p>部门: {{ scope.row.depart_name }}</p>
+          <p>车间: {{ scope.row.ws_name }}</p>
+          <p>时间: {{ scope.row.arrivaldate }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.machine_name }}</el-tag>
+          </div>
+        </el-popover>
+        </template>
+      </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -80,7 +97,7 @@ export default{
     },
 
     editMachine (machine) {
-      getMachineForm(machine, 'edit')
+      getMachineForm(machine, 'edit', this.DepartmentOptions, this.WSCodeOptions)
         .then(form => this.$showForm(form).$on('submit', (machine, close) => {
           apis.updateMachine(machine).then(machine => {
             const index = this.machine.findIndex(b => b.id === machine.id)

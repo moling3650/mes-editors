@@ -8,6 +8,7 @@
     </div>
     <el-table :data="machinePropertyList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineProperty">
       <el-table-column prop="ppt_name" label="属性名称"/>
+      <el-table-column prop="ppt_type" label="属性类型" :formatter="toPropertyType"/>
       <el-table-column prop="description" label="属性说明"/>
     </el-table>
   </el-card>
@@ -48,6 +49,11 @@ export default{
     }
   },
   methods: {
+
+    toPropertyType (row, column, cellValue, index) {
+      return ['一般属性', '匹配属性'][cellValue] || '未知'
+    },
+
     handleClickMachineProperty (machineProperty) {
       this.selectMachineProperty = machineProperty
       this.$emit('change', machineProperty)
