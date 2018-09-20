@@ -9,6 +9,13 @@ export default function getMachinePropertyForm (form = null, type = 'add') {
         span: 22
       },
       {
+        value: 'ppt_type',
+        label: '属性类型',
+        component: 'ex-select',
+        options: [{value: 0, label: '一般属性'}, {value: 1, label: '匹配属性'}],
+        span: 22
+      },
+      {
         value: 'description',
         label: '描述',
         component: 'el-input',
@@ -18,6 +25,7 @@ export default function getMachinePropertyForm (form = null, type = 'add') {
     formData: Object.assign({
       ppt_id: '',
       kind_id: '',
+      ppt_type: '',
       ppt_name: '',
       description: ''
     }, form),
