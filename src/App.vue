@@ -70,7 +70,7 @@ export default {
   color: #04408c;
   font-size: 16px;
 }
-#app .el-card__header .el-button--text {
+#app .el-card__header .el-button--text, #app .el-card__header .el-button {
   position: relative;
   z-index: 1;
   padding-top: 3px;

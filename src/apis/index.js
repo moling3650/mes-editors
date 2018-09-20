@@ -4,6 +4,11 @@ import formulaApis from '@/apis/formula'
 import reportApis from '@/apis/report'
 import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
+import machineTypeApis from '@/apis/machineType'
+import machineKindApis from '@/apis/machineKind'
+import machineModelApis from '@/apis/machineModel'
+import machinePropertyApis from '@/apis/machineProperty'
+import machineApis from '@/apis/machine'
 
 export default {
   addSubstitute (substitute) {
@@ -84,6 +89,32 @@ export default {
     })
   },
 
+  fetchMchineTypeKindOptions () {
+    const sql = `
+          SELECT DISTINCT B.type_id,B.type_name,k.kind_id,K.kind_name FROM B_Machine_Type B
+          LEFT JOIN B_Machine_Kinds K ON B.type_id = K.type_id
+          ORDER BY K.kind_id`
+    return execSQL(sql).then(data => {
+      const Kinds = {}
+      data.forEach(item => {
+        if (!Kinds[item.type_id]) {
+          Kinds[item.type_id] = {
+            value: item.type_id,
+            label: item.type_name,
+            children: []
+          }
+        }
+        if (item.kind_id) {
+          Kinds[item.type_id].children.push({
+            value: item.kind_id,
+            label: item.kind_name
+          })
+        }
+      })
+      return Object.values(Kinds)
+    })
+  },
+
   fetchBomMaterialOptions (bomCode) {
     const sql = `
           SELECT D.mat_code AS value
@@ -130,14 +161,39 @@ export default {
     return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
   },
 
+  validataModelCode (modelCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Machine_Model WHERE model_code = @modelCode'
+    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
+  },
+
+  validataMachineCode (machineCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Machine WHERE machine_code = @machineCode'
+    return execSQL(sql, { machineCode }).then(data => data[0].c === 0)
+  },
+
   validateFormulaCode (formulaCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Formula WHERE formula_code = @formulaCode'
     return execSQL(sql, { formulaCode }).then(data => data[0].c === 0)
+  },
+
+  fetchDepartmentOptions () {
+    const sql = 'SELECT depart_code as value, depart_name as label FROM S_Department'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
+  fetchWSCodeOptions () {
+    const sql = 'SELECT ws_code AS value, ws_name AS label FROM B_WorkShop'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
   },
 
   ...bomApis,
   ...formulaApis,
   ...reportApis,
   ...processFlowApis,
-  ...controlPointApis
+  ...controlPointApis,
+  ...machineTypeApis,
+  ...machineKindApis,
+  ...machinePropertyApis,
+  ...machineModelApis,
+  ...machineApis
 }
