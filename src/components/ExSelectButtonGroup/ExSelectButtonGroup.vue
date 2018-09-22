@@ -128,4 +128,16 @@ export default {
 </script>
 
 <style scoped>
+.ExSelectButtonGroup {
+  position: relative;
+}
+.select-wrap {
+  margin-right: 178px;
+}
+.button-group {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 168px;
+}
 </style>
