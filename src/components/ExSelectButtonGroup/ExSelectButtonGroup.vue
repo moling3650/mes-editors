@@ -68,6 +68,9 @@ export default {
     },
 
     addItem () {
+      if (!getForm[this.model]) {
+        return void this.$message.error(`需要在 @/form/index.js 引入${this.model}模型`)
+      }
       getForm[this.model](null, 'add').then(form => {
         this.$showForm(form).$on('submit', (formData, close) => {
           apis[`add${this.model}`](formData).then(newItem => {
@@ -82,6 +85,9 @@ export default {
     },
 
     editItem () {
+      if (!getForm[this.model]) {
+        return void this.$message.error(`需要在 @/form/index.js 引入${this.model}模型`)
+      }
       getForm[this.model](this.currentItem, 'edit').then(form => {
         this.$showForm(form).$on('submit', (formData, close) => {
           apis[`update${this.model}`](formData).then(newItem => {
