@@ -2,7 +2,7 @@
   <div id="MachineTypeEditor">
     <el-row :gutter="20" class="row">
       <el-col :span="8">
-        <MachineTypeButtonGroup :typeId="typeId" @change="handleMachineTypeChange"></MachineTypeButtonGroup>
+        <ExSelectButtonGroup model="MachineType" name="设备类型" value="type_id" label="type_name" @change="handleMachineTypeChange"/>
       </el-col>
 
     </el-row>
