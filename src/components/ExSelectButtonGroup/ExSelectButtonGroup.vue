@@ -1,7 +1,7 @@
 <template>
   <div class="ExSelectButtonGroup">
     <div class="select-wrap">
-      <ex-select :options="options" v-model="key" clearable @change="handleChange"/>
+      <ex-select :options="options" v-model="key" :placeholder="`请选择${name}`" clearable @change="handleChange"/>
     </div>
     <el-button-group class="button-group">
       <el-button @click="addItem" type="primary" icon="el-icon-plus"></el-button>
@@ -21,6 +21,10 @@ export default {
     model: {
       type: String,
       required: true
+    },
+    name: {
+      type: String,
+      default: ''
     },
     value: {
       type: [Number, String],
@@ -94,7 +98,7 @@ export default {
     },
 
     deleteItem () {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+      this.$confirm(`此操作将永久删除该${this.name || '选项'}, 是否继续?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
