@@ -18,6 +18,7 @@ export default {
             ( machine_code
             , machine_name
             , model_code
+            , state
             , simple_name
             , arrivaldate
             , userdepartment
@@ -27,6 +28,7 @@ export default {
             ( @machine_code
             , @machine_name
             , @model_code
+            , @state
             , @simple_name
             , @arrivaldate
             , @userdepartment

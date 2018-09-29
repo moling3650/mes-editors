@@ -26,6 +26,8 @@
         </el-popover>
         </template>
       </el-table-column>
+      <el-table-column label="状态" prop="state" :formatter="toState">
+      </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -73,6 +75,11 @@ export default{
     }
   },
   methods: {
+
+    toState (row, column, cellValue, index) {
+      return ['禁用', '启用'][cellValue] || '未知'
+    },
+
     handleClickMachine (machine) {
       this.selectMachine = machine
       this.$emit('change', machine)

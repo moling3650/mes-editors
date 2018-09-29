@@ -9,6 +9,16 @@ import machineKindApis from '@/apis/machineKind'
 import machineModelApis from '@/apis/machineModel'
 import machinePropertyApis from '@/apis/machineProperty'
 import machineApis from '@/apis/machine'
+import workToolTypeApis from '@/apis/workToolType'
+import workToolKindApis from '@/apis/workToolKind'
+import workToolPropertyApis from '@/apis/workToolProperty'
+import workToolModelApis from '@/apis/workToolModel'
+import workToolApis from '@/apis/workTool'
+import mouldTypeApis from '@/apis/mouldType'
+import mouldKindApis from '@/apis/mouldKind'
+import mouldPropertyApis from '@/apis/mouldProperty'
+import mouldModelApis from '@/apis/mouldModel'
+import mouldApis from '@/apis/mould'
 
 export default {
   addSubstitute (substitute) {
@@ -89,10 +99,62 @@ export default {
     })
   },
 
-  fetchMchineTypeKindOptions () {
+  fetchMachineTypeKindOptions () {
     const sql = `
           SELECT DISTINCT B.type_id,B.type_name,k.kind_id,K.kind_name FROM B_Machine_Type B
           LEFT JOIN B_Machine_Kinds K ON B.type_id = K.type_id
+          ORDER BY K.kind_id`
+    return execSQL(sql).then(data => {
+      const Kinds = {}
+      data.forEach(item => {
+        if (!Kinds[item.type_id]) {
+          Kinds[item.type_id] = {
+            value: item.type_id,
+            label: item.type_name,
+            children: []
+          }
+        }
+        if (item.kind_id) {
+          Kinds[item.type_id].children.push({
+            value: item.kind_id,
+            label: item.kind_name
+          })
+        }
+      })
+      return Object.values(Kinds)
+    })
+  },
+
+  fetchWorkToolTypeKindOptions () {
+    const sql = `
+          SELECT DISTINCT B.type_id,B.type_name,k.kind_id,K.kind_name FROM B_WorkTool_Type B
+          LEFT JOIN B_WorkTool_Kinds K ON B.type_id = K.type_id
+          ORDER BY K.kind_id`
+    return execSQL(sql).then(data => {
+      const Kinds = {}
+      data.forEach(item => {
+        if (!Kinds[item.type_id]) {
+          Kinds[item.type_id] = {
+            value: item.type_id,
+            label: item.type_name,
+            children: []
+          }
+        }
+        if (item.kind_id) {
+          Kinds[item.type_id].children.push({
+            value: item.kind_id,
+            label: item.kind_name
+          })
+        }
+      })
+      return Object.values(Kinds)
+    })
+  },
+
+  fetchMouldTypeKindOptions () {
+    const sql = `
+          SELECT DISTINCT B.type_id,B.type_name,k.kind_id,K.kind_name FROM B_Mould_Type B
+          LEFT JOIN B_Mould_Kinds K ON B.type_id = K.type_id
           ORDER BY K.kind_id`
     return execSQL(sql).then(data => {
       const Kinds = {}
@@ -161,14 +223,34 @@ export default {
     return execSQL(sql, { bomCode }).then(data => data[0].c === 0)
   },
 
-  validataModelCode (modelCode) {
+  validataMachineModelCode (modelCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Machine_Model WHERE model_code = @modelCode'
+    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
+  },
+
+  validataWorkToolModelCode (modelCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_WorkTool_Model WHERE model_code = @modelCode'
+    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
+  },
+
+  validataMouldModelCode (modelCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Mould_Model WHERE model_code = @modelCode'
     return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
   },
 
   validataMachineCode (machineCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Machine WHERE machine_code = @machineCode'
     return execSQL(sql, { machineCode }).then(data => data[0].c === 0)
+  },
+
+  validataWorkToolCode (workToolCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_WorkTool WHERE workTool_code = @workToolCode'
+    return execSQL(sql, { workToolCode }).then(data => data[0].c === 0)
+  },
+
+  validataMouldCode (mouldCode) {
+    const sql = 'SELECT COUNT(*) AS c FROM B_Moulds WHERE mould_code = @mouldCode'
+    return execSQL(sql, { mouldCode }).then(data => data[0].c === 0)
   },
 
   validateFormulaCode (formulaCode) {
@@ -195,5 +277,15 @@ export default {
   ...machineKindApis,
   ...machinePropertyApis,
   ...machineModelApis,
-  ...machineApis
+  ...machineApis,
+  ...workToolKindApis,
+  ...workToolPropertyApis,
+  ...workToolTypeApis,
+  ...workToolModelApis,
+  ...workToolApis,
+  ...mouldTypeApis,
+  ...mouldKindApis,
+  ...mouldPropertyApis,
+  ...mouldModelApis,
+  ...mouldApis
 }

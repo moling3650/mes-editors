@@ -36,6 +36,23 @@ export default new Router({
     {
       path: '/editors/machine_model',
       component: () => import('@/pages/MachineModelEditor')
+    },
+    {
+      path: '/editors/workTool_type',
+      component: () => import('@/pages/WorkToolTypeEditor')
+    },
+    {
+      path: '/editors/workTool_model',
+      component: () => import('@/pages/WorkToolModelEditor')
+    },
+    {
+      path: '/editors/mould_type',
+      component: () => import('@/pages/MouldTypeEditor')
+    },
+    {
+      path: '/editors/mould_model',
+      component: () => import('@/pages/MouldModelEditor')
     }
+
   ]
 })

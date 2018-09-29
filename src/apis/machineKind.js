@@ -18,7 +18,7 @@ export default {
             , @kind_name
             , @description);
 
-          SELECT TOP (1) * FROM B_Machine_Kinds WHERE kind_id = @kind_id`
+          SELECT TOP (1) * FROM B_Machine_Kinds WHERE type_id = @type_id and kind_name = @kind_name`
     return execSQL(sql, machineKind).then(data => data.pop())
   },
 

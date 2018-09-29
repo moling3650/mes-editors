@@ -3,11 +3,10 @@ import execSQL from '@/apis/executeSQL'
 export default {
   fetchPropertyListByMachineCode (machineCode) {
     const sql = `
-          SELECT D.id, P.ppt_id,P.ppt_name, P.ppt_type, M.machine_code, D.ppt_val
-          ,D.ppt_max,D.ppt_min,D.ppt_condition,D.[enable] FROM B_Machine_Type_Property P
-          JOIN B_Machine_Model MM ON MM.kind_id = P.kind_id
-          JOIN B_Machine M ON M.model_code = MM.model_code
-          LEFT JOIN B_Machine_Property_Detail D ON D.ppt_id = P.ppt_id
+          select  D.id, P.ppt_id,P.ppt_name, P.ppt_type, M.machine_code, D.ppt_val
+          ,D.ppt_max,D.ppt_min,D.ppt_condition,D.[enable] from B_Machine M inner join B_Machine_Model MM on M.model_code = MM.model_code
+ INNER JOIN B_Machine_Type_Property P ON MM.kind_id = P.kind_id
+ LEFT JOIN B_Machine_Property_Detail D ON P.ppt_id = D.ppt_id and D.machine_code = M.machine_code
           WHERE M.machine_code = @machineCode`
     return execSQL(sql, { machineCode })
   },
@@ -55,7 +54,7 @@ export default {
             , @ppt_type
             , @description);
 
-          SELECT TOP (1) * FROM B_Machine_Type_Property WHERE ppt_id = @ppt_id`
+          SELECT TOP (1) * FROM B_Machine_Type_Property WHERE kind_id = @kind_id and ppt_name = @ppt_name`
     return execSQL(sql, machineProperty).then(data => data.pop())
   },
 

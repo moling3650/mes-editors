@@ -4,7 +4,7 @@ function checkModelCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('型号编号不能为空'))
   }
-  apis.validataModelCode(value).then(valid => {
+  apis.validataMachineModelCode(value).then(valid => {
     if (valid) {
       callback()
     } else {

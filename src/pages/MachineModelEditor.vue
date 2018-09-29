@@ -2,17 +2,17 @@
   <div id="MachineModelEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="8">
+      <el-col :span="6">
         <el-cascader :options="kinds" placeholder="请选择类型" @change="handleKindChange"  class="w100p"/>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
-      <el-col :span="8">
+      <el-col :span="6">
         <MachineModelCard :kindId="id" :kindOptions="kindOptions" @change="handleMachineModelChange" />
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="10">
         <MachineCard :modelCode="modelCode" @change="handleMachineChange" :DepartmentOptions="departments" :WSCodeOptions="wscodes" />
       </el-col>
 
@@ -72,7 +72,7 @@ export default {
 
   },
   mounted () {
-    apis.fetchMchineTypeKindOptions().then(options => {
+    apis.fetchMachineTypeKindOptions().then(options => {
       this.kinds = options
     })
 

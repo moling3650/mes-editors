@@ -36,6 +36,13 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
         span: 12
       },
       {
+        value: 'state',
+        label: '状态',
+        component: 'ex-select',
+        options: [{value: 0, label: '禁用'}, {value: 1, label: '启用'}],
+        span: 12
+      },
+      {
         value: 'arrivaldate',
         label: '到货日期',
         component: 'el-date-picker',
@@ -65,6 +72,7 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
     formData: Object.assign({
       machine_code: '',
       machine_name: '',
+      state: 0,
       simple_name: '',
       manufacturer: '',
       arrivaldate: '',
