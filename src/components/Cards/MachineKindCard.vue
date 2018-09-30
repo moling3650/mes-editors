@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备类别管理</span>
-        <el-button type="primary" :disabled="kindDisabeld" icon="el-icon-edit" size="mini" @click="editMachineKind(selectMachineKind)"></el-button>
-        <el-button type="danger" :disabled="kindDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineKind(selectMachineKind)"></el-button>
-        <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineKind">添加类别</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addMachineKind" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editMachineKind(selectMachineKind)" :disabled="kindDisabeld"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteMachineKind(selectMachineKind)" :disabled="kindDisabeld"/>
+      </el-button-group>
     </div>
     <el-table :data="machineKindList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineKind">
       <el-table-column prop="kind_name" label="类别名称"/>

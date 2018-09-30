@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备管理</span>
-      <el-button @click="editMachine(selectMachine)" :disabled="machineDisabled" type="primary" icon="el-icon-edit" size="mini"></el-button>
-      <el-button @click="deleteMachine(selectMachine)" :disabled="machineDisabled" type="danger" icon="el-icon-delete" size="mini"></el-button>
-      <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachine">添加设备</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addMachine" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editMachine(selectMachine)" :disabled="machineDisabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteMachine(selectMachine)" :disabled="machineDisabled"/>
+      </el-button-group>
     </div>
     <el-table :data="machineList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachine">
       <el-table-column label="设备编号">
@@ -54,13 +56,16 @@ export default{
   },
 
   computed: {
+    disabled () {
+      return !this.modelCode
+    },
+
     machineDisabled () {
       return !this.selectMachine.id
     }
   },
   watch: {
     modelCode (value, oldValue) {
-      console.log(value)
       this.machineList = []
       this.selectMachine = {}
       if (value) {

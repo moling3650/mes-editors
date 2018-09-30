@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">模具管理</span>
-      <el-button @click="editMould(selectMould)" :disabled="mouldDisabled" type="primary" icon="el-icon-edit" size="mini"></el-button>
-      <el-button @click="deleteMould(selectMould)" :disabled="mouldDisabled" type="danger" icon="el-icon-delete" size="mini"></el-button>
-      <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMould">添加模具</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addMould" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editMould(selectMould)" :disabled="mouldDisabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteMould(selectMould)" :disabled="mouldDisabled"/>
+      </el-button-group>
     </div>
     <el-table :data="mouldList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMould">
       <el-table-column label="模具编号">
@@ -42,17 +44,19 @@ export default{
       type: String,
       required: true
     }
-
   },
 
   computed: {
+    disabled () {
+      return !this.modelCode
+    },
+
     mouldDisabled () {
       return !this.selectMould.ID
     }
   },
   watch: {
     modelCode (value, oldValue) {
-      console.log(value)
       this.mouldList = []
       this.selectMould = {}
       if (value) {
@@ -99,7 +103,7 @@ export default{
       getMouldForm(mould, 'edit')
         .then(form => this.$showForm(form).$on('submit', (mould, close) => {
           apis.updateMould(mould).then(mould => {
-            const index = this.mould.findIndex(b => b.id === mould.id)
+            const index = this.mouldList.findIndex(b => b.id === mould.id)
             ~index && this.mouldList.splice(index, 1, mould)
             this.$emit('change', mould)
             this.$message.success('修改成功')

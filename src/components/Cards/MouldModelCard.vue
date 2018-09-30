@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">模具型号列表</span>
-      <el-button type="primary" :disabled="modelDisabeld" icon="el-icon-edit" size="mini" @click="editMouldModel(selectMouldModel)"></el-button>
-        <el-button type="danger" :disabled="modelDisabeld" icon="el-icon-delete" size="mini" @click="deleteMouldModel(selectMouldModel)"></el-button>
-      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMouldModel">添加型号</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addMouldModel" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editMouldModel(selectMouldModel)" :disabled="modelDisabeld"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteMouldModel(selectMouldModel)" :disabled="modelDisabeld"/>
+      </el-button-group>
     </div>
     <el-table :data="mouldModelList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMouldModel">
       <el-table-column prop="model_code" label="型号编号"/>
@@ -84,6 +86,7 @@ export default {
           apis.updateMouldModel(mouldModel).then(mouldModel => {
             const index = this.mouldModelList.findIndex(b => b.id === mouldModel.id)
             ~index && this.mouldModelList.splice(index, 1, mouldModel)
+            this.selectMouldModel = {}
             this.$emit('change', mouldModel)
             this.$message.success('修改成功')
             close()
@@ -100,6 +103,7 @@ export default {
         apis.deleteMouldModel(mouldModel).then(_ => {
           const index = this.mouldModelList.findIndex(b => b.id === mouldModel.id)
           ~index && this.mouldModelList.splice(index, 1)
+          this.selectMouldModel = {}
           this.$emit('change', {})
           this.$message.success('删除成功!')
         })
