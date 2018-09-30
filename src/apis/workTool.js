@@ -41,6 +41,12 @@ export default {
           UPDATE B_WorkTool
             SET workTool_code = @workTool_code
             , workTool_name = @workTool_name
+            , state = @state
+            , supplier = @supplier
+            , storage_room = @storage_room
+            , store_place = @store_place
+            , use_place = @use_place
+            , description = @description
           WHERE id = @id;
 
           SELECT TOP (1) * FROM B_WorkTool WHERE id = @id`

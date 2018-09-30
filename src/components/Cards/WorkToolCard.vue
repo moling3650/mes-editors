@@ -75,7 +75,7 @@ export default{
   methods: {
 
     toState (row, column, cellValue, index) {
-      return ['禁用', '启用'][cellValue] || '未知'
+      return ['报废', '禁用', '启用', '已使用', '保养', '维修'][cellValue + 1] || '未知'
     },
 
     handleClickWorkTool (workTool) {

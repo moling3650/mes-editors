@@ -36,6 +36,9 @@ export default {
           UPDATE B_Moulds
             SET mould_code = @mould_code
             , mould_name = @mould_name
+            , state = @state
+            , supplier = @supplier
+            , description = @description
           WHERE id = @id;
 
           SELECT TOP (1) * FROM B_Moulds WHERE id = @id`

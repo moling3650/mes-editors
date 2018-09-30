@@ -44,6 +44,12 @@ export default {
           UPDATE B_Machine
             SET machine_code = @machine_code
             , machine_name = @machine_name
+            , simple_name = @simple_name
+            , state = @state
+            , arrivaldate = @arrivaldate
+            , userdepartment = @userdepartment
+            , ws_code = @ws_code
+            , description = @description
           WHERE id = @id;
 
           SELECT TOP (1) * FROM B_Machine WHERE id = @id`

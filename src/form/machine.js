@@ -81,7 +81,7 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
       description: ''
     }, form),
     rules: {
-      machine_code: [{ required: true, validator: checkMachineCode, trigger: 'blur' }]
+      machine_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkMachineCode, trigger: 'blur' }]
     }
   })
 }

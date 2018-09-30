@@ -112,7 +112,7 @@ export default{
       getMachineForm(machine, 'edit', this.DepartmentOptions, this.WSCodeOptions)
         .then(form => this.$showForm(form).$on('submit', (machine, close) => {
           apis.updateMachine(machine).then(machine => {
-            const index = this.machine.findIndex(b => b.id === machine.id)
+            const index = this.machineList.findIndex(b => b.id === machine.id)
             ~index && this.machineList.splice(index, 1, machine)
             this.$emit('change', machine)
             this.$message.success('修改成功')
