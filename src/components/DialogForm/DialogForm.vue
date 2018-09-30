@@ -11,7 +11,7 @@
                 :inactive-value="item.inactiveValue"
                 :disabled="item.disabled"
                 :unit="item.unit"
-                @change="$emit(`update:${item.value}`, form[item.value], item, formItems)"></component>
+                @change="$emit(`update:${item.value}`, form[item.value], item, formItems, rules)"></component>
             </el-form-item>
           </el-col>
         </el-row>
