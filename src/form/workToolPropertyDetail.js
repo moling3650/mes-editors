@@ -8,6 +8,22 @@ export default function getWorkToolPropertyDetailForm (form = null, type = 'add'
   if (form && form.ppt_min === null) {
     form.ppt_min = 0
   }
+  let pptValRules = [{
+    required: true,
+    message: '请输入标准值',
+    trigger: 'blur'
+  }]
+  if (form.ppt_type === 1 && form.ppt_condition === 'between') {
+    pptValRules = [{ required: false }]
+  } else if (form.ppt_type === 1) {
+    pptValRules = [{
+      required: true,
+      pattern: /^\d+(\.\d+)?$/,
+      transform: value => value && value.trim(),
+      message: '请输入数字',
+      trigger: 'blur'
+    }]
+  }
 
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}工装属性明细表单`,
@@ -77,7 +93,9 @@ export default function getWorkToolPropertyDetailForm (form = null, type = 'add'
     }, form),
     rules: {
       ppt_condition: [{ required: !!(form && form.ppt_type === 1), message: '请选择匹配条件', trigger: 'blur' }],
-      ppt_val: (form && form.ppt_type === 1) ? [{ required: true, pattern: /^\d+(\.\d+)?$/, transform: value => value && value.trim(), message: '请输入数字', trigger: 'blur' }] : [{ required: true, message: '请输入标准值', trigger: 'blur' }]
+      ppt_val: pptValRules,
+      ppt_max: [{ required: (form && form.ppt_condition === 'between') }],
+      ppt_min: [{ required: (form && form.ppt_condition === 'between') }]
     }
   })
 }

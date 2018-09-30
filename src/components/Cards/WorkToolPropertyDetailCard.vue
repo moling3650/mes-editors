@@ -51,6 +51,20 @@ export default {
   },
 
   methods: {
+    _handleConditionChange (pptCondition, item, formItems, rules) {
+      formItems[3].disabled = pptCondition === 'between'
+      formItems[4].disabled = pptCondition !== 'between'
+      formItems[5].disabled = pptCondition !== 'between'
+      if (pptCondition === 'between') {
+        this.$set(rules, 'ppt_val', [{ required: false }])
+        this.$set(rules, 'ppt_min', [{ required: true, trigger: 'blur' }])
+        this.$set(rules, 'ppt_max', [{ required: true, trigger: 'blur' }])
+      } else {
+        this.$set(rules, 'ppt_val', [{ required: true, pattern: /^\d+(\.\d+)?$/, transform: value => value && value.trim(), message: '请输入数字', trigger: 'blur' }])
+        this.$set(rules, 'ppt_min', [{ required: false }])
+        this.$set(rules, 'ppt_max', [{ required: false }])
+      }
+    },
 
     addOrEdit (pptDetail) {
       let type = 'add'
@@ -83,11 +97,7 @@ export default {
             this.$message.success('添加成功')
             close()
           })
-        }).$on('update:ppt_condition', (pptCondition, item, formItems) => {
-          formItems[3].disabled = pptCondition === 'between'
-          formItems[4].disabled = pptCondition !== 'between'
-          formItems[5].disabled = pptCondition !== 'between'
-        }))
+        }).$on('update:ppt_condition', this._handleConditionChange))
     },
 
     editWorkToolPropertyDetail (propertyDetail) {
@@ -103,16 +113,11 @@ export default {
               this.$set(this.propertyList[index], 'ppt_min', propertyDetail.ppt_min)
             }
 
-            // ~index && this.propertyList.splice(index, 1, propertyDetail)
             this.$emit('change', propertyDetail)
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:ppt_condition', (pptCondition, item, formItems) => {
-          formItems[3].disabled = pptCondition === 'between'
-          formItems[4].disabled = pptCondition !== 'between'
-          formItems[5].disabled = pptCondition !== 'between'
-        }))
+        }).$on('update:ppt_condition', this._handleConditionChange))
     }
   }
 }
