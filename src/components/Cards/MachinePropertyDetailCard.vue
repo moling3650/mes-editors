@@ -129,24 +129,23 @@ dt, dd {
 }
 dt {
   font-weight: bold;
+  line-height: 2;
 }
 dd {
   position: relative;
   height: 100%;
-  margin-left: 60px;
+  margin-left: 70px;
   margin-right: 100px;
   border-bottom: 1px solid #000;
   top: -25px;
-}
-dt {
-  line-height: 2;
 }
 dd > span {
   display: inline-block;
   height: 100%;
 }
 dd .btn {
-  position: relative;
-  left: 90px;
+  position: absolute;
+  top: 0;
+  right: -90px;
 }
 </style>

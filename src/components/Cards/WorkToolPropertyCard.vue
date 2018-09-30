@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">类别属性管理</span>
-      <el-button @click="editWorkToolProperty(selectWorkToolProperty)" :disabled="propertyDisabled" type="primary" icon="el-icon-edit" size="mini"></el-button>
-      <el-button @click="deleteWorkToolProperty(selectWorkToolProperty)" :disabled="propertyDisabled" type="danger" icon="el-icon-delete" size="mini"></el-button>
-      <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addWorkToolProperty">添加类别属性</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addWorkToolProperty" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editWorkToolProperty(selectWorkToolProperty)" :disabled="propertyDisabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteWorkToolProperty(selectWorkToolProperty)" :disabled="propertyDisabled"/>
+      </el-button-group>
     </div>
     <el-table :data="workToolPropertyList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickWorkToolProperty">
       <el-table-column prop="ppt_name" label="属性名称"/>
@@ -28,13 +30,16 @@ export default{
   },
 
   computed: {
+    disabled () {
+      return !this.kindId
+    },
+
     propertyDisabled () {
       return !this.selectWorkToolProperty.ppt_id
     }
   },
   watch: {
     kindId (value, oldValue) {
-      console.log(value)
       this.workToolPropertyList = []
       this.selectWorkToolProperty = {}
       if (value) {

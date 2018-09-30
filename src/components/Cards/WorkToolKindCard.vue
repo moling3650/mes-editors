@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">工装类别管理</span>
-        <el-button type="primary" :disabled="kindDisabeld" icon="el-icon-edit" size="mini" @click="editWorkToolKind(selectWorkToolKind)"></el-button>
-        <el-button type="danger" :disabled="kindDisabeld" icon="el-icon-delete" size="mini" @click="deleteWorkToolKind(selectWorkToolKind)"></el-button>
-        <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addWorkToolKind">添加类别</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addWorkToolKind" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editWorkToolKind(selectWorkToolKind)" :disabled="kindDisabeld"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteWorkToolKind(selectWorkToolKind)" :disabled="kindDisabeld"/>
+      </el-button-group>
     </div>
     <el-table :data="workToolKindList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickWorkToolKind">
       <el-table-column prop="kind_name" label="类别名称"/>
@@ -23,10 +25,6 @@ export default{
     typeId: {
       type: [Number, String],
       required: true
-    // },
-    // typeOptions: {
-    //   type: Array,
-    //   required: true
     }
   },
   computed: {

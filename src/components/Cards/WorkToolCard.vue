@@ -2,9 +2,11 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">工装管理</span>
-      <el-button @click="editWorkTool(selectWorkTool)" :disabled="workToolDisabled" type="primary" icon="el-icon-edit" size="mini"></el-button>
-      <el-button @click="deleteWorkTool(selectWorkTool)" :disabled="workToolDisabled" type="danger" icon="el-icon-delete" size="mini"></el-button>
-      <el-button icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addWorkTool">添加工装</el-button>
+      <el-button-group class="fl-r p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addWorkTool" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editWorkTool(selectWorkTool)" :disabled="workToolDisabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteWorkTool(selectWorkTool)" :disabled="workToolDisabled"/>
+      </el-button-group>
     </div>
     <el-table :data="workToolList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickWorkTool">
       <el-table-column label="工装编号">
@@ -26,7 +28,7 @@
         </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="state" :formatter="toState">
+      <el-table-column label="状态" prop="state" :formatter="toState" width="60">
       </el-table-column>
     </el-table>
   </el-card>
@@ -47,13 +49,16 @@ export default{
   },
 
   computed: {
+    disabled () {
+      return !this.modelCode
+    },
+
     workToolDisabled () {
       return !this.selectWorkTool.id
     }
   },
   watch: {
     modelCode (value, oldValue) {
-      console.log(value)
       this.workToolList = []
       this.selectWorkTool = {}
       if (value) {
