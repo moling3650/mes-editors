@@ -26,7 +26,7 @@
         </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="state" :formatter="toState">
+      <el-table-column label="状态" prop="state" width="60" :formatter="toState">
       </el-table-column>
     </el-table>
   </el-card>

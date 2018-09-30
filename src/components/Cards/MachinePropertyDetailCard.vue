@@ -16,7 +16,7 @@
           <span v-else>
             {{p.ppt_val}}
           </span>
-          <el-button icon="el-icon-plus" class="fl-r p3-0" @click="addOrEdit(p)">编辑属性</el-button>
+          <el-button icon="el-icon-edit" class="btn fl-r p3-0" @click="addOrEdit(p)">编辑属性</el-button>
         </dd>
       </template>
     </dl>
@@ -132,12 +132,21 @@ dt {
 }
 dd {
   position: relative;
-  margin-left: 65px;
+  height: 100%;
+  margin-left: 60px;
+  margin-right: 100px;
   border-bottom: 1px solid #000;
-  top: -24px;
-/*  margin-top: -25px;*/
+  top: -25px;
 }
 dt {
   line-height: 2;
+}
+dd > span {
+  display: inline-block;
+  height: 100%;
+}
+dd .btn {
+  position: relative;
+  left: 90px;
 }
 </style>

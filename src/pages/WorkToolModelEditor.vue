@@ -2,21 +2,21 @@
   <div id="WorkToolModelEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="10">
         <el-cascader :options="kinds" placeholder="请选择类型" @change="handleKindChange"  class="w100p"/>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="10">
         <WorkToolModelCard :kindId="id" :kindOptions="kindOptions" @change="handleWorkToolModelChange" />
       </el-col>
 
-      <el-col :span="10">
+      <el-col :span="7">
         <WorkToolCard :modelCode="modelCode" @change="handleWorkToolChange" />
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="7">
         <WorkToolPropertyDetailCard :workToolCode="workToolCode" />
       </el-col>
     </el-row>

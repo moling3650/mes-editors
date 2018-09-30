@@ -2,14 +2,16 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">设备型号列表</span>
-      <el-button type="primary" :disabled="modelDisabeld" icon="el-icon-edit" size="mini" @click="editMachineModel(selectMachineModel)"></el-button>
-        <el-button type="danger" :disabled="modelDisabeld" icon="el-icon-delete" size="mini" @click="deleteMachineModel(selectMachineModel)"></el-button>
-      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addMachineModel">添加型号</el-button>
+      <el-button-group class="fl-r  p3-0">
+        <el-button size="mini" type="primary" icon="el-icon-plus" @click="addMachineModel" :disabled="disabled"/>
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="editMachineModel(selectMachine)" :disabled="modelDisabeld"/>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="deleteMachineModel(selectMachine)" :disabled="modelDisabeld"/>
+      </el-button-group>
     </div>
     <el-table :data="machineModelList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMachineModel">
-      <el-table-column prop="model_code" label="型号编号" width="100"/>
-      <el-table-column prop="manufacturer" label="制造商" width="80"/>
-      <el-table-column prop="made_in" label="产地" width="50"/>
+      <el-table-column prop="model_code" label="型号编号"/>
+      <el-table-column prop="manufacturer" label="制造商"/>
+      <el-table-column prop="made_in" label="产地"/>
       <el-table-column prop="description" label="说明"/>
     </el-table>
   </el-card>

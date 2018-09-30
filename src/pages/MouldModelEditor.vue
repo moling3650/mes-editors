@@ -2,21 +2,21 @@
   <div id="MouldModelEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="10">
         <el-cascader :options="kinds" placeholder="请选择类型" @change="handleKindChange"  class="w100p"/>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="row">
-      <el-col :span="6">
+      <el-col :span="10">
         <MouldModelCard :kindId="id" :kindOptions="kindOptions" @change="handleMouldModelChange" />
       </el-col>
 
-      <el-col :span="10">
+      <el-col :span="7">
         <MouldCard :modelCode="modelCode" @change="handleMouldChange" />
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="7">
         <MouldPropertyDetailCard :mouldCode="mouldCode" />
       </el-col>
     </el-row>
