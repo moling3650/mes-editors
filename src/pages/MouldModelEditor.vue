@@ -61,11 +61,11 @@ export default {
 
     handleMouldModelChange (mouldModel) {
       this.mouldCode = ''
-      this.modelCode = mouldModel.model_code
+      this.modelCode = mouldModel.model_code || ''
     },
 
     handleMouldChange (mould) {
-      this.mouldCode = mould.mould_code
+      this.mouldCode = mould.mould_code || ''
     }
 
   },
