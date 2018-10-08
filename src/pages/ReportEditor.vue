@@ -2,7 +2,7 @@
   <div id="ReportEditor">
     <el-row :gutter="20" class="row">
       <el-col :span="8">
-        <ReportButtonGroup :reportCode.sync="reportCode"></ReportButtonGroup>
+        <ExSelectButtonGroup model="Report" name="报表" value="report_code" label="report_name"/>
       </el-col>
 
     </el-row>
@@ -10,13 +10,8 @@
 </template>
 
 <script>
-import ReportButtonGroup from '@/components/ButtonGroup/ReportButtonGroup'
-
 export default {
   name: 'ReportEditor',
-  components: {
-    ReportButtonGroup
-  },
   data () {
     return {
       reportCode: ''
