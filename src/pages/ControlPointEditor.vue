@@ -10,6 +10,9 @@
       <el-col :span="6">
         <ProcessFlowCard :flowCode="flowCode" :processCode.sync="processCode"></ProcessFlowCard>
       </el-col>
+      <el-col :span="10">
+        <ControlPointCard :processCode="processCode"></ControlPointCard>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -17,11 +20,13 @@
 <script>
 import apis from '@/apis'
 import ProcessFlowCard from '@/components/Cards/ProcessFlowCard'
+import ControlPointCard from '@/components/Cards/ControlPointCard'
 
 export default {
   name: 'ControlPointEditor',
   components: {
-    ProcessFlowCard
+    ProcessFlowCard,
+    ControlPointCard
   },
   data () {
     return {
