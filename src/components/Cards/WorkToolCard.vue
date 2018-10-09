@@ -105,7 +105,7 @@ export default{
       getWorkToolForm(workTool, 'edit')
         .then(form => this.$showForm(form).$on('submit', (workTool, close) => {
           apis.updateWorkTool(workTool).then(workTool => {
-            const index = this.workTool.findIndex(b => b.id === workTool.id)
+            const index = this.workToolList.findIndex(b => b.id === workTool.id)
             ~index && this.workToolList.splice(index, 1, workTool)
             this.$emit('change', workTool)
             this.$message.success('修改成功')

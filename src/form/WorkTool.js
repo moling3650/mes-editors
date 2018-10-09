@@ -79,7 +79,7 @@ export default function getWorkToolForm (form = null, type = 'add') {
       description: ''
     }, form),
     rules: {
-      workTool_code: [{ required: true, validator: checkWorkToolCode, trigger: 'blur' }]
+      workTool_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkWorkToolCode, trigger: 'blur' }]
     }
   })
 }
