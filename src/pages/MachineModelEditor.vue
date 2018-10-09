@@ -17,7 +17,7 @@
       </el-col>
 
       <el-col :span="8">
-        <MachinePropertyDetailCard :machineCode="machineCode" />
+        <ExPropsCard model="Machine" :code="machineCode"/>
       </el-col>
     </el-row>
 

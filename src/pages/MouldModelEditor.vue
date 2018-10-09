@@ -17,7 +17,7 @@
       </el-col>
 
       <el-col :span="7">
-        <MouldPropertyDetailCard :mouldCode="mouldCode" />
+        <ExPropsCard model="Mould" :code="mouldCode"/>
       </el-col>
     </el-row>
 

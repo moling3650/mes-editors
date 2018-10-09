@@ -17,7 +17,7 @@
       </el-col>
 
       <el-col :span="7">
-        <WorkToolPropertyDetailCard :workToolCode="workToolCode" />
+        <ExPropsCard model="WorkTool" :code="workToolCode"/>
       </el-col>
     </el-row>
 
