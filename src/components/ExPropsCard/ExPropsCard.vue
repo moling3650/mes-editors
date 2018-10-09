@@ -80,10 +80,10 @@ export default {
       }
     },
 
-    _addProperty (propertyDetail) {
-      getForm[`${this.model}PropertyDetail`](propertyDetail, 'add')
-        .then(form => this.$showForm(form).$on('submit', (propertyDetail, close) => {
-          apis[`add${this.model}PropertyDetail`](propertyDetail).then(propertyDetail => {
+    _addProperty (prop) {
+      getForm[`${this.model}PropertyDetail`](prop, 'add')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          apis[`add${this.model}PropertyDetail`](formData).then(propertyDetail => {
             this._updateProperty(propertyDetail)
             this.$emit('change', propertyDetail)
             this.$message.success('添加成功')
@@ -92,10 +92,10 @@ export default {
         }).$on('update:ppt_condition', this._handleConditionChange))
     },
 
-    _editProperty (propertyDetail) {
-      getForm[`${this.model}PropertyDetail`](propertyDetail, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (propertyDetail, close) => {
-          apis[`update${this.model}PropertyDetail`](propertyDetail).then(propertyDetail => {
+    _editProperty (prop) {
+      getForm[`${this.model}PropertyDetail`](prop, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          apis[`update${this.model}PropertyDetail`](formData).then(propertyDetail => {
             this._updateProperty(propertyDetail)
             this.$emit('change', propertyDetail)
             this.$message.success('修改成功')
@@ -107,6 +107,7 @@ export default {
     _updateProperty (prop) {
       const index = this.propertyList.findIndex(p => p.ppt_id === prop.ppt_id)
       if (~index) {
+        this.$set(this.propertyList[index], 'id', prop.id)
         this.$set(this.propertyList[index], 'ppt_condition', prop.ppt_condition)
         this.$set(this.propertyList[index], 'ppt_val', prop.ppt_val)
         this.$set(this.propertyList[index], 'ppt_max', prop.ppt_max)
