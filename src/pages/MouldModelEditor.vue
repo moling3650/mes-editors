@@ -28,14 +28,12 @@
 import apis from '@/apis'
 import MouldModelCard from '@/components/Cards/MouldModelCard'
 import MouldCard from '@/components/Cards/MouldCard'
-import MouldPropertyDetailCard from '@/components/Cards/MouldPropertyDetailCard'
 
 export default {
   name: 'MouldModelEditor',
   components: {
     MouldModelCard,
-    MouldCard,
-    MouldPropertyDetailCard
+    MouldCard
   },
   data () {
     return {

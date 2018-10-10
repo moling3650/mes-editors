@@ -28,14 +28,12 @@
 import apis from '@/apis'
 import WorkToolModelCard from '@/components/Cards/WorkToolModelCard'
 import WorkToolCard from '@/components/Cards/WorkToolCard'
-import WorkToolPropertyDetailCard from '@/components/Cards/WorkToolPropertyDetailCard'
 
 export default {
   name: 'WorkToolModelEditor',
   components: {
     WorkToolModelCard,
-    WorkToolCard,
-    WorkToolPropertyDetailCard
+    WorkToolCard
   },
   data () {
     return {
