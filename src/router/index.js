@@ -41,6 +41,10 @@ const editors = [
     component: () => import('@/pages/WorkToolModelEditor')
   },
   {
+    path: 'mould',
+    component: () => import('@/pages/MouldEditor')
+  },
+  {
     path: 'mould_type',
     component: () => import('@/pages/MouldTypeEditor')
   },

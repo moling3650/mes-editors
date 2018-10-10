@@ -24,6 +24,7 @@
             </template>
             <el-menu-item index="/editors/workTool_type">工装类型</el-menu-item>
             <el-menu-item index="/editors/workTool_model">工装型号</el-menu-item>
+            <el-menu-item index="/editors/mould">模具管理</el-menu-item>
             <el-menu-item index="/editors/mould_type">模具类型</el-menu-item>
             <el-menu-item index="/editors/mould_model">模具型号</el-menu-item>
           </el-submenu>
