@@ -18,7 +18,7 @@
 
 <script>
 import apis from '@/apis'
-import getMachinePropertyForm from '@/form/machineProperty'
+import getMachinePropertyForm from '@/form/machine/machineProperty'
 
 export default{
   name: 'MachinePropertyCard',

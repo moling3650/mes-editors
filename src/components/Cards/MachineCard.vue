@@ -36,7 +36,7 @@
 
 <script>
 import apis from '@/apis'
-import getMachineForm from '@/form/machine'
+import getMachineForm from '@/form/machine/machine'
 
 export default{
   name: 'MachineCard',

@@ -21,7 +21,7 @@
 
 <script>
 import apis from '@/apis'
-import getMachineTypeForm from '@/form/machineType'
+import getMachineTypeForm from '@/form/machine/machineType'
 
 export default{
   name: 'MachineType',

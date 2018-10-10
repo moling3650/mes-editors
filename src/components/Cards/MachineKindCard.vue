@@ -17,7 +17,7 @@
 
 <script>
 import apis from '@/apis'
-import getMachineKindForm from '@/form/machineKind'
+import getMachineKindForm from '@/form/machine/machineKind'
 
 export default{
   name: 'MachineKindCard',
