@@ -28,14 +28,12 @@
 import apis from '@/apis'
 import MachineModelCard from '@/components/Cards/MachineModelCard'
 import MachineCard from '@/components/Cards/MachineCard'
-import MachinePropertyDetailCard from '@/components/Cards/MachinePropertyDetailCard'
 
 export default {
   name: 'MachineModelEditor',
   components: {
     MachineModelCard,
-    MachineCard,
-    MachinePropertyDetailCard
+    MachineCard
   },
   data () {
     return {
