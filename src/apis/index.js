@@ -19,6 +19,7 @@ import mouldKindApis from '@/apis/mouldKind'
 import mouldPropertyApis from '@/apis/mouldProperty'
 import mouldModelApis from '@/apis/mouldModel'
 import mouldApis from '@/apis/mould'
+import mouldKindsBind from '@/apis/mouldKindsBind'
 
 export default {
   addSubstitute (substitute) {
@@ -263,6 +264,11 @@ export default {
     return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
   },
 
+  fetchMouldKindsOptions () {
+    const sql = 'SELECT mould_code as value, mould_name as label FROM B_Moulds'
+    return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
+  },
+
   fetchWSCodeOptions () {
     const sql = 'SELECT ws_code AS value, ws_name AS label FROM B_WorkShop'
     return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
@@ -287,5 +293,6 @@ export default {
   ...mouldKindApis,
   ...mouldPropertyApis,
   ...mouldModelApis,
-  ...mouldApis
+  ...mouldApis,
+  ...mouldKindsBind
 }
