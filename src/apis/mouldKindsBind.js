@@ -2,9 +2,9 @@ import execSQL from '@/apis/executeSQL'
 
 export default {
   // 操作B_Machine_Mould_Kinds
-  fetchMouldKindsBindListByKind (machineKindId) {
-    const sql = 'SELECT * FROM B_Machine_Mould_Kinds WHERE machine_kind_id = @machineKindId'
-    return execSQL(sql, { machineKindId })
+  fetchMouldKindsBindListByKind (machineKind) {
+    const sql = 'SELECT A.*,B.kind_name FROM B_Machine_Mould_Kinds A INNER JOIN B_Mould_Kinds B ON A.mould_kind_id = B.kind_id WHERE machine_kind_id = @machineKindId'
+    return execSQL(sql, machineKind)
   },
 
   addMouldKindsBind (machineMouldKinds) {

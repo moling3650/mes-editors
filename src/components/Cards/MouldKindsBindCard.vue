@@ -9,7 +9,8 @@
       </el-button-group>
     </div>
     <el-table :data="mouldKindsBindList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickMouldModel">
-      <el-table-column prop="model_kind_id" label="模具类别ID"/>
+      <el-table-column prop="mould_kind_id" label="模具类别ID"/>
+      <el-table-column prop="kind_name" label="类别名称"/>
       <el-table-column prop="qty" label="数量"/>
       <el-table-column prop="parameter" label="参数"/>
       <el-table-column prop="description" label="说明"/>
@@ -59,8 +60,10 @@ export default {
   methods: {
 
     getMouldKindsBindList (MachinekindId) {
+      console.log(MachinekindId)
       apis.fetchMouldKindsBindListByKind({ machineKindId: MachinekindId }).then(data => {
         this.mouldKindsBindList = data
+        console.log(data)
       })
     },
 
