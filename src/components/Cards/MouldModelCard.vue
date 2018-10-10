@@ -19,7 +19,7 @@
 
 <script>
 import apis from '@/apis'
-import getMouldModelForm from '@/form/mouldModel'
+import getMouldModelForm from '@/form/mould/mouldModel'
 
 export default {
   name: 'MouldModelCard',

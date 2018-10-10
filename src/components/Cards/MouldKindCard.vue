@@ -17,7 +17,7 @@
 
 <script>
 import apis from '@/apis'
-import getMouldKindForm from '@/form/mouldKind'
+import getMouldKindForm from '@/form/mould/mouldKind'
 
 export default{
   name: 'MouldKindCard',

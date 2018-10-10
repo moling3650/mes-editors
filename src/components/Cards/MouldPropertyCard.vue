@@ -18,7 +18,7 @@
 
 <script>
 import apis from '@/apis'
-import getMouldPropertyForm from '@/form/mouldProperty'
+import getMouldPropertyForm from '@/form/mould/mouldProperty'
 
 export default{
   name: 'MouldPropertyCard',

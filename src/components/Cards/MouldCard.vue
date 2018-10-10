@@ -35,7 +35,7 @@
 
 <script>
 import apis from '@/apis'
-import getMouldForm from '@/form/mould'
+import getMouldForm from '@/form/mould/mould'
 
 export default{
   name: 'MouldCard',
