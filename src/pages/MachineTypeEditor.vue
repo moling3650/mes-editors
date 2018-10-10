@@ -19,14 +19,12 @@
 </template>
 
 <script>
-import MachineTypeButtonGroup from '@/components/ButtonGroup/MachineTypeButtonGroup'
 import MachineKindCard from '@/components/Cards/MachineKindCard'
 import MachinePropertyCard from '@/components/Cards/MachinePropertyCard'
 
 export default {
   name: 'MachineTypeEditor',
   components: {
-    MachineTypeButtonGroup,
     MachineKindCard,
     MachinePropertyCard
   },
