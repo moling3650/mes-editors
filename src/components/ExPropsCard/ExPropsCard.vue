@@ -7,7 +7,7 @@
     <div class="common-parameter">
       <h3>普通参数</h3>
       <ul>
-        <li v-for="p in commonPropList" :key="p.ppt_id" class="prop-item">
+        <li v-for="p in commonPropList" :key="p.ppt_id" class="prop-item" :class="{ disable: !p.enable }">
           <span class="label">{{p.ppt_name}}： </span>
           <span class="value">{{p.ppt_val}}</span>
           <el-button class="fl-r edit-btn" type="text" @click="addOrEdit(p)">编辑</el-button>
@@ -18,9 +18,10 @@
     <div class="matching-parameter">
       <h3>匹配参数</h3>
       <ul>
-        <li v-for="p in matchPropList" :key="p.ppt_id" class="prop-item">
-          <span v-if="p.ppt_condition === 'between'">{{ `${p.ppt_min} &lt;= ${p.ppt_name} &lt;= ${p.ppt_max}` }}</span>
-          <span v-else>{{ `${p.ppt_name} ${p.ppt_condition || ''} ${p.ppt_val || ''}` }}</span>
+        <li v-for="p in matchPropList" :key="p.ppt_id" class="prop-item" :class="{ disable: !p.enable }">
+          <span class="label">{{p.ppt_name}}： </span>
+          <span class="value" v-if="p.ppt_condition === 'between'">{{ `${p.ppt_min} ~ ${p.ppt_max}` }}</span>
+          <span class="value" v-else>{{ `${p.ppt_condition || ''} ${p.ppt_val || ''}` }}</span>
           <el-button class="fl-r edit-btn" type="text" @click="addOrEdit(p)">编辑</el-button>
         </li>
       </ul>
@@ -112,6 +113,7 @@ export default {
         this.$set(this.propertyList[index], 'ppt_val', prop.ppt_val)
         this.$set(this.propertyList[index], 'ppt_max', prop.ppt_max)
         this.$set(this.propertyList[index], 'ppt_min', prop.ppt_min)
+        this.$set(this.propertyList[index], 'enable', prop.enable)
       }
     },
 
@@ -134,6 +136,10 @@ export default {
 </script>
 
 <style scoped>
+ul {
+  list-style: none;
+  padding-left: 20px;
+}
 .common-parameter,
 .matching-parameter {
   position: relative;
@@ -164,6 +170,7 @@ export default {
 
 .prop-item {
   position: relative;
+  margin: 5px 0;
   color: #409eff;
 }
 .prop-item > .edit-btn {
@@ -173,5 +180,25 @@ export default {
 }
 .prop-item > .edit-btn:hover {
   color: #f56c6c;
+}
+
+.disable {
+  color: #606266;
+}
+.prop-item > .label,
+.prop-item > .value {
+  display: inline-block;
+}
+
+.prop-item > .label {
+  min-width: 60px;
+  text-align: right;
+}
+
+.prop-item > .value {
+  min-width: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: 1px solid #333;
 }
 </style>
