@@ -18,7 +18,7 @@
 
 <script>
 import apis from '@/apis'
-import getWorkToolPropertyForm from '@/form/workToolProperty'
+import getWorkToolPropertyForm from '@/form/workTool/workToolProperty'
 
 export default{
   name: 'WorkToolPropertyCard',

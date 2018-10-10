@@ -17,7 +17,7 @@
 
 <script>
 import apis from '@/apis'
-import getWorkToolKindForm from '@/form/workToolKind'
+import getWorkToolKindForm from '@/form/workTool/workToolKind'
 
 export default{
   name: 'WorkToolKindCard',

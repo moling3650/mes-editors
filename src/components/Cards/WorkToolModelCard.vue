@@ -19,7 +19,7 @@
 
 <script>
 import apis from '@/apis'
-import getWorkToolModelForm from '@/form/workToolModel'
+import getWorkToolModelForm from '@/form/workTool/workToolModel'
 
 export default {
   name: 'WorkToolModelCard',

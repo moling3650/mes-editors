@@ -36,7 +36,7 @@
 
 <script>
 import apis from '@/apis'
-import getWorkToolForm from '@/form/workTool'
+import getWorkToolForm from '@/form/workTool/workTool'
 
 export default{
   name: 'WorkToolCard',
