@@ -3,7 +3,16 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">{{title}}</span>
     </div>
-    <el-tree :props="props" :load="loadNode" :expand-on-click-node="false" lazy/>
+    <el-tree :props="props" :load="loadNode" :expand-on-click-node="false" lazy>
+      <span class="tree-node" slot-scope="{ node, data }">
+        <span>{{ node.label }}</span>
+        <span v-if="!node.isLeaf">
+          <el-button type="text" size="mini" icon="el-icon-plus" @click="() => append(node, data)">
+            {{ toAppendText(node.level) }}
+          </el-button>
+        </span>
+      </span>
+    </el-tree>
   </el-card>
 </template>
 
@@ -38,6 +47,14 @@ export default {
   computed: {
     modelKey () {
       return this.model[0].toLowerCase() + this.model.substr(1)
+    },
+    modelName () {
+      const nameMap = {
+        Machine: '设备',
+        WorkTool: '工装',
+        Mould: '模具'
+      }
+      return nameMap[this.model] || '未知'
     }
   },
   methods: {
@@ -57,6 +74,16 @@ export default {
       } else {
         return resolve([])
       }
+    },
+
+    append (node, data) {
+      console.log(node)
+      console.log(data)
+    },
+
+    toAppendText (level) {
+      const types = ['类型', '类别', '型号', '']
+      return `${this.modelName}${types[level]}`
     }
   }
 }
