@@ -2,15 +2,14 @@ import execSQL from '@/apis/executeSQL'
 
 export default {
   // 操作Mould
-  getMouldListByModel (modelCode) {
+  getMouldListByModel (model) {
     const sql = `
           SELECT * FROM B_Moulds M
           WHERE M.model_code = @model_code`
-    return execSQL(sql, modelCode)
+    return execSQL(sql, model)
   },
 
   addMould (mould) {
-    console.log(mould)
     const sql = `
           INSERT INTO B_Moulds
             ( mould_code
