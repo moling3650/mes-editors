@@ -1,11 +1,9 @@
 import MachineForms from './machine'
 import MouldForms from './mould'
-import WorkToolType from './workTool/workToolType'
-import WorkToolPropertyDetail from './workTool/workToolPropertyDetail'
+import WorkToolForms from './workTool'
 
 export default {
   ...MachineForms,
   ...MouldForms,
-  WorkToolType,
-  WorkToolPropertyDetail
+  ...WorkToolForms
 }
