@@ -1,15 +1,13 @@
-import MachineType from './machine/machineType'
+import MachineForms from './machine'
 import WorkToolType from './workTool/workToolType'
 import MouldType from './mould/mouldType'
-import MachinePropertyDetail from './machine/machinePropertyDetail'
 import MouldPropertyDetail from './mould/mouldPropertyDetail'
 import WorkToolPropertyDetail from './workTool/workToolPropertyDetail'
 
 export default {
-  MachineType,
+  ...MachineForms,
   WorkToolType,
   MouldType,
-  MachinePropertyDetail,
   MouldPropertyDetail,
   WorkToolPropertyDetail
 }
