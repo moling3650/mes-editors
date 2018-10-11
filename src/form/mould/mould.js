@@ -13,7 +13,6 @@ function checkMouldCode (rule, value, callback) {
   })
 }
 
-
 export default function getMouldForm (form = null, type = 'add', options) {
   const formItems = [
     {
