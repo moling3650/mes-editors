@@ -64,28 +64,41 @@ export default {
     }
   },
   methods: {
+    _getModel (level) {
+      return this.model + ['Type', 'Kind', 'Model', ''][level]
+    },
+
+    _getLabelKey (level) {
+      return ['type_name', 'kind_name', 'model_code', `${this.modelKey}_name`][level]
+    },
+
+    _addLabel (item, level) {
+      return Object.assign({ label: item[this._getLabelKey(level)] }, item)
+    },
+
     loadNode (node, resolve) {
-      if (node.level === 0) {
-        return apis[`fetch${this.model}TypeList`]()
-          .then(data => this.treeData.push(...data.map(item => Object.assign({label: item.type_name}, item))))
-      } else if (node.level === 1) {
-        return apis[`fetch${this.model}KindListByType`](node.data)
-          .then(data => resolve(data.map(item => Object.assign({label: item.kind_name}, item))))
-      } else if (node.level === 2) {
-        return apis[`fetch${this.model}ModelListByKind`](node.data)
-          .then(data => resolve(data.map(item => Object.assign({label: item.model_code}, item))))
-      } else if (node.level === 3) {
-        return apis[`get${this.model}ListByModel`](node.data)
-          .then(data => resolve(data.map(item => Object.assign({label: item[`${this.modelKey}_name`]}, item))))
-      } else {
+      if (node.level > 3) {
         return resolve([])
       }
+      const apiKey = [
+        `fetch${this.model}TypeList`,
+        `fetch${this.model}KindListByType`,
+        `fetch${this.model}ModelListByKind`,
+        `get${this.model}ListByModel`
+      ][node.level]
+
+      apis[apiKey](node.data).then(data => {
+        if (node.level) {
+          return resolve(data.map(item => this._addLabel(item, node.level)))
+        } else {
+          this.treeData.push(...data.map(item => this._addLabel(item, node.level)))
+        }
+      })
     },
 
     _updateChildNodes (node, newItem) {
-      const labelKey = ['type_name', 'kind_name', 'model_code', `${this.modelKey}_name`][node.level]
       if (!node.level) {
-        this.treeData.push(Object.assign({label: newItem[labelKey]}, newItem))
+        this.treeData.push(this._addLabel(newItem, node.level))
         return
       }
       if (!node.loaded) {
@@ -96,15 +109,14 @@ export default {
         this.$set(node.data, 'children', [])
       }
       if (!node.data.children.length) {
-        nodes.push(...node.childNodes.map(n => Object.assign({label: n.data[labelKey]}, n.data)))
+        nodes.push(...node.childNodes.map(n => this._addLabel(n.data, node.level)))
       }
-      nodes.push(Object.assign({label: newItem[labelKey]}, newItem))
+      nodes.push(this._addLabel(newItem, node.level))
       node.data.children.push(...nodes)
     },
 
     append (node) {
-      const types = ['Type', 'Kind', 'Model', '']
-      const modelType = this.model + types[node.level]
+      const modelType = this._getModel(node.level)
       const data = {}
       const options = []
       if (node.level === 1) {
@@ -130,7 +142,7 @@ export default {
       if (this.currentNode && this.currentNode.id === node.id) {
         return
       }
-      const model = this.model + ['Type', 'Kind', 'Model', ''][node.level - 1]
+      const model = this._getModel(node.level - 1)
       this.currentNode = node
       const {label, ...nodeData} = data
       this.$emit('change', model, nodeData)
