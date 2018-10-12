@@ -6,7 +6,7 @@
         {{ toAppendText(0) }}
       </el-button>
     </div>
-    <el-tree :data="treeData" :props="props" :load="loadNode" :expand-on-click-node="false" lazy ref="tree">
+    <el-tree :data="treeData" :props="props" :load="loadNode" :expand-on-click-node="false" lazy ref="tree" highlight-current @node-click="handleNodeClick">
       <span class="tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span v-if="node.level < 4">
@@ -41,6 +41,7 @@ export default {
   },
   data () {
     return {
+      currentNode: null,
       treeData: [],
       props: {
         isLeaf (data, node) {
@@ -123,6 +124,16 @@ export default {
           close()
         })
       }))
+    },
+
+    handleNodeClick (data, node) {
+      if (this.currentNode && this.currentNode.id === node.id) {
+        return
+      }
+      const model = this.model + ['Type', 'Kind', 'Model', ''][node.level - 1]
+      this.currentNode = node
+      const {label, ...nodeData} = data
+      this.$emit('change', model, nodeData)
     },
 
     toAppendText (level) {
