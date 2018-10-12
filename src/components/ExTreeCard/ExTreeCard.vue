@@ -138,6 +138,24 @@ export default {
       }))
     },
 
+    removeCurrentNode () {
+      if (!this.currentNode) {
+        return
+      }
+      const parent = this.currentNode.parent
+      const childNodes = parent.childNodes
+      const nodeIndex = childNodes.findIndex(n => n.id === this.currentNode.id)
+      childNodes.splice(nodeIndex, 1)
+      parent.isLeaf = !childNodes.length
+      const children = parent.data.children || parent.data
+      if (Array.isArray(children)) {
+        const key = ['type_id', 'kind_id', 'model_code', `${this.modelKey}_code`][parent.level]
+        const index = children.findIndex(item => item[key] === this.currentNode.data[key])
+        children.splice(index, 1)
+      }
+      this.currentNode = null
+    },
+
     handleNodeClick (data, node) {
       if (this.currentNode && this.currentNode.id === node.id) {
         return
