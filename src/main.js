@@ -8,6 +8,7 @@ import ExInputNumber from '@/components/ExInputNumber'
 import ExSelectButtonGroup from '@/components/ExSelectButtonGroup'
 import ExPropsCard from '@/components/ExPropsCard'
 import ExTreeCard from '@/components/ExTreeCard'
+import ExItemCard from '@/components/ExItemCard'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
@@ -17,6 +18,7 @@ Vue.use(ExInputNumber)
 Vue.use(ExSelectButtonGroup)
 Vue.use(ExPropsCard)
 Vue.use(ExTreeCard)
+Vue.use(ExItemCard)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
