@@ -2,6 +2,10 @@
   <el-card :style="{ height: (/(%|px)$/i.test(height)) ? height : `${height}px` }">
     <div slot="header" class="clearfix">
       <span class="card-header--text">{{title}}</span>
+      <span class="fl-r" v-show="model">
+        <el-button type="text" size="mini" icon="el-icon-edit" @click="editItem">编辑</el-button>
+        <el-button type="text" size="mini" icon="el-icon-delete" @click="deleteItem">删除</el-button>
+      </span>
     </div>
     <ul>
       <li v-for="(value, key) in item" :key="key">
@@ -14,6 +18,7 @@
 </template>
 
 <script>
+import apis from '@/apis'
 import forms from '@/form'
 
 export default {
@@ -53,7 +58,23 @@ export default {
     }
   },
   methods: {
+    editItem () {
 
+    },
+
+    deleteItem () {
+      this.$confirm(`此操作将永久删除该${this.title}, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        apis[`delete${this.model}`](this.item).then(_ => {
+          this.$emit('deleted')
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
     }
   }
 }
