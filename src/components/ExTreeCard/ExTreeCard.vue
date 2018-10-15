@@ -68,12 +68,13 @@ export default {
       return this.model + ['Type', 'Kind', 'Model', ''][level]
     },
 
-    _getLabelKey (level) {
-      return ['type_name', 'kind_name', 'model_code', `${this.modelKey}_name`][level]
+    _getLabel (item, level) {
+      const key = ['type_name', 'kind_name', 'model_code', `${this.modelKey}_name`][level]
+      return item[key]
     },
 
     _addLabel (item, level) {
-      return Object.assign({ label: item[this._getLabelKey(level)] }, item)
+      return Object.assign({ label: this._getLabel(item, level) }, item)
     },
 
     loadNode (node, resolve) {
