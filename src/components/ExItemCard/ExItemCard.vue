@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       title: '未知',
-      formItems: []
+      formItems: {}
     }
   },
   watch: {
@@ -59,7 +59,14 @@ export default {
   },
   methods: {
     editItem () {
-
+      forms[this.model](this.item, 'edit', [])
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          apis[`update${this.model}`](formData).then(newItem => {
+            this.$emit('updated', newItem)
+            this.$message.success('修改成功')
+            close()
+          })
+        }))
     },
 
     deleteItem () {

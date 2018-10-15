@@ -5,7 +5,7 @@
         <ExTreeCard title="模具管理" model="Mould" height="500" @change="handleChange" ref="tree"/>
       </el-col>
       <el-col :span="8">
-        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem"/>
+        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem"/>
       </el-col>
     </el-row>
   </div>
@@ -25,6 +25,12 @@ export default {
       this.model = model
       this.item = data
     },
+
+    updateItem (item) {
+      this.item = item
+      this.$refs.tree.updateCurrentNode(item)
+    },
+
     removeItem () {
       this.model = ''
       this.item = {}
