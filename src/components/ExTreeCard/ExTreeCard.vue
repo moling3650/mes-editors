@@ -153,7 +153,9 @@ export default {
       const key = ['type_id', 'kind_id', 'model_code', `${this.modelKey}_code`][parent.level]
       const index = children.findIndex(item => item[key] === data[key])
       children.splice(index, 1, this._addLabel(data, parent.level))
-      this.currentNode = null
+      this.$nextTick(_ => {
+        this.currentNode = parent.childNodes[index]
+      })
     },
 
     removeCurrentNode () {
@@ -180,7 +182,7 @@ export default {
       }
       const model = this._getModel(node.level - 1)
       this.currentNode = node
-      const {label, ...nodeData} = data
+      const {label, children, ...nodeData} = data
       this.$emit('change', model, nodeData)
     },
 
