@@ -39,7 +39,7 @@ export default {
   },
   data () {
     return {
-      title: '未知',
+      title: '请先选择',
       formItems: {}
     }
   },
@@ -76,6 +76,7 @@ export default {
         type: 'warning'
       }).then(_ => {
         apis[`delete${this.model}`](this.item).then(_ => {
+          this.title = '请先选择'
           this.$emit('deleted')
           this.$message.success('删除成功!')
         })
