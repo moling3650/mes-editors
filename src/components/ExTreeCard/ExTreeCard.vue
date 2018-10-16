@@ -154,8 +154,10 @@ export default {
       const key = ['type_id', 'kind_id', 'model_code', `${this.modelKey}_code`][parent.level]
       const index = children.findIndex(item => item[key] === data[key])
       children.splice(index, 1, this._addLabel(data, parent.level))
+      const isLeaf = this.currentNode.isLeaf
       this.$nextTick(_ => {
         this.currentNode = parent.childNodes[index]
+        this.currentNode.isLeaf = isLeaf
       })
     },
 
