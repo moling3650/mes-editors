@@ -1,6 +1,6 @@
 <template>
   <div id="DialogForm">
-    <el-dialog :title="title" :visible.sync="visible" :before-close="close" @closed="handleClosed" top="10vh">
+    <el-dialog :title="title" :visible.sync="visible" :before-close="close" @closed="handleClosed" :width="width" top="10vh">
       <el-form :model="form" :rules="rules" label-width="100px" ref="form">
         <el-row :gutter="20">
           <el-col v-for="item in formItems" :key="item.value" :span="item.span || 24">
@@ -31,6 +31,10 @@ export default {
     title: {
       type: String,
       default: '表单'
+    },
+    width: {
+      type: String,
+      default: '50%'
     },
     formItems: {
       type: Array,
