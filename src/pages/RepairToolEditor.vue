@@ -12,6 +12,14 @@
         <el-button type="primary" @click="repairLogin">登录维修</el-button>
       </el-col>
     </el-row>
+    <el-row>
+      <el-tabs type="card">
+        <el-tab-pane label="登记管理" name="first">
+          <RepairRegisterCard></RepairRegisterCard>
+        </el-tab-pane>
+        <el-tab-pane label="维修管理" name="second">维修管理</el-tab-pane>
+      </el-tabs>
+    </el-row>
 
   </div>
 </template>
@@ -19,11 +27,12 @@
 <script>
 import apis from '@/apis'
 import getRepairLoginForm from '@/form/repair/repairLogin'
+import RepairRegisterCard from '@/components/Cards/repair/RepairRegisterCard'
 
 export default {
   name: 'RepairToolEditor',
   components: {
-
+    RepairRegisterCard
   },
   data () {
     return {
@@ -47,11 +56,9 @@ export default {
     },
 
     repairLogin () {
-      console.log(1)
       getRepairLoginForm()
         .then(form => this.$showForm(form).$on('submit', (user, close) => {
           apis.validateUserLogin(user.user_code, user.user_pwd).then(valid => {
-            console.log(valid)
             if (valid) {
               this.$message.success('登录成功')
               close()

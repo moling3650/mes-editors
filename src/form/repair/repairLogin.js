@@ -1,18 +1,19 @@
 export default function getRepairLoginForm (form = null) {
   return Promise.resolve({
     title: `维修登录`,
+    width: '350px',
     formItems: [
       {
         value: 'user_code',
         label: '用户编号',
         component: 'el-input',
-        span: 24
+        span: 22
       },
       {
         value: 'user_pwd',
         label: '密  码',
         component: 'el-input',
-        span: 24
+        span: 22
       }
     ],
     formData: Object.assign({
