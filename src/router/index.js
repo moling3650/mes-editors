@@ -55,6 +55,10 @@ const editors = [
   {
     path: 'mould_kindsBind',
     component: () => import('@/pages/MachineModelKindsBindEditor')
+  },
+  {
+    path: 'repair_tool',
+    component: () => import('@/pages/RepairToolEditor')
   }
 ]
 

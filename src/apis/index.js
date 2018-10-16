@@ -274,6 +274,40 @@ export default {
     return execSQL(sql).then(opts => opts.map(({value, label}) => ({value, label: `${label} / ${value}`})))
   },
 
+  fetchIP () {
+    return Promise.resolve('192.168.0.28')
+  },
+
+  fetchStationOptionsByIp (ip) {
+    const sql = `
+          select A.process_code,B.process_name,A.station_code,A.station_name from b_stationlist A inner
+          join B_ProcessList B on A.process_code = B.process_code
+          where ip_address= @ip
+          ORDER BY A.process_code`
+    return execSQL(sql, {ip}).then(data => {
+      const processes = {}
+      data.forEach(item => {
+        if (!processes[item.process_code]) {
+          processes[item.process_code] = {
+            value: item.process_code,
+            label: item.process_name,
+            children: []
+          }
+        }
+        processes[item.process_code].children.push({
+          value: item.station_code,
+          label: item.station_name
+        })
+      })
+      return Object.values(processes)
+    })
+  },
+
+  validateUserLogin (userCode, userPwd) {
+    const sql = 'SELECT COUNT(*) AS c FROM S_Employee WHERE emp_code = @userCode AND pass_wprd = @userPwd'
+    return execSQL(sql, { userCode, userPwd }).then(data => data[0].c === 1)
+  },
+
   ...bomApis,
   ...formulaApis,
   ...reportApis,
