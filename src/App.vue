@@ -98,6 +98,9 @@ export default {
 .clearfix:after {
   clear: both
 }
+#app .w200 {
+  width: 200px;
+}
 .h600 {
   height: 600px;
 }

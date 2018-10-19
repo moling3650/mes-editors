@@ -308,6 +308,34 @@ export default {
     return execSQL(sql, { userCode, userPwd }).then(data => data[0].c === 1)
   },
 
+  // 根据SFC，查询工单、数量、不良工序、产品类型
+  fetchDataBySFC (sfc) {
+    const sql = `
+          select a.order_no,a.qty,b.typecode,b.type_name,e.process_code,e.process_name,e.group_code,e.route_type,
+          (select COUNT(*) as fail_times from P_FailLog where sfc = @sfc) as cnt
+          from P_SFC_State as a
+          inner join V_Order_Produc_Type_Name as b on a.order_no = b.order_no
+          inner join P_WorkOrder c on a.order_no = c.order_no
+          inner join B_Process_Flow_Detail d on c.flow_code = d.flow_code
+          inner join B_ProcessList e on d.process_from = e.process_code
+          where a.SFC = @sfc`
+    return execSQL(sql, { sfc })
+  },
+
+  fetchNGCodeByTypeCode (typecode) {
+    const sql = `
+          select ng_id,idx,typecode,ng_code,ng_name,b.type_code,b.[type_name],decription,exec_proc from
+          B_NG_Code a inner join B_NG_Type b on a.type_code = b.type_code
+          where a.typecode = @typecode`
+    return execSQL(sql, { typecode })
+  },
+
+  fetcgNGType () {
+    const sql = `
+          select type_name from B_NG_Type`
+    return execSQL(sql)
+  },
+
   ...bomApis,
   ...formulaApis,
   ...reportApis,
