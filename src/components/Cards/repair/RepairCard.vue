@@ -12,20 +12,32 @@
       </el-form>
     </el-row>
     <el-row>
-      <el-card style=" width: 700px; float: left;">
+      <el-card>
         <div slot="header" class="clearfix">
         <span class="card-header--text">维修登记列表</span>
         </div>
         <el-table :data="repairDataList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row>
-          <el-table-column prop="ng_code" label="现象代码"/>
-          <el-table-column prop="ng_name" label="现象描述"/>
-          <el-table-column prop="type_name" label="类型名称"/>
+          <el-table-column prop="sfc" label="批次号"/>
+          <el-table-column prop="order_no" label="工单编号"/>
+          <el-table-column prop="from_process" label="来源工序代码"/>
+          <el-table-column prop="from_process_name" label="来源工序名称"/>
+          <el-table-column prop="qty" label="数量"/>
+          <el-table-column fixed="right" label="操作" width="200" align="center">
+            <template slot-scope="scope">
+              <el-button-group>
+                <el-button @click.stop="doRepair(scope.row)"  type="primary" icon="el-icon-edit" circle size="mini">开始维修</el-button>
+              </el-button-group>
+            </template>
+          </el-table-column>
         </el-table>
+      </el-card>
     </el-row>
   </div>
 </template>
 
 <script>
+import apis from '@/apis'
+
 export default {
   name: 'RepairCard',
   props: {
@@ -43,11 +55,18 @@ export default {
 
   methods: {
     selectSFC (sfc) {
-      apis.fetchDataBySFC(sfc).then(data => {
+      apis.fetchRepairBySFC(sfc).then(data => {
+        console.log(data)
         if (!data.length) {
-          return
+          console.log('没有数据')
+        } else {
+          this.repairDataList = data
         }
       })
+    },
+
+    doRepair (row) {
+
     }
   },
 

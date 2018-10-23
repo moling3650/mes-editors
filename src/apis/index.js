@@ -372,6 +372,11 @@ export default {
             , @ng_remark)`
     return execSQL(sql, FailLog)
   },
+  fetchRepairBySFC (sfc) {
+    const sql = `
+          select fid,fguid,order_no,sfc,from_process,from_station,from_emp,process_code,Disposal_Process,fail_times,state,input_time,finish_time,emp_code,from_process_name,process_name,ng_remark,repair_remark,processid,Expr1,qty from V_P_FailLog_Name where sfc=@sfc and state = 0`
+    return execSQL(sql, { sfc })
+  },
 
   ...bomApis,
   ...formulaApis,
