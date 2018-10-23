@@ -1,3 +1,14 @@
+function checkNumber (rule, value, callback) {
+  console.log(value)
+  if (!value && value !== 0) {
+    return callback(new Error('登记数量不能为空'))
+  } else if (value <= 0) {
+    return callback(new Error('登记数量必须大于0'))
+  } else {
+    return callback()
+  }
+}
+
 export default function getNGCodeRegisterForm (form = null) {
   return Promise.resolve({
     title: `不良现象-登记`,
@@ -30,7 +41,7 @@ export default function getNGCodeRegisterForm (form = null) {
       number: 0
     }, form),
     rules: {
-      number: [{ required: true, message: '登记数量不能为空', trigger: 'blur' }]
+      number: [{ required: true, validator: checkNumber, trigger: 'blur' }]
     }
   })
 }

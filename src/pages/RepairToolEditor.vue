@@ -6,7 +6,7 @@
         <el-input  v-model="ip" :disabled="true" />
       </el-col>
       <el-col :span="6">
-        <el-cascader :options="stationOptions" placeholder="请选择工序" @change="handleKindChange"/>
+        <el-cascader :options="stationOptions" v-model="processStation" placeholder="请选择工序" @change="handleKindChange"/>
       </el-col>
       <el-col :span="6">
         <el-button type="primary" @click="repairLogin">登录维修</el-button>
@@ -15,9 +15,11 @@
     <el-row>
       <el-tabs type="card">
         <el-tab-pane label="登记管理" name="first">
-          <RepairRegisterCard></RepairRegisterCard>
+          <RegisterCard :fromProcess="processStation[0] || ''"></RegisterCard>
         </el-tab-pane>
-        <el-tab-pane label="维修管理" name="second">维修管理</el-tab-pane>
+        <el-tab-pane label="维修管理" name="second">
+          <RepairCard></RepairCard>
+        </el-tab-pane>
       </el-tabs>
     </el-row>
 
@@ -27,21 +29,21 @@
 <script>
 import apis from '@/apis'
 import getRepairLoginForm from '@/form/repair/repairLogin'
-import RepairRegisterCard from '@/components/Cards/repair/RepairRegisterCard'
+import RegisterCard from '@/components/Cards/repair/RegisterCard'
+import RepairCard from '@/components/Cards/repair/RepairCard'
 
 export default {
   name: 'RepairToolEditor',
   components: {
-    RepairRegisterCard
+    RegisterCard,
+    RepairCard
   },
   data () {
     return {
       ip: '',
-      stationOptions: []
+      stationOptions: [],
+      processStation: []
     }
-  },
-  computed: {
-
   },
   methods: {
 

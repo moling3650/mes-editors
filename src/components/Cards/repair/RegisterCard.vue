@@ -60,7 +60,7 @@
           <el-button type="primary" @click="filteredList()">筛选</el-button>
         </el-form-item>
         <el-form-item style="float: right;">
-          <el-button type="success" icon="el-icon-success" :disabled="!sfc" circle @click="registerSubmit">确认</el-button>
+          <el-button type="success" icon="el-icon-success" :disabled="!form.sfc || !registerdList.length" circle @click="registerSubmit">确认</el-button>
         </el-form-item>
         <el-form-item style="float: right;">
           <el-button type="info" icon="el-icon-warning" circle>报废</el-button>
@@ -109,14 +109,17 @@
 </template>
 
 <script>
-// import guid from 'guid'
+import guid from 'guid'
 import apis from '@/apis'
 import getNGCodeRegisterForm from '@/form/repair/NGCodeRegister'
 
 export default {
-  name: 'RepairRegisterCard',
-  computed: {
-
+  name: 'RegisterCard',
+  props: {
+    fromProcess: {
+      type: String,
+      required: true
+    }
   },
   data () {
     const checkSplitSFC = (rule, value, callback) => {
@@ -125,11 +128,25 @@ export default {
       }
       if (!value) {
         return callback(new Error('拆分批次不能为空'))
+      } else if (value === this.form.sfc) {
+        return callback(new Error('拆分新批次不能与批次号相同'))
       }
+      apis.validateSfcStateBySFC(value).then(valid => {
+        if (valid) {
+          callback()
+        } else {
+          callback(new Error('拆分批次号已存在，请更改'))
+        }
+      })
     }
 
     const checkSplitNumber = (rule, value, callback) => {
-
+      const registerAll = this.registerdList.reduce((total, item) => total + item.number, 0)
+      if (value >= registerAll) {
+        callback(new Error('拆分批次数量不能大于或等于总数量'))
+      } else {
+        return callback()
+      }
     }
     return {
       sfc: '0411-1VZ17D10SB-00FJJL',
@@ -138,7 +155,8 @@ export default {
         splitSFCCheck: false,
         newSfc: '',
         newSfcNumber: 0,
-        type_name: ''
+        type_name: '',
+        description: ''
       },
       filteredType: '',
       opts: [],
@@ -151,6 +169,7 @@ export default {
         process_code: [{ required: true, message: '不良工序不能为空' }],
         newSfc: [{ validator: checkSplitSFC }],
         newSfcNumber: [{ validator: checkSplitNumber }]
+        // description: [{ required: true, message: '请' }]
       }
     }
   },
@@ -224,29 +243,34 @@ export default {
     },
 
     registerSubmit () {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          alert('submit!')
+          const failData = {
+            fguid: guid.raw(),
+            order_no: this.form.order_no,
+            sfc: this.form.sfc,
+            from_process: this.fromProcess,
+            process_code: this.form.process_code,
+            fail_times: 1,
+            p_date: new Date(),
+            class_code: 'A',
+            ws_code: '001',
+            state: 9,
+            qty: this.registerdList.reduce((total, item) => total + item.number, 0),
+            ng_remark: this.form.description
+          }
+          console.log(failData)
+          apis.addFailLog(failData).then(_ => {
+            this.$message.success('FailLog添加成功')
+            close()
+          })
+          // console.log(this.form.process_code)
+          // alert('submit!')
         } else {
           console.log('error submit!!')
           return false
         }
       })
-      // if(this.splitSFCCheck)
-      // {
-      //   console.log(this.newSfc)
-      //   if (!this.newSfc) {
-      //     return void this.$message.info('请输入新批次号')
-      //   }
-      //   if (!this.newSfcNumber) {
-      //     return void this.$message.info('请输入拆分数量')
-      //   }
-      //   if (this.newSfcNumber <= '0') {
-      //     return void this.$message.info('数量不能小于或等于0')
-      //   }
-      //   const registerAll = this.registerdList.reduce((total, item) => total + item.number, 0)
-      //   console.log(registerAll)
-      // }
     }
   },
 

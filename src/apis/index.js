@@ -336,6 +336,43 @@ export default {
     return execSQL(sql)
   },
 
+  validateSfcStateBySFC (SFC) {
+    const sql = 'SELECT COUNT(*) AS c FROM P_SFC_State WHERE SFC = @SFC'
+    return execSQL(sql, { SFC }).then(data => data[0].c === 0)
+  },
+
+  addFailLog (FailLog) {
+    console.log(FailLog)
+    const sql = `
+          INSERT INTO P_FailLog
+            ( fguid
+            , order_no
+            , sfc
+            , from_process
+            , process_code
+            , fail_times
+            , p_date
+            , class_code
+            , ws_code
+            , state
+            , qty
+            , ng_remark)
+          VALUES
+            ( @fguid
+            , @order_no
+            , @sfc
+            , @from_process
+            , @process_code
+            , @fail_times
+            , @p_date
+            , @class_code
+            , @ws_code
+            , @state
+            , @qty
+            , @ng_remark)`
+    return execSQL(sql, FailLog)
+  },
+
   ...bomApis,
   ...formulaApis,
   ...reportApis,
