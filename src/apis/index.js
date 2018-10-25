@@ -377,6 +377,36 @@ export default {
           select fid,fguid,order_no,sfc,from_process,from_station,from_emp,process_code,Disposal_Process,fail_times,state,input_time,finish_time,emp_code,from_process_name,process_name,ng_remark,repair_remark,processid,Expr1,qty from V_P_FailLog_Name where sfc=@sfc and state = 0`
     return execSQL(sql, { sfc })
   },
+  fetchNgCodeListByFidAndTypeCode (fid, typeCode) {
+    const sql = `
+          SElect * from V_Fail_Detail_NGName where fid = @fid and typecode = @typecode`
+    return execSQL(sql, { fid, typeCode })
+  },
+
+  fetchNGReasonByTypeCode (typecode) {
+    const sql = `
+          select reason_code AS value,reason_name AS label from B_NG_Reason where typecode = @typecode`
+    return execSQL(sql, { typecode })
+  },
+
+  fetchNGReasonType () {
+    const sql = `
+          select reasontype_code AS value,reasontype_name AS label from B_NG_ReasonType`
+    return execSQL(sql)
+  },
+
+  fetchProductGradeByTypeCode (typecode) {
+    const sql = `
+          select grade_id AS value,grade_name AS label from B_Product_Grade where typecode = @typecode`
+    return execSQL(sql, { typecode })
+  },
+
+  fetchReturnProcessByOrderNo (orderNo) {
+    const sql = `
+          select c.process_code,c.process_name,c.group_code,c.route_type from P_WorkOrder a inner join  B_Process_Flow_Detail b on  a.flow_code = b.flow_code inner join B_ProcessList c on b.process_from = c.process_code
+          where a.order_no= @orderNo`
+    return execSQL(sql, { orderNo })
+  },
 
   ...bomApis,
   ...formulaApis,
