@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import request from '@/utils/request'
 import forms from '@/form'
 
 export default {
@@ -43,6 +43,17 @@ export default {
       formItems: {}
     }
   },
+  computed: {
+    id () {
+      if (this.model.endsWith('Types')) {
+        return this.item.typeId
+      } else if (this.model.endsWith('Kinds')) {
+        return this.item.kindId
+      } else {
+        return this.item.id
+      }
+    }
+  },
   watch: {
     model (value) {
       if (!value) {
@@ -58,11 +69,25 @@ export default {
     }
   },
   methods: {
+    _getIdKey () {
+      if (this.model.endsWith('Types')) {
+        return 'typeId'
+      } else if (this.model.endsWith('Kinds')) {
+        return 'kindId'
+      } else {
+        return 'id'
+      }
+    },
+
     editItem () {
       forms[this.model](this.item, 'edit', [])
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          apis[`update${this.model}`](formData).then(newItem => {
-            this.$emit('updated', newItem)
+          request({
+            method: 'put',
+            url: `${this.model}/${this.id}`,
+            data: formData
+          }).then(_ => {
+            this.$emit('updated', formData)
             this.$message.success('修改成功')
             close()
           })
@@ -75,7 +100,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis[`delete${this.model}`](this.item).then(_ => {
+        request({
+          method: 'delete',
+          url: `${this.model}/${this.id}`
+        }).then(_ => {
           this.title = '请先选择'
           this.$emit('deleted')
           this.$message.success('删除成功!')

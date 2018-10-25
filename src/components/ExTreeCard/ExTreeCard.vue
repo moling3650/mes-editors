@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import request from '@/utils/request'
 import forms from '@/form'
 
 export default {
@@ -65,12 +65,20 @@ export default {
   },
   methods: {
     _getModel (level) {
-      return this.model + ['Type', 'Kind', 'Model', ''][level]
+      const modelTypes = ['Type', 'Kind', 'Model', '']
+      return `${this.model}${modelTypes[level]}s`
+    },
+
+    _getKey (level) {
+      return ['typeId', 'kindId', 'modelCode', `${this.modelKey}Code`][level]
+    },
+
+    _getLabelKey (level) {
+      return ['typeName', 'kindName', 'modelCode', `${this.modelKey}Name`][level]
     },
 
     _getLabel (item, level) {
-      const key = ['type_name', 'kind_name', 'model_code', `${this.modelKey}_name`][level]
-      return item[key]
+      return item[this._getLabelKey(level)]
     },
 
     _addLabel (item, level) {
@@ -81,14 +89,16 @@ export default {
       if (node.level > 3) {
         return resolve([])
       }
-      const apiKey = [
-        `fetch${this.model}TypeList`,
-        `fetch${this.model}KindListByType`,
-        `fetch${this.model}ModelListByKind`,
-        `get${this.model}ListByModel`
-      ][node.level]
-
-      apis[apiKey](node.data).then(data => {
+      const params = {}
+      if (node.level) {
+        const key = this._getKey(node.level - 1)
+        params[key] = node.data[key]
+      }
+      request({
+        method: 'get',
+        url: this._getModel(node.level),
+        params: node.data
+      }).then(data => {
         if (node.level) {
           return resolve(data.map(item => this._addLabel(item, node.level)))
         } else {
@@ -120,18 +130,17 @@ export default {
       const modelType = this._getModel(node.level)
       const data = {}
       const options = []
-      if (node.level === 1) {
-        data['type_id'] = node.data.type_id
-        options.push({ value: node.data.type_id, label: node.data.type_name })
-      } else if (node.level === 2) {
-        data['kind_id'] = node.data.kind_id
-        options.push({ value: node.data.kind_id, label: node.data.kind_name })
-      } else if (node.level === 3) {
-        data['model_code'] = node.data.model_code
-      }
+      const key = this._getKey(node.level - 1)
+      const labelKey = this._getLabelKey(node.level - 1)
+      data[key] = node.data[key]
+      options.push({ value: node.data[key], label: node.data[labelKey] })
 
       forms[modelType](data, 'add', options).then(form => this.$showForm(form).$on('submit', (formData, close) => {
-        apis[`add${modelType}`](formData).then(newItem => {
+        request({
+          method: 'post',
+          url: modelType,
+          data: formData
+        }).then(newItem => {
           this._updateChildNodes(node, newItem)
           this.$message.success('添加成功!')
           close()
@@ -151,7 +160,7 @@ export default {
       if (!children.length) {
         children.push(...parent.childNodes.map(n => this._addLabel(n.data, parent.level)))
       }
-      const key = ['type_id', 'kind_id', 'model_code', `${this.modelKey}_code`][parent.level]
+      const key = this._getKey(parent.level)
       const index = children.findIndex(item => item[key] === data[key])
       children.splice(index, 1, this._addLabel(data, parent.level))
       const isLeaf = this.currentNode.isLeaf
@@ -172,7 +181,7 @@ export default {
       parent.isLeaf = !childNodes.length
       const children = parent.data.children || parent.data
       if (Array.isArray(children)) {
-        const key = ['type_id', 'kind_id', 'model_code', `${this.modelKey}_code`][parent.level]
+        const key = this._getKey(parent.level)
         const index = children.findIndex(item => item[key] === this.currentNode.data[key])
         children.splice(index, 1)
       }

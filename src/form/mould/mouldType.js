@@ -3,7 +3,7 @@ export default function getMouldTypeForm (form = null, type = 'add') {
     title: `${type === 'add' ? '新建' : '编辑'}模具类型表单`,
     formItems: [
       {
-        value: 'type_name',
+        value: 'typeName',
         label: '类型名称',
         component: 'el-input'
       },
@@ -14,12 +14,11 @@ export default function getMouldTypeForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      type_id: '',
-      type_name: '',
+      typeName: '',
       description: ''
     }, form),
     rules: {
-      type_name: [{ required: true, message: '请输入类型名称', trigger: 'blur' }]
+      typeName: [{ required: true, message: '请输入类型名称', trigger: 'blur' }]
     }
   })
 }

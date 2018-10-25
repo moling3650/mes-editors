@@ -14,11 +14,6 @@ import workToolKindApis from '@/apis/workToolKind'
 import workToolPropertyApis from '@/apis/workToolProperty'
 import workToolModelApis from '@/apis/workToolModel'
 import workToolApis from '@/apis/workTool'
-import mouldTypeApis from '@/apis/mouldType'
-import mouldKindApis from '@/apis/mouldKind'
-import mouldPropertyApis from '@/apis/mouldProperty'
-import mouldModelApis from '@/apis/mouldModel'
-import mouldApis from '@/apis/mould'
 import mouldKindsBind from '@/apis/mouldKindsBind'
 
 export default {
@@ -423,10 +418,5 @@ export default {
   ...workToolTypeApis,
   ...workToolModelApis,
   ...workToolApis,
-  ...mouldTypeApis,
-  ...mouldKindApis,
-  ...mouldPropertyApis,
-  ...mouldModelApis,
-  ...mouldApis,
   ...mouldKindsBind
 }
