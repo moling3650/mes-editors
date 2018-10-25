@@ -1,15 +1,15 @@
-import MouldType from './mouldType'
-import MouldKind from './mouldKind'
-import MouldModel from './mouldModel'
-import Mould from './mould'
+import MouldTypes from './mouldType'
+import MouldKinds from './mouldKind'
+import MouldModels from './mouldModel'
+import Moulds from './mould'
 import MouldProperty from './mouldProperty'
 import MouldPropertyDetail from './mouldPropertyDetail'
 
 export default {
-  MouldType,
-  MouldKind,
-  MouldModel,
-  Mould,
+  MouldTypes,
+  MouldKinds,
+  MouldModels,
+  Moulds,
   MouldProperty,
   MouldPropertyDetail
 }

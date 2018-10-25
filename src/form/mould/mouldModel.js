@@ -25,7 +25,7 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
       span: 11
     },
     {
-      value: 'made_in',
+      value: 'madeIn',
       label: '产地',
       component: 'el-input',
       span: 11
@@ -39,7 +39,7 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
   ]
   if (type === 'add') {
     formItems.unshift({
-      value: 'kind_id',
+      value: 'kindId',
       label: '模具类别',
       component: 'ex-select',
       span: 22,
@@ -47,7 +47,7 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
       disabled: true
     },
     {
-      value: 'model_code',
+      value: 'modelCode',
       label: '型号编号',
       component: 'el-input',
       disabled: type === 'edit',
@@ -58,14 +58,14 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}模具型号表单`,
     formItems,
     formData: Object.assign({
-      kind_id: '',
-      model_code: '',
+      kindId: '',
+      modelCode: '',
       manufacturer: '',
-      made_in: '',
+      madeIn: '',
       description: ''
     }, form),
     rules: {
-      model_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]
+      modelCode: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]
     }
   })
 }

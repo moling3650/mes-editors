@@ -6,7 +6,7 @@ export default function getMouldKindForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}模具类别表单`,
     formItems: [
       {
-        value: 'type_id',
+        value: 'typeId',
         label: '模具类型',
         component: 'ex-select',
         span: 22,
@@ -14,7 +14,7 @@ export default function getMouldKindForm (form = null, type = 'add', options) {
         disabled: true
       },
       {
-        value: 'kind_name',
+        value: 'kindName',
         label: '类别名称',
         component: 'el-input',
         span: 22
@@ -27,13 +27,13 @@ export default function getMouldKindForm (form = null, type = 'add', options) {
       }
     ],
     formData: Object.assign({
-      type_id: '',
-      kind_id: '',
-      kind_name: '',
+      typeId: '',
+      kindId: '',
+      kindName: '',
       description: ''
     }, form),
     rules: {
-      kind_name: [{ required: true, message: '请输入类别名称', trigger: 'blur' }]
+      kindName: [{ required: true, message: '请输入类别名称', trigger: 'blur' }]
     }
   })
 }

@@ -16,13 +16,13 @@ function checkMouldCode (rule, value, callback) {
 export default function getMouldForm (form = null, type = 'add', options) {
   const formItems = [
     {
-      value: 'mould_code',
+      value: 'mouldCode',
       label: '模具编号',
       component: 'el-input',
       span: 11
     },
     {
-      value: 'mould_name',
+      value: 'mouldName',
       label: '模具名称',
       component: 'el-input',
       span: 11
@@ -49,7 +49,7 @@ export default function getMouldForm (form = null, type = 'add', options) {
   ]
   if (type === 'add') {
     formItems.unshift({
-      value: 'model_code',
+      value: 'modelCode',
       label: '型号编号',
       component: 'el-input',
       disabled: true,
@@ -60,16 +60,16 @@ export default function getMouldForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}模具表单`,
     formItems,
     formData: Object.assign({
-      mould_code: '',
-      mould_name: '',
+      mouldCode: '',
+      mouldName: '',
       state: 1,
-      input_time: '',
+      inputTime: '',
       supplier: '',
-      model_code: '',
+      modelCode: '',
       description: ''
     }, form),
     rules: {
-      mould_code: [{ required: true, validator: checkMouldCode, trigger: 'blur' }]
+      mouldCode: [{ required: true, validator: checkMouldCode, trigger: 'blur' }]
     }
   })
 }
