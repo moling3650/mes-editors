@@ -27,8 +27,7 @@ export default function getMouldKindForm (form = null, type = 'add', options) {
       }
     ],
     formData: Object.assign({
-      typeId: '',
-      kindId: '',
+      typeId: 0,
       kindName: '',
       description: ''
     }, form),

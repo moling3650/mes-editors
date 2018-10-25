@@ -58,7 +58,7 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}模具型号表单`,
     formItems,
     formData: Object.assign({
-      kindId: '',
+      kindId: 0,
       modelCode: '',
       manufacturer: '',
       madeIn: '',

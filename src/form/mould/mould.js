@@ -69,7 +69,8 @@ export default function getMouldForm (form = null, type = 'add', options) {
       description: ''
     }, form),
     rules: {
-      mouldCode: [{ required: true, validator: checkMouldCode, trigger: 'blur' }]
+      mouldCode: [{ required: true, validator: checkMouldCode, trigger: 'blur' }],
+      mouldName: [{ required: true, message: '请输入模具名称', trigger: 'blur' }]
     }
   })
 }

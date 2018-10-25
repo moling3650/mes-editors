@@ -14,7 +14,6 @@ export default function getMouldTypeForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      typeId: '',
       typeName: '',
       description: ''
     }, form),
