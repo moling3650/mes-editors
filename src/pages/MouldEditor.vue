@@ -7,6 +7,9 @@
       <el-col :span="8">
         <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem"/>
       </el-col>
+      <el-col :span="8">
+        <ExPropsCard :model="model" :item="item" height="500" type="Mould"/>
+      </el-col>
     </el-row>
   </div>
 </template>

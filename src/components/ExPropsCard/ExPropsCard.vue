@@ -1,5 +1,5 @@
 <template>
-  <el-card :style="{ height }" :body-style="{ padding: '10px' }">
+  <el-card :style="{ height: (/(%|px)$/i.test(height)) ? height : `${height}px` }" :body-style="{ padding: '10px' }">
     <div slot="header" class="clearfix">
       <span class="card-header--text">属性明细</span>
     </div>
@@ -7,9 +7,9 @@
     <div class="common-parameter">
       <h3>普通参数</h3>
       <ul>
-        <li v-for="p in commonPropList" :key="p.ppt_id" class="prop-item" :class="{ disable: !p.enable }">
-          <span class="label">{{p.ppt_name}}： </span>
-          <span class="value">{{p.ppt_val}}</span>
+        <li v-for="p in commonPropList" :key="p.pptId" class="prop-item" :class="{ disable: !p.enable }">
+          <span class="label">{{p.pptName}}： </span>
+          <span class="value">{{p.pptVal}}</span>
           <el-button class="fl-r edit-btn" type="text" @click="addOrEdit(p)">编辑</el-button>
         </li>
       </ul>
@@ -18,10 +18,10 @@
     <div class="matching-parameter">
       <h3>匹配参数</h3>
       <ul>
-        <li v-for="p in matchPropList" :key="p.ppt_id" class="prop-item" :class="{ disable: !p.enable }">
-          <span class="label">{{p.ppt_name}}： </span>
-          <span class="value" v-if="p.ppt_condition === 'between'">{{ `${p.ppt_min} ~ ${p.ppt_max}` }}</span>
-          <span class="value" v-else>{{ `${p.ppt_condition || ''} ${p.ppt_val || ''}` }}</span>
+        <li v-for="p in matchPropList" :key="p.pptId" class="prop-item" :class="{ disable: !p.enable }">
+          <span class="label">{{p.pptName}}： </span>
+          <span class="value" v-if="p.pptCondition === 'between'">{{ `${p.pptMin} ~ ${p.pptMax}` }}</span>
+          <span class="value" v-else>{{ `${p.pptCondition || ''} ${p.pptVal || ''}` }}</span>
           <el-button class="fl-r edit-btn" type="text" @click="addOrEdit(p)">编辑</el-button>
         </li>
       </ul>
@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import axios from 'axios'
+import request from '@/utils/request'
 import getForm from '@/form'
 
 export default {
@@ -44,7 +45,11 @@ export default {
       type: String,
       required: true
     },
-    code: {
+    item: {
+      type: Object,
+      required: true
+    },
+    type: {
       type: String,
       required: true
     }
@@ -56,63 +61,119 @@ export default {
   },
   computed: {
     commonPropList () {
-      return this.propertyList.filter(p => p.ppt_type === 0)
+      return this.propertyList.filter(p => p.pptType === 0)
     },
     matchPropList () {
-      return this.propertyList.filter(p => p.ppt_type === 1)
+      return this.propertyList.filter(p => p.pptType === 1)
+    },
+    modelCode () {
+      return `${this.type[0].toLowerCase()}${this.type.substr(1)}Code`
     }
   },
   watch: {
-    code (value) {
-      this.propertyList = []
-      if (value) {
-        apis[`fetchPropertyListBy${this.model}Code`](value).then(data => {
-          this.propertyList = data
-        })
+    item (obj) {
+      if (!/^(Mould|WorkTool|Machine)s$/i.test(this.model)) {
+        this.propertyList = []
+        return
       }
+      axios.all([this._fetchKindProps(obj.modelCode), this._fetchPropDetails(obj[this.modelCode])])
+        .then(([kindProps, propDetails]) => {
+          this.propertyList = kindProps.map(item => {
+            const props = {
+              pptId: item.pptId,
+              pptName: item.pptName,
+              pptType: item.pptType,
+              pptCondition: '',
+              pptVal: '',
+              pptMin: 0,
+              pptMax: 0,
+              enable: 1
+            }
+            const propDetail = propDetails.find(item => item.pptId === props.pptId)
+            if (propDetail) {
+              props.id = propDetail.id
+              props.pptType = propDetail.pptType
+              props.pptCondition = propDetail.pptCondition
+              props.pptVal = propDetail.pptVal
+              props.pptMin = propDetail.pptMin
+              props.pptMax = propDetail.pptMax
+              props.enable = propDetail.enable
+            }
+            props[this.modelCode] = this.item[this.modelCode]
+            return props
+          })
+        })
     }
   },
   methods: {
     addOrEdit (prop) {
-      if (prop.ppt_val || prop.ppt_condition) {
+      if (prop.id) {
         this._editProperty(prop)
       } else {
         this._addProperty(prop)
       }
     },
 
+    _fetchKindProps (modelCode) {
+      return request({
+        url: `${this.type}KindProperties`,
+        params: {
+          modelCode
+        }
+      })
+    },
+
+    _fetchPropDetails (code) {
+      const params = {}
+      params[this.modelCode] = code
+      return request({
+        url: `${this.type}PropertyDetails`,
+        params
+      })
+    },
+
     _addProperty (prop) {
-      getForm[`${this.model}PropertyDetail`](prop, 'add')
-        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          apis[`add${this.model}PropertyDetail`](formData).then(propertyDetail => {
-            this._updateProperty(propertyDetail)
-            this.$emit('change', propertyDetail)
-            this.$message.success('添加成功')
+      const { pptName, ...ppt } = prop
+      getForm[`${this.type}PropertyDetail`](ppt, 'add')
+        .then(form => this.$showForm(form).$on('submit', (data, close) => {
+          request({
+            method: 'post',
+            url: `${this.type}PropertyDetails`,
+            data
+          }).then(newProp => {
+            this._updateProperty(Object.assign(newProp, { pptName }))
+            this.$emit('change', newProp)
+            this.$message.success('添加成功!')
             close()
           })
-        }).$on('update:ppt_condition', this._handleConditionChange))
+        }).$on('update:pptCondition', this._handleConditionChange))
     },
 
     _editProperty (prop) {
-      getForm[`${this.model}PropertyDetail`](prop, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          apis[`update${this.model}PropertyDetail`](formData).then(propertyDetail => {
-            this._updateProperty(propertyDetail)
-            this.$emit('change', propertyDetail)
+      const { pptName, ...ppt } = prop
+      getForm[`${this.type}PropertyDetail`](ppt, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (data, close) => {
+          request({
+            method: 'put',
+            url: `${this.type}PropertyDetails/${data.id}`,
+            data
+          }).then(_ => {
+            this._updateProperty(Object.assign(data, { pptName }))
+            this.$emit('change', data)
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:ppt_condition', this._handleConditionChange))
+        }).$on('update:pptCondition', this._handleConditionChange))
     },
 
     _updateProperty (prop) {
-      const index = this.propertyList.findIndex(p => p.ppt_id === prop.ppt_id)
+      const index = this.propertyList.findIndex(p => p.pptId === prop.pptId)
       if (~index) {
         this.$set(this.propertyList[index], 'id', prop.id)
-        this.$set(this.propertyList[index], 'ppt_condition', prop.ppt_condition)
-        this.$set(this.propertyList[index], 'ppt_val', prop.ppt_val)
-        this.$set(this.propertyList[index], 'ppt_max', prop.ppt_max)
-        this.$set(this.propertyList[index], 'ppt_min', prop.ppt_min)
+        this.$set(this.propertyList[index], 'pptCondition', prop.pptCondition)
+        this.$set(this.propertyList[index], 'pptVal', prop.pptVal)
+        this.$set(this.propertyList[index], 'pptMax', prop.pptMax)
+        this.$set(this.propertyList[index], 'pptMin', prop.pptMin)
         this.$set(this.propertyList[index], 'enable', prop.enable)
       }
     },
@@ -122,13 +183,13 @@ export default {
       formItems[4].disabled = pptCondition !== 'between'
       formItems[5].disabled = pptCondition !== 'between'
       if (pptCondition === 'between') {
-        this.$set(rules, 'ppt_val', [{ required: false }])
-        this.$set(rules, 'ppt_min', [{ required: true, trigger: 'blur' }])
-        this.$set(rules, 'ppt_max', [{ required: true, trigger: 'blur' }])
+        this.$set(rules, 'pptVal', [{ required: false }])
+        this.$set(rules, 'pptMin', [{ required: true, trigger: 'blur' }])
+        this.$set(rules, 'pptMax', [{ required: true, trigger: 'blur' }])
       } else {
-        this.$set(rules, 'ppt_val', [{ required: true, pattern: /^\d+(\.\d+)?$/, transform: value => value && value.trim(), message: '请输入数字', trigger: 'blur' }])
-        this.$set(rules, 'ppt_min', [{ required: false }])
-        this.$set(rules, 'ppt_max', [{ required: false }])
+        this.$set(rules, 'pptVal', [{ required: true, pattern: /^\d+(\.\d+)?$/, transform: value => value && value.trim(), message: '请输入数字', trigger: 'blur' }])
+        this.$set(rules, 'pptMin', [{ required: false }])
+        this.$set(rules, 'pptMax', [{ required: false }])
       }
     }
   }
