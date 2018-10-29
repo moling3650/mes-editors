@@ -45,14 +45,6 @@ const editors = [
     component: () => import('@/pages/MouldEditor')
   },
   {
-    path: 'mould_type',
-    component: () => import('@/pages/MouldTypeEditor')
-  },
-  {
-    path: 'mould_model',
-    component: () => import('@/pages/MouldModelEditor')
-  },
-  {
     path: 'mould_kindsBind',
     component: () => import('@/pages/MachineModelKindsBindEditor')
   },
