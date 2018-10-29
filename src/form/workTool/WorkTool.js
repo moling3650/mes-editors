@@ -4,6 +4,9 @@ function checkWorkToolCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('工装编号不能为空'))
   }
+  if (rule.type === 'edit') {
+    return callback()
+  }
   apis.validataWorkToolCode(value).then(valid => {
     if (valid) {
       callback()
@@ -18,13 +21,14 @@ export default function getWorkToolForm (form = null, type = 'add') {
     title: `${type === 'add' ? '新建' : '编辑'}工装表单`,
     formItems: [
       {
-        value: 'workTool_code',
+        value: 'workToolCode',
         label: '工装编号',
         component: 'el-input',
-        span: 12
+        span: 12,
+        disabled: type === 'edit'
       },
       {
-        value: 'workTool_name',
+        value: 'workToolName',
         label: '工装名称',
         component: 'el-input',
         span: 12
@@ -43,19 +47,19 @@ export default function getWorkToolForm (form = null, type = 'add') {
         span: 12
       },
       {
-        value: 'storage_room',
+        value: 'storageRoom',
         label: '库房',
         component: 'el-input',
         span: 12
       },
       {
-        value: 'store_place',
+        value: 'storePlace',
         label: '存放位置',
         component: 'el-input',
         span: 12
       },
       {
-        value: 'use_place',
+        value: 'usePlace',
         label: '使用位置',
         component: 'el-input',
         span: 12
@@ -68,18 +72,19 @@ export default function getWorkToolForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      workTool_code: '',
-      workTool_name: '',
+      workToolCode: '',
+      workToolName: '',
       state: 0,
       supplier: '',
-      model_code: '',
-      storage_room: '',
-      store_place: '',
-      use_place: '',
+      modelCode: '',
+      storageRoom: '',
+      storePlace: '',
+      usePlace: '',
       description: ''
     }, form),
     rules: {
-      workTool_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkWorkToolCode, trigger: 'blur' }]
+      workToolCode: [{ required: true, type, validator: checkWorkToolCode, trigger: 'blur' }],
+      workToolName: [{ required: true, message: '请输入工装名称', trigger: 'blur' }]
     }
   })
 }

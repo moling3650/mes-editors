@@ -1,15 +1,15 @@
-import WorkToolType from './workToolType'
-import WorkToolKind from './workToolKind'
-import WorkToolModel from './workToolModel'
-import WorkTool from './workTool'
+import WorkToolTypes from './workToolType'
+import WorkToolKinds from './workToolKind'
+import WorkToolModels from './workToolModel'
+import WorkTools from './workTool'
 import WorkToolProperty from './workToolProperty'
 import WorkToolPropertyDetail from './workToolPropertyDetail'
 
 export default {
-  WorkToolType,
-  WorkToolKind,
-  WorkToolModel,
-  WorkTool,
+  WorkToolTypes,
+  WorkToolKinds,
+  WorkToolModels,
+  WorkTools,
   WorkToolProperty,
   WorkToolPropertyDetail
 }

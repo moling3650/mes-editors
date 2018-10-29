@@ -3,7 +3,7 @@ export default function getWorkToolKindForm (form = null, type = 'add') {
     title: `${type === 'add' ? '新建' : '编辑'}工装类别表单`,
     formItems: [
       {
-        value: 'kind_name',
+        value: 'kindName',
         label: '类别名称',
         component: 'el-input',
         span: 22
@@ -16,14 +16,13 @@ export default function getWorkToolKindForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      kind_id: '',
-      type_id: '',
-      kind_name: '',
+      typeId: 0,
+      kindName: '',
       description: ''
     }, form),
     rules: {
-      kind_name: [{ required: true, message: '请输入类别名称', trigger: 'blur' }],
-      type_id: [{ required: true, message: '请选择工装类型', trigger: 'blur' }]
+      kindName: [{ required: true, message: '请输入类别名称', trigger: 'blur' }],
+      typeId: [{ required: true, message: '请选择工装类型', trigger: 'blur' }]
     }
   })
 }
