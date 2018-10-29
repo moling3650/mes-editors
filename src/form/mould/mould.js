@@ -4,6 +4,9 @@ function checkMouldCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('模具编号不能为空'))
   }
+  if (rule.type === 'edit') {
+    return callback()
+  }
   apis.validataMouldCode(value).then(valid => {
     if (valid) {
       callback()
@@ -69,7 +72,7 @@ export default function getMouldForm (form = null, type = 'add', options) {
       description: ''
     }, form),
     rules: {
-      mouldCode: [{ required: true, validator: checkMouldCode, trigger: 'blur' }],
+      mouldCode: [{ required: true, type, validator: checkMouldCode, trigger: 'blur' }],
       mouldName: [{ required: true, message: '请输入模具名称', trigger: 'blur' }]
     }
   })

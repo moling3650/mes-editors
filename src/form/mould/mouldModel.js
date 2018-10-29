@@ -4,6 +4,9 @@ function checkModelCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('型号编号不能为空'))
   }
+  if (rule.type === 'edit') {
+    return callback()
+  }
   apis.validataMouldModelCode(value).then(valid => {
     if (valid) {
       callback()
@@ -65,7 +68,7 @@ export default function getMouldModelForm (form = null, type = 'add', options) {
       description: ''
     }, form),
     rules: {
-      modelCode: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]
+      modelCode: [{ required: true, type, validator: checkModelCode, trigger: 'blur' }]
     }
   })
 }
