@@ -94,8 +94,8 @@ export default function getMachinePropertyDetailForm (form = null, type = 'add')
     rules: {
       pptCondition: [{ required: !!(form && form.pptType === 1), message: '请选择匹配条件', trigger: 'blur' }],
       pptVal: pptValRules,
-      pptMax: [{ required: (form && form.pptCondition === 'between') }],
-      pptMin: [{ required: (form && form.pptCondition === 'between') }]
+      pptMax: [{ required: (form && form.pptCondition === 'between'), type: 'number' }],
+      pptMin: [{ required: (form && form.pptCondition === 'between'), type: 'number' }]
     }
   })
 }
