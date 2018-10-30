@@ -12,9 +12,7 @@
               <i class="el-icon-setting"></i>
               <span>设备</span>
             </template>
-            <el-menu-item index="/editors/machine_type">设备类型</el-menu-item>
-            <el-menu-item index="/editors/machine_model">设备型号</el-menu-item>
-            <el-menu-item index="/editors/machine">设备属性</el-menu-item>
+            <el-menu-item index="/editors/machine">设备管理</el-menu-item>
             <el-menu-item index="/editors/control_point">设备管控点</el-menu-item>
           </el-submenu>
           <el-submenu index="workTool">
@@ -22,11 +20,8 @@
               <i class="el-icon-setting"></i>
               <span>工装</span>
             </template>
-            <el-menu-item index="/editors/workTool_type">工装类型</el-menu-item>
-            <el-menu-item index="/editors/workTool_model">工装型号</el-menu-item>
+            <el-menu-item index="/editors/workTool">工装管理</el-menu-item>
             <el-menu-item index="/editors/mould">模具管理</el-menu-item>
-            <el-menu-item index="/editors/mould_type">模具类型</el-menu-item>
-            <el-menu-item index="/editors/mould_model">模具型号</el-menu-item>
           </el-submenu>
           <el-submenu index="material">
             <template slot="title">

@@ -25,20 +25,8 @@ const editors = [
     component: () => import('@/pages/MachineEditor')
   },
   {
-    path: 'machine_type',
-    component: () => import('@/pages/MachineTypeEditor')
-  },
-  {
-    path: 'machine_model',
-    component: () => import('@/pages/MachineModelEditor')
-  },
-  {
-    path: 'workTool_type',
-    component: () => import('@/pages/WorkToolTypeEditor')
-  },
-  {
-    path: 'workTool_model',
-    component: () => import('@/pages/WorkToolModelEditor')
+    path: 'workTool',
+    component: () => import('@/pages/WorkToolEditor')
   },
   {
     path: 'mould',
