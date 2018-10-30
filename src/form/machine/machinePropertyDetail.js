@@ -1,21 +1,21 @@
 export default function getMachinePropertyDetailForm (form = null, type = 'add') {
-  if (form && form.ppt_condition === null) {
-    form.ppt_condition = ''
+  if (form && form.pptCondition === null) {
+    form.pptCondition = ''
   }
-  if (form && form.ppt_max === null) {
-    form.ppt_max = 0
+  if (form && form.pptMax === null) {
+    form.pptMax = 0
   }
-  if (form && form.ppt_min === null) {
-    form.ppt_min = 0
+  if (form && form.pptMin === null) {
+    form.pptMin = 0
   }
   let pptValRules = [{
     required: true,
     message: '请输入标准值',
     trigger: 'blur'
   }]
-  if (form.ppt_type === 1 && form.ppt_condition === 'between') {
+  if (form.pptType === 1 && form.pptCondition === 'between') {
     pptValRules = [{ required: false }]
-  } else if (form.ppt_type === 1) {
+  } else if (form.pptType === 1) {
     pptValRules = [{
       required: true,
       pattern: /^\d+(\.\d+)?$/,
@@ -29,14 +29,14 @@ export default function getMachinePropertyDetailForm (form = null, type = 'add')
     title: `${type === 'add' ? '新建' : '编辑'}设备属性明细表单`,
     formItems: [
       {
-        value: 'ppt_name',
+        value: 'pptName',
         label: '属性名称',
         component: 'el-input',
         disabled: true,
         span: 12
       },
       {
-        value: 'ppt_type',
+        value: 'pptType',
         label: '属性类型',
         component: 'ex-select',
         options: [{value: 0, label: '一般属性'}, {value: 1, label: '匹配属性'}],
@@ -44,31 +44,31 @@ export default function getMachinePropertyDetailForm (form = null, type = 'add')
         span: 12
       },
       {
-        value: 'ppt_condition',
+        value: 'pptCondition',
         label: '匹配条件',
         component: 'ex-select',
         placeholder: '请选择匹配条件',
         options: [{value: '>'}, {value: '>='}, {value: '<'}, {value: '<='}, {value: '='}, {value: '<>'}, {value: 'between'}],
-        disabled: form.ppt_type === 0
+        disabled: form.pptType === 0
       },
       {
-        value: 'ppt_val',
+        value: 'pptVal',
         label: '标准值',
         component: 'el-input',
-        disabled: !!(form.ppt_type === 1 && form.ppt_condition === 'between')
+        disabled: !!(form.pptType === 1 && form.pptCondition === 'between')
       },
       {
-        value: 'ppt_min',
+        value: 'pptMin',
         label: '最小值',
         component: 'ex-input-number',
-        disabled: !!(form.ppt_type === 0 || (form.ppt_type === 1 && form.ppt_condition !== 'between')),
+        disabled: !!(form.pptType === 0 || (form.pptType === 1 && form.pptCondition !== 'between')),
         span: 12
       },
       {
-        value: 'ppt_max',
+        value: 'pptMax',
         label: '最大值',
         component: 'ex-input-number',
-        disabled: !!(form.ppt_type === 0 || (form.ppt_type === 1 && form.ppt_condition !== 'between')),
+        disabled: !!(form.pptType === 0 || (form.pptType === 1 && form.pptCondition !== 'between')),
         span: 12
       },
       {
@@ -81,21 +81,21 @@ export default function getMachinePropertyDetailForm (form = null, type = 'add')
       }
     ],
     formData: Object.assign({
-      ppt_id: '',
-      machine_code: '',
-      ppt_name: '',
-      ppt_val: '',
-      ppt_type: 0,
-      ppt_max: 0,
-      ppt_min: 0,
-      ppt_condition: '',
+      ppt_id: 0,
+      machineCode: '',
+      pptName: '',
+      pptVal: '',
+      pptType: 0,
+      pptMax: 0,
+      pptMin: 0,
+      pptCondition: '',
       enable: 1
     }, form),
     rules: {
-      ppt_condition: [{ required: !!(form && form.ppt_type === 1), message: '请选择匹配条件', trigger: 'blur' }],
-      ppt_val: pptValRules,
-      ppt_max: [{ required: (form && form.ppt_condition === 'between') }],
-      ppt_min: [{ required: (form && form.ppt_condition === 'between') }]
+      pptCondition: [{ required: !!(form && form.pptType === 1), message: '请选择匹配条件', trigger: 'blur' }],
+      pptVal: pptValRules,
+      pptMax: [{ required: (form && form.pptCondition === 'between') }],
+      pptMin: [{ required: (form && form.pptCondition === 'between') }]
     }
   })
 }

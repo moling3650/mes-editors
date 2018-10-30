@@ -43,7 +43,14 @@ export default function getWorkToolForm (form = null, type = 'add') {
         value: 'state',
         label: '状态',
         component: 'ex-select',
-        options: [{value: -1, label: '报废'}, {value: 0, label: '禁用'}, {value: 1, label: '启用'}, {value: 2, label: '已使用'}, {value: 3, label: '保养'}, {value: 4, label: '维修'}],
+        options: [
+          {value: -1, label: '报废'},
+          {value: 0, label: '禁用'},
+          {value: 1, label: '启用'},
+          {value: 2, label: '已使用'},
+          {value: 3, label: '保养'},
+          {value: 4, label: '维修'}
+        ],
         span: 12
       },
       {

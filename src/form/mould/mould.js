@@ -16,7 +16,7 @@ function checkMouldCode (rule, value, callback) {
   })
 }
 
-export default function getMouldForm (form = null, type = 'add', options) {
+export default function getMouldForm (form = null, type = 'add') {
   const formItems = [
     {
       value: 'mouldCode',
@@ -40,7 +40,14 @@ export default function getMouldForm (form = null, type = 'add', options) {
       value: 'state',
       label: '状态',
       component: 'ex-select',
-      options: [{value: -1, label: '报废'}, {value: 0, label: '禁用'}, {value: 1, label: '启用'}, {value: 2, label: '已使用'}, {value: 3, label: '保养'}, {value: 4, label: '维修'}],
+      options: [
+        {value: -1, label: '报废'},
+        {value: 0, label: '禁用'},
+        {value: 1, label: '启用'},
+        {value: 2, label: '已使用'},
+        {value: 3, label: '保养'},
+        {value: 4, label: '维修'}
+      ],
       span: 11
     },
     {
