@@ -21,7 +21,7 @@ export default function getMachineModelForm (form = null, type = 'add', options)
     title: `${type === 'add' ? '新建' : '编辑'}设备型号表单`,
     formItems: [
       {
-        value: 'model_code',
+        value: 'modelCode',
         label: '型号编号',
         component: 'el-input',
         disabled: type === 'edit',
@@ -34,7 +34,7 @@ export default function getMachineModelForm (form = null, type = 'add', options)
         span: 12
       },
       {
-        value: 'made_in',
+        value: 'madeIn',
         label: '产地',
         component: 'el-input',
         span: 12
@@ -47,13 +47,13 @@ export default function getMachineModelForm (form = null, type = 'add', options)
       }
     ],
     formData: Object.assign({
-      model_code: '',
+      modelCode: '',
       manufacturer: '',
-      made_in: '',
+      madeIn: '',
       description: ''
     }, form),
     rules: {
-      model_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]
+      modelCode: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkModelCode, trigger: 'blur' }]
     }
   })
 }

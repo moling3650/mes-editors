@@ -4,6 +4,9 @@ function checkMachineCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('设备编号不能为空'))
   }
+  if (rule.type === 'edit') {
+    return callback()
+  }
   apis.validataMachineCode(value).then(valid => {
     if (valid) {
       callback()
@@ -18,19 +21,19 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
     title: `${type === 'add' ? '新建' : '编辑'}设备表单`,
     formItems: [
       {
-        value: 'machine_code',
+        value: 'machineCode',
         label: '设备编号',
         component: 'el-input',
         span: 12
       },
       {
-        value: 'machine_name',
+        value: 'machineName',
         label: '设备名称',
         component: 'el-input',
         span: 12
       },
       {
-        value: 'simple_name',
+        value: 'simpleName',
         label: '简称',
         component: 'el-input',
         span: 12
@@ -56,7 +59,7 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
         span: 12
       },
       {
-        value: 'ws_code',
+        value: 'wsCode',
         label: '车间',
         component: 'ex-select',
         options: WsCodeoptions,
@@ -70,18 +73,18 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
       }
     ],
     formData: Object.assign({
-      machine_code: '',
-      machine_name: '',
+      machineCode: '',
+      machineName: '',
       state: 0,
-      simple_name: '',
+      simpleName: '',
       manufacturer: '',
       arrivaldate: '',
       userdepartment: '',
-      ws_code: '',
+      wsCode: '',
       description: ''
     }, form),
     rules: {
-      machine_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkMachineCode, trigger: 'blur' }]
+      machineCode: [{ required: true, type, validator: checkMachineCode, trigger: 'blur' }]
     }
   })
 }

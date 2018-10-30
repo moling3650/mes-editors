@@ -1,15 +1,15 @@
-import MachineType from './machineType'
-import MachineKind from './machineKind'
-import MachineModel from './machineModel'
-import Machine from './machine'
+import MachineTypes from './machineType'
+import MachineKinds from './machineKind'
+import MachineModels from './machineModel'
+import Machines from './machine'
 import MachineProperty from './machineProperty'
 import MachinePropertyDetail from './machinePropertyDetail'
 
 export default {
-  MachineType,
-  MachineKind,
-  MachineModel,
-  Machine,
+  MachineTypes,
+  MachineKinds,
+  MachineModels,
+  Machines,
   MachineProperty,
   MachinePropertyDetail
 }
