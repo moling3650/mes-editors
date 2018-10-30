@@ -12,6 +12,7 @@ export default function getRepairLoginForm (form = null) {
       {
         value: 'user_pwd',
         label: '密  码',
+        type: 'password',
         component: 'el-input',
         span: 22
       }
