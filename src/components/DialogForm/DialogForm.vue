@@ -1,7 +1,7 @@
 <template>
   <div id="DialogForm">
     <el-dialog :title="title" :visible.sync="visible" :before-close="close" @closed="handleClosed" :width="width" top="10vh">
-      <el-form :model="form" :rules="rules" label-width="100px" ref="form">
+      <el-form :model="form" :rules="formRules" label-width="100px" ref="form">
         <el-row :gutter="20">
           <el-col v-for="item in formItems" :key="item.value" :span="item.span || 24">
             <el-form-item :label="item.label" :prop="item.value">
@@ -51,6 +51,17 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  computed: {
+    formRules () {
+      const rules = {...this.rules}
+      Object.keys(this.rules).map(key => {
+        rules[key].map(rule => {
+          rule.form = this.form
+        })
+      })
+      return rules
     }
   },
   data () {
