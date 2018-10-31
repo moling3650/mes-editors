@@ -1,18 +1,28 @@
 <template>
   <div id="RepairToolEditor">
-
-    <el-row :gutter="20" class="row">
-      <el-col :span="6">
-        <el-input  v-model="ip" :disabled="true" />
-      </el-col>
-      <el-col :span="6">
-        <el-cascader :options="stationOptions" v-model="processStation" placeholder="请选择工序" @change="handleKindChange"/>
-      </el-col>
-      <el-col :span="6">
-        <el-button type="primary" @click="repairLogin">登录维修</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
+    <el-form :inline="true">
+      <el-row :gutter="0" class="row">
+        <el-col :span="6">
+          <el-form-item label="IP:">
+            <el-input  v-model="ip" :disabled="true" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="工序/工位:">
+            <el-cascader :options="stationOptions" v-model="processStation" placeholder="请选择工序工位" @change="handleKindChange"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="员工号:">
+            <el-input  v-model="userCode" :disabled="true" v-show="registerRepair" style="width: 100px;" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-button type="primary" @click="repairLogin" :disabled="!processStation.length">登录维修</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+    <el-row v-show="registerRepair">
       <el-tabs type="card">
         <el-tab-pane label="登记管理" name="first">
           <RegisterCard :fromProcess="processStation[0] || ''"></RegisterCard>
@@ -42,7 +52,9 @@ export default {
     return {
       ip: '',
       stationOptions: [],
-      processStation: []
+      processStation: [],
+      registerRepair: false,
+      userCode: ''
     }
   },
   methods: {
@@ -63,6 +75,8 @@ export default {
           apis.validateUserLogin(user.user_code, user.user_pwd).then(valid => {
             if (valid) {
               this.$message.success('登录成功')
+              this.registerRepair = true
+              this.userCode = user.user_code
               close()
             } else {
               this.$message.error('登录失败')

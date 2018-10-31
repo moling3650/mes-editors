@@ -39,6 +39,10 @@ const editors = [
   {
     path: 'repair_tool',
     component: () => import('@/pages/RepairToolEditor')
+  },
+  {
+    path: 'drive',
+    component: () => import('@/pages/DriveEditor')
   }
 ]
 
