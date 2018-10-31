@@ -21,9 +21,6 @@ export default {
   border: 1px solid #bfc0c1;
   border-radius: 0;
 }
-#app .el-tree-node__content {
-  border-bottom: 1px solid #333;
-}
 #app .el-card {
   border: 1px solid #8db3e3;
   border-radius: 0;
