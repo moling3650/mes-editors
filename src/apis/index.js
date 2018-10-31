@@ -4,11 +4,6 @@ import formulaApis from '@/apis/formula'
 import reportApis from '@/apis/report'
 import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
-import machineTypeApis from '@/apis/machineType'
-import machineKindApis from '@/apis/machineKind'
-import machineModelApis from '@/apis/machineModel'
-import machinePropertyApis from '@/apis/machineProperty'
-import machineApis from '@/apis/machine'
 import mouldKindsBind from '@/apis/mouldKindsBind'
 
 export default {
@@ -403,10 +398,5 @@ export default {
   ...reportApis,
   ...processFlowApis,
   ...controlPointApis,
-  ...machineTypeApis,
-  ...machineKindApis,
-  ...machinePropertyApis,
-  ...machineModelApis,
-  ...machineApis,
   ...mouldKindsBind
 }
