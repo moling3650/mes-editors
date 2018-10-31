@@ -9,11 +9,6 @@ import machineKindApis from '@/apis/machineKind'
 import machineModelApis from '@/apis/machineModel'
 import machinePropertyApis from '@/apis/machineProperty'
 import machineApis from '@/apis/machine'
-import workToolTypeApis from '@/apis/workToolType'
-import workToolKindApis from '@/apis/workToolKind'
-import workToolPropertyApis from '@/apis/workToolProperty'
-import workToolModelApis from '@/apis/workToolModel'
-import workToolApis from '@/apis/workTool'
 import mouldKindsBind from '@/apis/mouldKindsBind'
 
 export default {
@@ -413,10 +408,5 @@ export default {
   ...machinePropertyApis,
   ...machineModelApis,
   ...machineApis,
-  ...workToolKindApis,
-  ...workToolPropertyApis,
-  ...workToolTypeApis,
-  ...workToolModelApis,
-  ...workToolApis,
   ...mouldKindsBind
 }
