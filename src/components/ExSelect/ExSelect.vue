@@ -1,7 +1,7 @@
 <template>
   <el-select class="w100p" :value="value" filterable v-bind="$attrs" v-on="listers">
     <el-option
-      v-for="item in options"
+      v-for="item in items"
       :key="item.value"
       :label="item.label"
       :value="item.value">
@@ -14,7 +14,7 @@ export default {
   name: 'ExSelect',
   props: {
     options: {
-      type: Array,
+      type: [Array, Object],
       required: true
     },
     value: {
@@ -23,6 +23,18 @@ export default {
     }
   },
   computed: {
+    items () {
+      if (Array.isArray(this.options)) {
+        return this.options.map((opt, idx) => {
+          const value = (typeof opt === 'string') ? idx : opt.value
+          const label = opt.label || opt.value || opt
+          return { value, label }
+        })
+      } else {
+        return Object.entries(this.options).map(([value, label]) => ({ value, label }))
+      }
+    },
+
     listers () {
       return {
         ...this.$listeners,
