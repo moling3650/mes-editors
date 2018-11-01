@@ -1,10 +1,19 @@
-import apis from '@/apis'
+import request from '@/utils/request'
 
 function checkBomCode (rule, value, callback) {
+  if (rule.type === 'edit') {
+    return callback()
+  }
   if (!value) {
     return callback(new Error('Bom编号不能为空'))
   }
-  apis.validateBomCode(value).then(valid => {
+  request({
+    method: 'get',
+    url: 'Boms/Validate',
+    params: {
+      bomCode: value
+    }
+  }).then(valid => {
     if (valid) {
       callback()
     } else {
@@ -21,24 +30,24 @@ export default function getBomForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}BOM表单`,
     formItems: [
       {
-        value: 'bom_code',
+        value: 'bomCode',
         label: 'BOM编号',
         component: 'el-input',
         disabled: type === 'edit',
         span: 12
       },
       {
-        value: 'version_code',
+        value: 'versionCode',
         label: '版本',
         component: 'el-input',
         span: 12
       },
       {
-        value: 'product_code',
+        value: 'productCode',
         label: '产品',
         component: 'ex-select',
         options,
-        disabled: !!(form && form.product_code)
+        disabled: !!(form && form.productCode)
       },
       {
         value: 'designator',
@@ -60,7 +69,7 @@ export default function getBomForm (form = null, type = 'add', options) {
         inactiveValue: 0
       },
       {
-        value: 'is_split',
+        value: 'isSplit',
         label: '是否拆分',
         component: 'el-switch',
         activeValue: 1,
@@ -68,19 +77,19 @@ export default function getBomForm (form = null, type = 'add', options) {
       }
     ],
     formData: Object.assign({
-      bom_code: '',
-      version_code: '',
-      product_code: '',
-      base_qty: 1,
+      bomCode: '',
+      versionCode: '',
+      productCode: '',
+      baseQty: 1,
       designator: '',
       discription: '',
       enable: 1,
-      is_split: 1
+      isSplit: 1
     }, form),
     rules: {
-      bom_code: type === 'edit' ? [{ required: true, trigger: 'blur' }] : [{ required: true, validator: checkBomCode, trigger: 'blur' }],
-      version_code: [{ required: true, pattern: /^[A-Za-z0-9]+$/, transform: value => value.trim(), message: '请输入英文或数字', trigger: 'blur' }],
-      product_code: [{ required: true, message: '请选择产品', trigger: 'blur' }]
+      bomCode: [{ required: true, type, validator: checkBomCode, trigger: 'blur' }],
+      versionCode: [{ required: true, pattern: /^[A-Za-z0-9]+$/, transform: value => value.trim(), message: '请输入英文或数字', trigger: 'blur' }],
+      productCode: [{ required: true, message: '请选择产品', trigger: 'blur' }]
     }
   })
 }

@@ -5,8 +5,8 @@
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBom">添加BOM</el-button>
     </div>
     <el-table :data="bomList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickBom">
-      <el-table-column prop="bom_code" label="BOM"/>
-      <el-table-column prop="version_code" label="版本" width="50"/>
+      <el-table-column prop="bomCode" label="BOM"/>
+      <el-table-column prop="versionCode" label="版本" width="50"/>
       <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import request from '@/utils/request'
 import getBomForm from '@/form/bom'
 
 export default {
@@ -61,7 +61,13 @@ export default {
     },
 
     getBomList (productCode) {
-      apis.fetchBomListByProduct({ product_code: productCode }).then(data => {
+      request({
+        method: 'get',
+        url: 'Boms',
+        params: {
+          productCode
+        }
+      }).then(data => {
         this.bomList = data
       })
     },
@@ -70,10 +76,14 @@ export default {
       if (!this.productCode) {
         return void this.$message.info('请先选择产品')
       }
-      getBomForm({product_code: this.productCode}, 'add', this.productOptions)
-        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
-          bom.create_time = new Date()
-          apis.addBom(bom).then(bom => {
+      getBomForm({productCode: this.productCode}, 'add', this.productOptions)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          formData.createTime = new Date()
+          request({
+            method: 'post',
+            url: 'Boms',
+            data: formData
+          }).then(bom => {
             this.bomList.push(bom)
             this.$emit('change', bom)
             this.$message.success('添加成功')
@@ -84,25 +94,32 @@ export default {
 
     editBom (row) {
       getBomForm(row, 'edit', this.productOptions)
-        .then(form => this.$showForm(form).$on('submit', (bom, close) => {
-          apis.updateBom(bom).then(bom => {
-            const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
-            ~index && this.bomList.splice(index, 1, bom)
-            this.$emit('change', bom)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          request({
+            method: 'put',
+            url: `Boms/${formData.bomId}`,
+            data: formData
+          }).then(_ => {
+            const index = this.bomList.findIndex(b => b.bomId === formData.bomId)
+            ~index && this.bomList.splice(index, 1, formData)
+            this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
           })
         }))
     },
 
-    deleteBom (bom) {
+    deleteBom (row) {
       this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteBom(bom).then(_ => {
-          const index = this.bomList.findIndex(b => b.bom_id === bom.bom_id)
+        request({
+          method: 'delete',
+          url: `Boms/${row.bomId}`
+        }).then(_ => {
+          const index = this.bomList.findIndex(b => b.bomId === row.bomId)
           ~index && this.bomList.splice(index, 1)
           this.$emit('change', {})
           this.$message.success('删除成功!')
