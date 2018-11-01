@@ -43,6 +43,10 @@ const editors = [
   {
     path: 'drive',
     component: () => import('@/pages/DriveEditor')
+  },
+  {
+    path: 'machineStandardPoint',
+    component: () => import('@/pages/MachineStandardPointsEditor')
   }
 ]
 

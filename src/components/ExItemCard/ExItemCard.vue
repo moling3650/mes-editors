@@ -3,6 +3,7 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">{{title}}</span>
       <span class="fl-r" v-show="model">
+        <el-button type="text" size="mini" icon="el-icon-edit" @click="editPoint" v-if="this.model === 'Machines'">数据点</el-button>
         <el-button type="text" size="mini" icon="el-icon-edit" @click="editItem">编辑</el-button>
         <el-button type="text" size="mini" icon="el-icon-delete" @click="deleteItem">删除</el-button>
       </span>
@@ -77,6 +78,10 @@ export default {
       } else {
         return 'id'
       }
+    },
+
+    editPoint () {
+      this.$router.push({ path: '/editors/machineStandardPoint', query: { machineCode: this.item.machineCode } })
     },
 
     editItem () {

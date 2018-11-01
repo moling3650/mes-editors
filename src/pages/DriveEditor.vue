@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import apis from '@/apis'
 import DriveTypeTreeCard from '@/components/Cards/DriveTypeTreeCard'
 import DriveDetailCard from '@/components/Cards/DriveDetailCard'
 
@@ -36,7 +35,7 @@ export default {
     handleDriveTypeChange (data) {
       this.typeId = data.typeId
     }
-  },
+  }
 }
 </script>
 

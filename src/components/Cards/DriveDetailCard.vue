@@ -2,7 +2,7 @@
   <el-card>
     <div slot="header" class="clearfix">
       <span class="card-header--text">驱动维护</span>
-      <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加驱动</el-button>
+      <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addDrive">添加驱动</el-button>
     </div>
     <el-table :data="drivesList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="driveCode" label="驱动编号"/>
@@ -15,8 +15,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editSubstitute(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteSubstitute(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editDrive(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+            <el-button @click.stop="deleteDrive(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -82,7 +82,7 @@ export default {
       })
     },
 
-    addSubstitute () {
+    addDrive () {
       getDriveForm(null, 'add')
         .then(form => this.$showForm(form).$on('submit', (drive, close) => {
           drive.typeId = this.typeId
@@ -99,7 +99,7 @@ export default {
         }))
     },
 
-    editSubstitute (drive) {
+    editDrive (drive) {
       getDriveForm(drive, 'edit')
         .then(form => this.$showForm(form).$on('submit', (drive, close) => {
           request({
@@ -116,7 +116,7 @@ export default {
         }))
     },
 
-    deleteSubstitute (drive) {
+    deleteDrive (drive) {
       this.$confirm('此操作将永久删除该驱动, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
