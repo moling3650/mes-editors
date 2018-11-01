@@ -47,8 +47,8 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       {
         value: 'triggerCondition',
         label: '触发条件',
-        component: 'ex-select',
-        options: [{value: 0, label: '秒'}, {value: 1, label: '次'}],
+        component: 'ex-input-number',
+        unit: '秒',
         span: 12
       },
       {

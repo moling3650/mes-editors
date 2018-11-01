@@ -111,6 +111,8 @@ export default {
             this.$message.success('添加成功')
             close()
           })
+        }).$on('update:triggerType', (value, item, formItems) => {
+          formItems[6].unit = ['秒', '次'][value]
         }))
     },
 
