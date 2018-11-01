@@ -1,3 +1,29 @@
+import request from '@/utils/request'
+
+function checkBusinessCode (rule, value, callback) {
+  console.log(rule)
+  if (rule.type === 'edit') {
+    return callback()
+  }
+  if (!value) {
+    return callback(new Error('请选择业务'))
+  }
+  request({
+    method: 'get',
+    url: 'MachineStandardPoints/Validate',
+    params: {
+      machineCode: rule.form.machineCode,
+      businessCode: rule.form.businessCode
+    }
+  }).then(valid => {
+    if (valid) {
+      return callback()
+    } else {
+      return callback(new Error('该业务已存在'))
+    }
+  })
+}
+
 export default function getMachineStandardPointForm (form = null, type = 'add', businessOptions, pointOptions, driveOptions) {
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}设备标准数据点表单`,
@@ -14,11 +40,12 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
         label: '业务',
         component: 'ex-select',
         options: businessOptions,
-        span: 12
+        span: 12,
+        disabled: type === 'edit'
       },
       {
         value: 'runAt',
-        label: '业务',
+        label: '运行在',
         component: 'ex-select',
         options: [{value: 0, label: '客户端'}, {value: 1, label: '服务器'}],
         span: 12
@@ -70,7 +97,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       parameter: ''
     }, form),
     rules: {
-      businessCode: [{ required: true, message: '请选择业务', trigger: 'blur' }]
+      // businessCode: [{ required: true, type, validator: checkBusinessCode, trigger: 'blur' }]
     }
   })
 }

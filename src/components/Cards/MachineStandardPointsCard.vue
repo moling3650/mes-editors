@@ -100,6 +100,7 @@ export default {
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           formData.businessName = business[parseInt(formData.businessCode) - 1]
           formData.machineCode = this.machineCode
+          console.log(formData.businessName)
           console.log(formData)
           request({
             method: 'post',
@@ -116,40 +117,40 @@ export default {
         }))
     },
 
-    editStandardPoint (drive) {
-      // getDriveForm(drive, 'edit')
-      //   .then(form => this.$showForm(form).$on('submit', (drive, close) => {
-      //     request({
-      //       method: 'put',
-      //       url: `Drives/${drive.driveId}`,
-      //       data: drive
-      //     }).then(_ => {
-      //       const index = this.drivesList.findIndex(b => b.driveId === drive.driveId)
-      //       ~index && this.drivesList.splice(index, 1, drive)
-      //       this.$emit('change', drive)
-      //       this.$message.success('修改成功')
-      //       close()
-      //     })
-      //   }))
+    editStandardPoint (row) {
+      getMachineStandardPointForm(row, 'edit', this.businessOptions, this.dataPointOptions, this.driveOptions)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          request({
+            method: 'put',
+            url: `MachineStandardPoints/${formData.id}`,
+            data: formData
+          }).then(_ => {
+            const index = this.PointList.findIndex(b => b.id === formData.id)
+            ~index && this.PointList.splice(index, 1, formData)
+            this.$emit('change', formData)
+            this.$message.success('修改成功')
+            close()
+          })
+        }))
     },
 
-    deleteStandardPoint (drive) {
-      // this.$confirm('此操作将永久删除该驱动, 是否继续?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(_ => {
-      //   request({
-      //     method: 'delete',
-      //     url: `Drives/${drive.driveId}`
-      //   }).then(_ => {
-      //     const index = this.drivesList.findIndex(s => s.driveId === drive.driveId)
-      //     ~index && this.drivesList.splice(index, 1)
-      //     this.$message.success('删除成功!')
-      //   })
-      // }).catch(_ => {
-      //   this.$message.info('已取消删除')
-      // })
+    deleteStandardPoint (row) {
+      this.$confirm('此操作将永久删除该数据点, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        request({
+          method: 'delete',
+          url: `MachineStandardPoints/${row.id}`
+        }).then(_ => {
+          const index = this.PointList.findIndex(s => s.id === row.id)
+          ~index && this.PointList.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
     }
   }
 }
