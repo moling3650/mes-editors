@@ -8,11 +8,15 @@
       <el-table-column prop="machineCode" label="设备编号"/>
       <el-table-column prop="businessCode" label="业务编号"/>
       <el-table-column prop="businessName" label="业务名称"/>
-      <el-table-column prop="pointId" label="数据点"/>
-      <el-table-column prop="driveCode" label="驱动"/>
-      <el-table-column prop="runAt" label="运行在"/>
-      <el-table-column prop="triggerType" label="触发类型"/>
-      <el-table-column prop="triggerCondition" label="触发条件"/>
+      <el-table-column prop="pointId" label="数据点" :formatter="formatter"/>
+      <el-table-column prop="driveCode" label="驱动" :formatter="formatter"/>
+      <el-table-column prop="runAt" label="运行在" :formatter="formatter"/>
+      <el-table-column prop="triggerType" label="触发类型" :formatter="formatter"/>
+      <el-table-column prop="triggerCondition" label="触发条件">
+        <template slot-scope="scope">
+          {{scope.row.triggerCondition}} {{['秒', '次'][scope.row.triggerType]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="parameter" label="属性"/>
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
@@ -28,6 +32,7 @@
 
 <script>
 import toOptions from '@/utils/toOptions'
+import toMap from '@/utils/toMap'
 import request from '@/utils/request'
 import getMachineStandardPointForm from '@/form/MachineStandardPoint'
 const business = ['完成数', '不良数', '状态', '状态代码']
@@ -46,6 +51,7 @@ export default {
   },
   data () {
     return {
+      formatterMap: {},
       PointList: [],
       dataPointOptions: [],
       driveOptions: [],
@@ -62,6 +68,10 @@ export default {
     }
   },
   methods: {
+    formatter (row, col, cell, index) {
+      return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
+    },
+
     // 数据点列表
     fetchPoints (machineCode) {
       request({
@@ -73,7 +83,6 @@ export default {
       }).then(data => {
         this.PointList = data
       })
-
       request({
         method: 'get',
         url: `Drives`,
@@ -82,6 +91,7 @@ export default {
         }
       }).then(data => {
         this.driveOptions = toOptions(data, 'driveCode', 'driveName')
+        this.formatterMap.driveCode = toMap(data, 'driveCode', 'driveName')
       })
 
       request({
@@ -92,6 +102,7 @@ export default {
         }
       }).then(data => {
         this.dataPointOptions = toOptions(data, 'pointId', 'dataPointName')
+        this.formatterMap.pointId = toMap(data, 'pointId', 'dataPointName')
       })
     },
 
@@ -131,6 +142,8 @@ export default {
             this.$message.success('修改成功')
             close()
           })
+        }).$on('update:triggerType', (value, item, formItems) => {
+          formItems[6].unit = ['秒', '次'][value]
         }))
     },
 
@@ -152,6 +165,12 @@ export default {
         this.$message.info('已取消删除')
       })
     }
+  },
+  mounted () {
+    getMachineStandardPointForm().then(form => {
+      this.formatterMap.runAt = toMap(form.formItems[2].options, 'value', 'label')
+      this.formatterMap.triggerType = toMap(form.formItems[5].options, 'value', 'label')
+    })
   }
 }
 </script>
