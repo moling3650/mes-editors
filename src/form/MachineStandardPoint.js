@@ -97,7 +97,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       parameter: ''
     }, form),
     rules: {
-      // businessCode: [{ required: true, type, validator: checkBusinessCode, trigger: 'blur' }]
+      businessCode: [{ required: true, type, validator: checkBusinessCode, trigger: 'change' }]
     }
   })
 }
