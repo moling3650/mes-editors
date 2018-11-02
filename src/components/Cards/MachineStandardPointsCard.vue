@@ -31,9 +31,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import toOptions from '@/utils/toOptions'
 import toMap from '@/utils/toMap'
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import getMachineStandardPointForm from '@/form/MachineStandardPoint'
 const business = ['完成数', '不良数', '状态', '状态代码']
 export default {
@@ -63,7 +64,7 @@ export default {
     'machineCode' (value, oldValue) {
       this.PointList = []
       if (value) {
-        this.fetchPoints(value)
+        this.fetchOptions(value).then(_ => this.fetchPoints(value))
       }
     }
   },
@@ -72,37 +73,20 @@ export default {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
 
+    fetchOptions (machineCode) {
+      return axios.all([Api.get('MachineDataPoints', { machineCode }), Api.get('Drives', { typeId: 3 })])
+        .then(([points, drives]) => {
+          this.dataPointOptions = toOptions(points, 'pointId', 'dataPointName')
+          this.formatterMap.pointId = toMap(points, 'pointId', 'dataPointName')
+          this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
+          this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
+        })
+    },
+
     // 数据点列表
     fetchPoints (machineCode) {
-      request({
-        method: 'get',
-        url: `MachineStandardPoints`,
-        params: {
-          machineCode
-        }
-      }).then(data => {
+      Api.get(`MachineStandardPoints`, { machineCode }).then(data => {
         this.PointList = data
-      })
-      request({
-        method: 'get',
-        url: `Drives`,
-        params: {
-          typeId: 3
-        }
-      }).then(data => {
-        this.driveOptions = toOptions(data, 'driveCode', 'driveName')
-        this.formatterMap.driveCode = toMap(data, 'driveCode', 'driveName')
-      })
-
-      request({
-        method: 'get',
-        url: `MachineDataPoints`,
-        params: {
-          machineCode
-        }
-      }).then(data => {
-        this.dataPointOptions = toOptions(data, 'pointId', 'dataPointName')
-        this.formatterMap.pointId = toMap(data, 'pointId', 'dataPointName')
       })
     },
 
@@ -111,13 +95,7 @@ export default {
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           formData.businessName = business[parseInt(formData.businessCode) - 1]
           formData.machineCode = this.machineCode
-          console.log(formData.businessName)
-          console.log(formData)
-          request({
-            method: 'post',
-            url: 'MachineStandardPoints',
-            data: formData
-          }).then(standardPoint => {
+          Api.post('MachineStandardPoints', formData).then(standardPoint => {
             this.PointList.push(standardPoint)
             this.$emit('change', standardPoint)
             this.$message.success('添加成功')
@@ -131,11 +109,7 @@ export default {
     editStandardPoint (row) {
       getMachineStandardPointForm(row, 'edit', this.businessOptions, this.dataPointOptions, this.driveOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          request({
-            method: 'put',
-            url: `MachineStandardPoints/${formData.id}`,
-            data: formData
-          }).then(_ => {
+          Api.put(`MachineStandardPoints/${formData.id}`, formData).then(_ => {
             const index = this.PointList.findIndex(b => b.id === formData.id)
             ~index && this.PointList.splice(index, 1, formData)
             this.$emit('change', formData)
@@ -153,10 +127,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        request({
-          method: 'delete',
-          url: `MachineStandardPoints/${row.id}`
-        }).then(_ => {
+        Api.delete(`MachineStandardPoints/${row.id}`).then(_ => {
           const index = this.PointList.findIndex(s => s.id === row.id)
           ~index && this.PointList.splice(index, 1)
           this.$message.success('删除成功!')
