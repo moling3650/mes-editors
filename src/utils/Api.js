@@ -19,9 +19,9 @@ instance.interceptors.response.use(response => {
 export default {
   get: (url, params) => instance.get(url, { params }),
 
-  post: (url, data) => instance.post(url, { data }),
+  post: (url, data) => instance.post(url, data),
 
-  put: (url, data) => instance.put(url, { data }),
+  put: (url, data) => instance.put(url, data),
 
   delete: url => instance.delete(url)
 }

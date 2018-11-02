@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import BomCard from '@/components/Cards/BomCard'
 import BomDetailTreeCard from '@/components/Cards/BomDetailTreeCard'
 import BomDetailCard from '@/components/Cards/BomDetailCard'
@@ -73,10 +73,7 @@ export default {
 
   },
   mounted () {
-    request({
-      method: 'get',
-      url: 'Products/CascaderOptions'
-    }).then(options => {
+    Api.get('Products/CascaderOptions').then(options => {
       this.products = options
     })
   }

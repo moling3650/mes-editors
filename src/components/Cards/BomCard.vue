@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import getBomForm from '@/form/bom'
 
 export default {
@@ -61,14 +61,8 @@ export default {
     },
 
     getBomList (productCode) {
-      request({
-        method: 'get',
-        url: 'Boms',
-        params: {
-          productCode
-        }
-      }).then(data => {
-        this.bomList = data
+      Api.get('Boms', { productCode }).then(boms => {
+        this.bomList = boms
       })
     },
 
@@ -79,11 +73,7 @@ export default {
       getBomForm({productCode: this.productCode}, 'add', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           formData.createTime = new Date()
-          request({
-            method: 'post',
-            url: 'Boms',
-            data: formData
-          }).then(bom => {
+          Api.post('Boms', formData).then(bom => {
             this.bomList.push(bom)
             this.$emit('change', bom)
             this.$message.success('添加成功')
@@ -95,11 +85,7 @@ export default {
     editBom (row) {
       getBomForm(row, 'edit', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          request({
-            method: 'put',
-            url: `Boms/${formData.bomId}`,
-            data: formData
-          }).then(_ => {
+          Api.put(`Boms/${formData.bomId}`, formData).then(_ => {
             const index = this.bomList.findIndex(b => b.bomId === formData.bomId)
             ~index && this.bomList.splice(index, 1, formData)
             this.$emit('change', formData)
@@ -115,10 +101,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        request({
-          method: 'delete',
-          url: `Boms/${row.bomId}`
-        }).then(_ => {
+        Api.delete(`Boms/${row.bomId}`).then(_ => {
           const index = this.bomList.findIndex(b => b.bomId === row.bomId)
           ~index && this.bomList.splice(index, 1)
           this.$emit('change', {})
