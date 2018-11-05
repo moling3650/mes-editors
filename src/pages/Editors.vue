@@ -14,6 +14,8 @@
             </template>
             <el-menu-item index="/editors/machine">设备管理</el-menu-item>
             <el-menu-item index="/editors/control_point">设备管控点</el-menu-item>
+            <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item>
+            <el-menu-item index="/editors/drive">驱动管理</el-menu-item>
           </el-submenu>
           <el-submenu index="workTool">
             <template slot="title">
