@@ -47,6 +47,10 @@ const editors = [
   {
     path: 'machineStandardPoint',
     component: () => import('@/pages/MachineStandardPointsEditor')
+  },
+  {
+    path: 'machineAnalogPoint',
+    component: () => import('@/pages/MachineAnalogPointEditor')
   }
 ]
 
