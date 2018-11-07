@@ -4,7 +4,23 @@
       <span class="card-header--text">属性明细</span>
     </div>
 
-    <div class="common-parameter">
+    <div class="kind-parameter" v-if="item.kindId">
+      <el-button class="fl-r" type="text" @click="addKindProp">添加属性</el-button>
+      <el-table :data="kindProps" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+        <el-table-column prop="pptType" label="属性类型" :formatter="formatter"></el-table-column>
+        <el-table-column prop="pptName" label="属性名称"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="80" align="center">
+          <template slot-scope="scope">
+            <el-button-group>
+              <el-button @click.stop="editKindProp(scope.row)" type="text" icon="el-icon-edit" circle size="mini"></el-button>
+              <el-button @click.stop="deleteKindProp(scope.row.pptId)" type="text" icon="el-icon-delete" circle size="mini"></el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <div class="common-parameter" v-if="propDetailVisible">
       <h3>普通参数</h3>
       <ul>
         <li v-for="p in commonPropList" :key="p.pptId" class="prop-item" :class="{ disable: !p.enable }">
@@ -15,7 +31,7 @@
       </ul>
     </div>
 
-    <div class="matching-parameter">
+    <div class="matching-parameter" v-if="propDetailVisible">
       <h3>匹配参数</h3>
       <ul>
         <li v-for="p in matchPropList" :key="p.pptId" class="prop-item" :class="{ disable: !p.enable }">
@@ -31,8 +47,8 @@
 
 <script>
 import axios from 'axios'
-import request from '@/utils/request'
-import getForm from '@/form'
+import Api from '@/utils/Api'
+import forms from '@/form'
 
 export default {
   name: 'ExPropsCard',
@@ -56,6 +72,8 @@ export default {
   },
   data () {
     return {
+      propDetailVisible: false,
+      kindProps: [],
       propertyList: []
     }
   },
@@ -71,13 +89,25 @@ export default {
     }
   },
   watch: {
-    item (obj) {
+    item (obj, oldObj) {
+      this.propDetailVisible = false
       if (!/^(Mould|WorkTool|Machine)s$/i.test(this.model)) {
         this.propertyList = []
+        if (obj.kindId === oldObj.kindId) {
+          return
+        }
+        if (obj.kindId) {
+          this._fetchKindProps({kindId: obj.kindId}).then(kindProps => {
+            this.kindProps = kindProps
+          })
+        } else {
+          this.kindProps = []
+        }
         return
       }
-      axios.all([this._fetchKindProps(obj.modelCode), this._fetchPropDetails(obj[this.modelCode])])
+      axios.all([this._fetchKindProps({modelCode: obj.modelCode}), this._fetchPropDetails(obj[this.modelCode])])
         .then(([kindProps, propDetails]) => {
+          this.kindProps = kindProps
           this.propertyList = kindProps.map(item => {
             const props = {
               pptId: item.pptId,
@@ -102,10 +132,15 @@ export default {
             props[this.modelCode] = this.item[this.modelCode]
             return props
           })
+          this.propDetailVisible = true
         })
     }
   },
   methods: {
+    formatter (row, col, cell) {
+      return ['普通参数', '匹配参数'][cell]
+    },
+
     addOrEdit (prop) {
       if (prop.id) {
         this._editProperty(prop)
@@ -114,33 +149,55 @@ export default {
       }
     },
 
-    _fetchKindProps (modelCode) {
-      return request({
-        url: `${this.type}KindProperties`,
-        params: {
-          modelCode
-        }
+    _fetchKindProps (params) {
+      return Api.get(`${this.type}KindProperties`, params)
+    },
+
+    addKindProp () {
+      forms[`${this.type}Property`]({kindId: this.item.kindId}, 'add').then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.post(`${this.type}KindProperties`, formData).then(kindProp => {
+          this.kindProps.push(kindProp)
+          close()
+        })
+      }))
+    },
+
+    editKindProp (row) {
+      forms[`${this.type}Property`](row, 'edit').then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.put(`${this.type}KindProperties/${formData.pptId}`, formData).then(_ => {
+          const index = this.kindProps.findIndex(kp => kp.pptId === formData.pptId)
+          ~index && this.kindProps.splice(index, 1, formData)
+          this.$message.success('修改成功')
+          close()
+        })
+      }))
+    },
+
+    deleteKindProp (id) {
+      this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        Api.delete(`${this.type}KindProperties/${id}`).then(_ => {
+          const index = this.kindProps.findIndex(kp => kp.pptId === id)
+          ~index && this.kindProps.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
       })
     },
 
     _fetchPropDetails (code) {
       const params = {}
       params[this.modelCode] = code
-      return request({
-        url: `${this.type}PropertyDetails`,
-        params
-      })
+      return Api.get(`${this.type}PropertyDetails`, params)
     },
 
     _addProperty (prop) {
-      const { pptName, ...ppt } = prop
-      getForm[`${this.type}PropertyDetail`](ppt, 'add')
-        .then(form => this.$showForm(form).$on('submit', (data, close) => {
-          request({
-            method: 'post',
-            url: `${this.type}PropertyDetails`,
-            data
-          }).then(newProp => {
+      forms[`${this.type}PropertyDetail`](prop, 'add')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          const { pptName, ...data } = formData
+          Api.post(`${this.type}PropertyDetails`, data).then(newProp => {
             this._updateProperty(Object.assign(newProp, { pptName }))
             this.$emit('change', newProp)
             this.$message.success('添加成功!')
@@ -150,14 +207,11 @@ export default {
     },
 
     _editProperty (prop) {
-      const { pptName, ...ppt } = prop
-      getForm[`${this.type}PropertyDetail`](ppt, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (data, close) => {
-          request({
-            method: 'put',
-            url: `${this.type}PropertyDetails/${data.id}`,
-            data
-          }).then(_ => {
+      console.log(prop)
+      forms[`${this.type}PropertyDetail`](prop, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          const { pptName, ...data } = formData
+          Api.put(`${this.type}PropertyDetails/${data.id}`, data).then(_ => {
             this._updateProperty(Object.assign(data, { pptName }))
             this.$emit('change', data)
             this.$message.success('修改成功')
@@ -184,12 +238,12 @@ export default {
       formItems[5].disabled = pptCondition !== 'between'
       if (pptCondition === 'between') {
         this.$set(rules, 'pptVal', [{ required: false }])
-        this.$set(rules, 'pptMin', [{ required: true, trigger: 'blur' }])
-        this.$set(rules, 'pptMax', [{ required: true, trigger: 'blur' }])
+        this.$set(rules, 'pptMin', [{ required: true, type: 'number', trigger: 'blur' }])
+        this.$set(rules, 'pptMax', [{ required: true, type: 'number', trigger: 'blur' }])
       } else {
         this.$set(rules, 'pptVal', [{ required: true, pattern: /^\d+(\.\d+)?$/, transform: value => value && value.trim(), message: '请输入数字', trigger: 'blur' }])
-        this.$set(rules, 'pptMin', [{ required: false }])
-        this.$set(rules, 'pptMax', [{ required: false }])
+        this.$set(rules, 'pptMin', [{ required: false, type: 'number' }])
+        this.$set(rules, 'pptMax', [{ required: false, type: 'number' }])
       }
     }
   }
@@ -262,4 +316,5 @@ ul {
   padding-right: 10px;
   border-bottom: 1px solid #333;
 }
+
 </style>
