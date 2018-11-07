@@ -3,15 +3,15 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">物料明细</span>
     </div>
-    <dl v-show="bomDetail.mat_code">
+    <dl v-show="bomDetail.matCode">
       <dt>BOM编号：</dt>
-      <dd>{{bomDetail.bom_code}}</dd>
+      <dd>{{bomDetail.bomCode}}</dd>
       <dt>物料编号：</dt>
-      <dd>{{bomDetail.mat_code}}</dd>
+      <dd>{{bomDetail.matCode}}</dd>
       <dt>物料名称：</dt>
-      <dd>{{bomDetail.mat_name}}</dd>
+      <dd>{{bomDetail.matName}}</dd>
       <dt>物料类型：</dt>
-      <dd>{{bomDetail.mat_type === 1 ? '原材料' : '半成品'}}</dd>
+      <dd>{{bomDetail.matType === 1 ? '原材料' : '半成品'}}</dd>
       <dt>消耗基数：</dt>
       <dd>{{bomDetail.base_qty}} {{bomDetail.unit}}</dd>
       <dt>消耗数量：</dt>
@@ -19,7 +19,7 @@
       <dt>损耗率：</dt>
       <dd>{{bomDetail.wastage || 0}} %</dd>
       <dt>是否管控：</dt>
-      <dd>{{bomDetail.be_ctrl === 1 ? '是' : '否'}}</dd>
+      <dd>{{bomDetail.beCtrl === 1 ? '是' : '否'}}</dd>
       <dt>能否超越：</dt>
       <dd>{{bomDetail.enable_beyond === 1 ? '是' : '否'}}</dd>
       <dt>可否替代：</dt>

@@ -66,8 +66,8 @@ export default {
     },
 
     handleBomChange (bom) {
-      this.bomCode = bom.bom_code
-      this.versionCode = bom.version_code
+      this.bomCode = bom.bomCode
+      this.versionCode = bom.versionCode
       this.bomDetail = {}
     }
 
