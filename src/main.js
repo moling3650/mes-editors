@@ -10,7 +10,9 @@ import ExPropsCard from '@/components/ExPropsCard'
 import ExTreeCard from '@/components/ExTreeCard'
 import ExItemCard from '@/components/ExItemCard'
 import 'element-ui/lib/theme-chalk/index.css'
+import VTree from 'vue-jstree'
 
+Vue.component('VTree', VTree)
 Vue.use(ElementUI)
 Vue.use(DialogForm)
 Vue.use(ExSelect)
