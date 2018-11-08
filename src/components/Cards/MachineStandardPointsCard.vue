@@ -74,7 +74,7 @@ export default {
     },
 
     fetchOptions (machineCode) {
-      return axios.all([Api.get('MachineDataPoints', { machineCode }), Api.get('Drives', { typeId: 3 })])
+      return axios.all([Api.get('MachineDataPoints', { machineCode }), Api.get('Drives', { driveClass: 1 })])
         .then(([points, drives]) => {
           this.dataPointOptions = toOptions(points, 'pointId', 'dataPointName')
           this.formatterMap.pointId = toMap(points, 'pointId', 'dataPointName')

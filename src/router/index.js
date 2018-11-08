@@ -51,6 +51,14 @@ const editors = [
   {
     path: 'machineAnalogPoint',
     component: () => import('@/pages/MachineAnalogPointEditor')
+  },
+  {
+    path: 'processFlowDetail',
+    component: () => import('@/pages/ProcessFlowDetailEditor')
+  },
+  {
+    path: 'processControlItemDetail',
+    component: () => import('@/pages/ProcessControlItemDetailEditor')
   }
 ]
 

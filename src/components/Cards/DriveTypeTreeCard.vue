@@ -32,7 +32,7 @@ export default {
     return {
       driveTypeList: [{
         value: 1,
-        typeName: '数据驱动'
+        typeName: '数采驱动'
       }, {
         value: 2,
         typeName: '业务驱动'
