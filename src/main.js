@@ -10,7 +10,8 @@ import ExPropsCard from '@/components/ExPropsCard'
 import ExTreeCard from '@/components/ExTreeCard'
 import ExItemCard from '@/components/ExItemCard'
 import 'element-ui/lib/theme-chalk/index.css'
-import VTree from 'vue-jstree'
+import 'vue-tree-halower/dist/halower-tree.min.css'
+import VTree from 'vue-tree-halower'
 
 Vue.component('VTree', VTree)
 Vue.use(ElementUI)
