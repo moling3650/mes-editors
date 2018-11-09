@@ -35,6 +35,8 @@ import Api from '@/utils/Api'
 import axios from 'axios'
 import toOptions from '@/utils/toOptions'
 import toMap from '@/utils/toMap'
+import getOkForm from '@/form/ProcessFlowDetailOk'
+import getNGForm from '@/form/ProcessFlowDetailNG'
 
 export default {
   name: 'ProcessFlowDetailCard',
@@ -57,7 +59,12 @@ export default {
       processListOptions: [],
       controlId: 0,
       pId: 0,
-      processFrom: ''
+      processFrom: '',
+      processGroupOptions: [],
+      processList: [],
+      disposalOptions: [],
+      processResult: '',
+      processOptions: []
     }
   },
   watch: {
@@ -107,52 +114,112 @@ export default {
         cancelButtonText: 'NG',
         distinguishCancelAndClose: true,
         type: 'warning'
-      }).then(_ => 0)
-        .catch(action => action === 'cancel' ? 1 : Promise.reject(new Error('cancel')))
-        .then(matType => {
+      }).then(_ => 'OK')
+        .catch(action => action === 'cancel' ? 'NG' : Promise.reject(new Error('cancel')))
+        .then(value => {
+          if (value === 'OK') {
+            getOkForm({flowCode: this.flowCode}, 'add', this.processGroupOptions)
+              .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+                formData.flowCode = this.flowCode
+                Api.post('ProcessFlowDetails', formData).then(flowDetail => {
+                  this.processFlowDetailList.push(flowDetail)
+                  this.$emit('change', flowDetail)
+                  this.$message.success('添加成功')
+                  close()
+                })
+              }).$on('update:processFromGroup', (groupCode, item, formItems) => {
+                const processList = this.processList.filter(p => p.groupCode === groupCode)
+                formItems[2].options = toOptions(processList, 'processCode', 'processName')
+              }).$on('update:processNextGroup', (groupCode, item, formItems) => {
+                const processList = this.processList.filter(p => p.groupCode === groupCode)
+                formItems[4].options = toOptions(processList, 'processCode', 'processName')
+              }))
+          } else {
+            getNGForm({flowCode: this.flowCode}, 'add', this.processGroupOptions, this.disposalOptions)
+              .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+                formData.flowCode = this.flowCode
+                Api.post('ProcessFlowDetails', formData).then(flowDetail => {
+                  this.processFlowDetailList.push(flowDetail)
+                  this.$emit('change', flowDetail)
+                  this.$message.success('添加成功')
+                  close()
+                })
+              }).$on('update:processFromGroup', (groupCode, item, formItems) => {
+                const processList = this.processList.filter(p => p.groupCode === groupCode)
+                formItems[2].options = toOptions(processList, 'processCode', 'processName')
+              }))
+          }
         })
     },
 
-    editProcessFlowDetail (drive) {
-      // getDriveForm(drive, 'edit')
-      //   .then(form => this.$showForm(form).$on('submit', (drive, close) => {
-      //     request({
-      //       method: 'put',
-      //       url: `Drives/${drive.driveId}`,
-      //       data: drive
-      //     }).then(_ => {
-      //       const index = this.processFlowDetailList.findIndex(b => b.driveId === drive.driveId)
-      //       ~index && this.processFlowDetailList.splice(index, 1, drive)
-      //       this.$emit('change', drive)
-      //       this.$message.success('修改成功')
-      //       close()
-      //     })
-      //   }))
+    editProcessFlowDetail (row) {
+      if (row.processResult === 'OK') {
+        getOkForm(row, 'edit', this.processGroupOptions, this.processOptions)
+          .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+            Api.put('ProcessFlowDetails/${formData.id', formData).then(_ => {
+              const index = this.processFlowDetailList.findIndex(b => b.pid === formData.id)
+              ~index && this.processFlowDetailList.splice(index, 1, formData)
+              this.$emit('change', formData)
+              this.$message.success('修改成功')
+              close()
+            })
+          }).$on('update:processFromGroup', (groupCode, item, formItems) => {
+            const processList = this.processList.filter(p => p.groupCode === groupCode)
+            formItems[2].options = toOptions(processList, 'processCode', 'processName')
+          }).$on('update:processNextGroup', (groupCode, item, formItems) => {
+            const processList = this.processList.filter(p => p.groupCode === groupCode)
+            formItems[4].options = toOptions(processList, 'processCode', 'processName')
+          }))
+      } else {
+        getNGForm(row, 'edit', this.processGroupOptions, this.disposalOptions, this.processOptions)
+          .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+            Api.put('ProcessFlowDetails/${formData.id', formData).then(_ => {
+              const index = this.processFlowDetailList.findIndex(b => b.pid === formData.id)
+              ~index && this.processFlowDetailList.splice(index, 1, formData)
+              this.$emit('change', formData)
+              this.$message.success('修改成功')
+              close()
+            })
+          }).$on('update:processFromGroup', (groupCode, item, formItems) => {
+            const processList = this.processList.filter(p => p.groupCode === groupCode)
+            formItems[2].options = toOptions(processList, 'processCode', 'processName')
+          }))
+      }
     },
 
-    deleteProcessFlowDetail (drive) {
-      // this.$confirm('此操作将永久删除该驱动, 是否继续?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(_ => {
-      //   request({
-      //     method: 'delete',
-      //     url: `Drives/${drive.driveId}`
-      //   }).then(_ => {
-      //     const index = this.processFlowDetailList.findIndex(s => s.driveId === drive.driveId)
-      //     ~index && this.processFlowDetailList.splice(index, 1)
-      //     this.$message.success('删除成功!')
-      //   })
-      // }).catch(_ => {
-      //   this.$message.info('已取消删除')
-      // })
+    deleteProcessFlowDetail (row) {
+      this.$confirm('此操作将永久删除该工艺步骤, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        Api.delete(`ProcessFlowDetails/${row.id}`).then(_ => {
+          const index = this.processFlowDetailList.findIndex(s => s.pid === row.pid)
+          ~index && this.processFlowDetailList.splice(index, 1)
+          this.$message.success('删除成功!')
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
     },
 
     selelctRow (row) {
       this.pId = row.pid
       this.processFrom = row.processFrom
     }
+  },
+
+  created () {
+    Api.get(`WorkGroups`).then(data => {
+      this.processGroupOptions = toOptions(data, 'groupCode', 'groupName')
+    })
+    Api.get(`ProcessLists`).then(data => {
+      this.processList = data
+      this.processOptions = toOptions(data, 'processCode', 'processName')
+    })
+    Api.get(`DisposalProcesses`).then(data => {
+      this.disposalOptions = toOptions(data, 'disposalCode', 'disposalName')
+    })
   }
 }
 </script>

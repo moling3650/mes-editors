@@ -94,8 +94,6 @@ export default {
 
     // 数据点列表
     fetchPoints (pId) {
-      console.log(33444)
-      console.log(pId)
       Api.get(`ProcessControlItemDetails`, { pId }).then(data => {
         this.ControlItemDetailList = data
       })
