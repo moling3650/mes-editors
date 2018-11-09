@@ -119,17 +119,13 @@ export default {
               pptMax: 0,
               enable: 1
             }
+            props[this.modelCode] = this.item[this.modelCode]
             const propDetail = propDetails.find(item => item.pptId === props.pptId)
             if (propDetail) {
-              props.id = propDetail.id
-              props.pptType = propDetail.pptType
-              props.pptCondition = propDetail.pptCondition
-              props.pptVal = propDetail.pptVal
-              props.pptMin = propDetail.pptMin
-              props.pptMax = propDetail.pptMax
-              props.enable = propDetail.enable
+              const { mouldCode, ...data } = propDetail
+              return Object.assign({}, props, data)
             }
-            props[this.modelCode] = this.item[this.modelCode]
+
             return props
           })
           this.propDetailVisible = true
@@ -207,7 +203,6 @@ export default {
     },
 
     _editProperty (prop) {
-      console.log(prop)
       forms[`${this.type}PropertyDetail`](prop, 'edit')
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           const { pptName, ...data } = formData
