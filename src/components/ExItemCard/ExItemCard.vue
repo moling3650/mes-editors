@@ -3,8 +3,8 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">{{title}}</span>
       <span class="fl-r" v-show="model">
-        <el-button type="text" size="mini" icon="el-icon-edit" @click="editAnalogPoint" v-if="this.model === 'Machines'">模拟量</el-button>
-        <el-button type="text" size="mini" icon="el-icon-edit" @click="editStandardPoint" v-if="this.model === 'Machines'">数据点</el-button>
+        <el-button type="text" size="mini" icon="el-icon-edit" @click="$emit('skip', 'MachineAnalogPoint', item)" v-if="this.model === 'Machines'">模拟量</el-button>
+        <el-button type="text" size="mini" icon="el-icon-edit" @click="$emit('skip', 'MachineStandardPoint', item)" v-if="this.model === 'Machines'">数据点</el-button>
         <el-button type="text" size="mini" icon="el-icon-edit" @click="editItem">编辑</el-button>
         <el-button type="text" size="mini" icon="el-icon-delete" @click="deleteItem">删除</el-button>
       </span>

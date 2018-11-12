@@ -1,5 +1,5 @@
 <template>
-  <div id="MachineAnalogPointEditor">
+  <div id="MachineAnalogPoint">
 
     <el-row :gutter="20" class="row">
       <el-col :span="22">
@@ -14,27 +14,21 @@
 import MachineAnalogPointCard from '@/components/Cards/MachineAnalogPointCard'
 
 export default {
-  name: 'MachineAnalogPointEditor',
+  name: 'MachineAnalogPoint',
   components: {
     MachineAnalogPointCard
   },
-  data () {
-    return {
-      machineCode: ''
+  props: {
+    machineCode: {
+      type: String,
+      required: true
     }
-  },
-  computed: {
-  },
-  methods: {
-  },
-  mounted () {
-    this.machineCode = this.$route.query.machineCode
   }
 }
 </script>
 
 <style scoped>
-#MachineAnalogPointEditor {
+#MachineAnalogPoint {
   margin: 5px;
 }
 </style>
