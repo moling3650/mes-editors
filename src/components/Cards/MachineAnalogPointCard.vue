@@ -1,8 +1,8 @@
 <template>
   <el-card>
     <div slot="header" class="clearfix">
-      <span class="card-header--text">设备模拟量维护</span>
-      <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addAnalogPoint">添加模拟量</el-button>
+      <span class="card-header--text">设备({{machineCode}})模拟量维护</span>
+      <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addAnalogPoint">添加模拟量</el-button>
     </div>
     <el-table :data="AnalogPointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="machineCode" label="设备编号"/>
@@ -38,11 +38,6 @@ export default {
       required: true
     }
   },
-  computed: {
-    disabled () {
-      return !this.machineCode
-    }
-  },
   data () {
     return {
       formatterMap: {},
@@ -53,11 +48,8 @@ export default {
     }
   },
   watch: {
-    'machineCode' (value, oldValue) {
-      this.AnalogPointList = []
-      if (value) {
-        this.fetchOptions(value).then(_ => this.fetchPoints(value))
-      }
+    machineCode (value) {
+      this.fetchOptions(value).then(_ => this.fetchPoints(value))
     }
   },
   methods: {
@@ -126,7 +118,8 @@ export default {
       })
     }
   },
-  mounted () {
+  created () {
+    this.fetchOptions(this.machineCode).then(_ => this.fetchPoints(this.machineCode))
     getMachineAnalogPointForm(null, 'add', [], [], []).then(form => {
       this.formatterMap.runAt = toMap(form.formItems[2].options, 'value', 'label')
     })

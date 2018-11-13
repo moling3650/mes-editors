@@ -1,8 +1,8 @@
 <template>
-  <div id="MachineStandardPointsEditor">
+  <div id="MachineStandardPoint">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="22">
+      <el-col :span="24">
         <MachineStandardPointsCard :machineCode="machineCode"/>
       </el-col>
     </el-row>
@@ -14,27 +14,21 @@
 import MachineStandardPointsCard from '@/components/Cards/MachineStandardPointsCard'
 
 export default {
-  name: 'MachineStandardPointsEditor',
+  name: 'MachineStandardPoint',
   components: {
     MachineStandardPointsCard
   },
-  data () {
-    return {
-      machineCode: ''
+  props: {
+    machineCode: {
+      type: String,
+      required: true
     }
-  },
-  computed: {
-  },
-  methods: {
-  },
-  mounted () {
-    this.machineCode = this.$route.query.machineCode
   }
 }
 </script>
 
 <style scoped>
-#MachineStandardPointsEditor {
+#MachineStandardPoint {
   margin: 5px;
 }
 </style>

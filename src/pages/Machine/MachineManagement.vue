@@ -5,7 +5,7 @@
         <ExTreeCard title="设备管理" model="Machine" height="500" @change="handleChange" ref="tree"/>
       </el-col>
       <el-col :span="8">
-        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem"/>
+        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem" @skip="handleSkip"/>
       </el-col>
       <el-col :span="8">
         <ExPropsCard :model="model" :item="item" height="500" type="Machine"/>
@@ -38,6 +38,19 @@ export default {
       this.model = ''
       this.item = {}
       this.$refs.tree.removeCurrentNode()
+    },
+
+    handleSkip (name, machine) {
+      const labels = {
+        MachineAnalogPoint: '模拟量',
+        MachineStandardPoint: '数据点'
+      }
+      const tab = {
+        name,
+        label: labels[name],
+        machineCode: machine.machineCode
+      }
+      this.$emit('addTab', tab)
     }
   }
 }

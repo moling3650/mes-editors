@@ -22,7 +22,7 @@ const editors = [
   },
   {
     path: 'machine',
-    component: () => import('@/pages/MachineEditor')
+    component: () => import('@/pages/Machine/Machine')
   },
   {
     path: 'workTool',
@@ -43,14 +43,6 @@ const editors = [
   {
     path: 'drive',
     component: () => import('@/pages/DriveEditor')
-  },
-  {
-    path: 'machineStandardPoint',
-    component: () => import('@/pages/MachineStandardPointsEditor')
-  },
-  {
-    path: 'machineAnalogPoint',
-    component: () => import('@/pages/MachineAnalogPointEditor')
   },
   {
     path: 'processFlowDetail',
