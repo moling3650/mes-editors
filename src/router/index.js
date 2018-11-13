@@ -59,7 +59,12 @@ const editors = [
   {
     path: 'processControlItemDetail',
     component: () => import('@/pages/ProcessControlItemDetailEditor')
+  },
+  {
+    path: 'processStep',
+    component: () => import('@/pages/ProcessStepEditor')
   }
+
 ]
 
 export default new Router({

@@ -3,7 +3,8 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">工艺流程管理</span>
       <span class="fl-r">
-        <el-button :disabled="disabled" type="text" size="mini" icon="el-icon-edit" @click="editControlItemDetail">管控细则</el-button>
+        <el-button :disabled="workDisabled" type="text" size="mini" icon="el-icon-edit" @click="editProcessStep">后工序步骤管理</el-button>
+        <el-button :disabled="workDisabled" type="text" size="mini" icon="el-icon-edit" @click="editControlItemDetail">管控细则</el-button>
         <el-button :disabled="disabled" size="mini" icon="el-icon-plus" type="text" @click="addProcessFlowDetail">添加</el-button>
       </span>
     </div>
@@ -49,6 +50,9 @@ export default {
   computed: {
     disabled () {
       return !this.flowCode
+    },
+    workDisabled () {
+      return this.pId === 0
     }
   },
   data () {
@@ -92,8 +96,10 @@ export default {
           this.formatterMap.processFromGroup = toMap(workGroups, 'groupCode', 'groupName')
           this.formatterMap.processNextGroup = toMap(workGroups, 'groupCode', 'groupName')
           this.processListOptions = toOptions(processLists, 'processCode', 'processName')
+          this.processListOptions.push({ value: 'END' })
           this.formatterMap.processFrom = toMap(processLists, 'processCode', 'processName')
           this.formatterMap.processNext = toMap(processLists, 'processCode', 'processName')
+          this.formatterMap.processNext['END'] = 'END'
         })
     },
 
@@ -106,6 +112,10 @@ export default {
     // 待完善传入controlId、pId
     editControlItemDetail () {
       this.$router.push({ path: '/editors/processControlItemDetail', query: { pId: this.pId, processFrom: this.processFrom } })
+    },
+
+    editProcessStep () {
+      this.$router.push({ path: '/editors/processStep', query: { pId: this.pId, processFrom: this.processFrom, flowCode: this.flowCode } })
     },
 
     addProcessFlowDetail () {
