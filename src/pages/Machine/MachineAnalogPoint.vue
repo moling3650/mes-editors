@@ -2,7 +2,7 @@
   <div id="MachineAnalogPoint">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="22">
+      <el-col :span="24">
         <MachineAnalogPointCard :machineCode="machineCode"/>
       </el-col>
     </el-row>
