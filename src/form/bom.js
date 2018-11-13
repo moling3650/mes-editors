@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 
 function checkBomCode (rule, value, callback) {
   if (rule.type === 'edit') {
@@ -7,13 +7,7 @@ function checkBomCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('Bom编号不能为空'))
   }
-  request({
-    method: 'get',
-    url: 'Boms/Validate',
-    params: {
-      bomCode: value
-    }
-  }).then(valid => {
+  Api.get('Boms/Validate', { bomCode: value }).then(valid => {
     if (valid) {
       callback()
     } else {

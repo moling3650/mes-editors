@@ -3,45 +3,43 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
     return void console.error('缺少物料的Options')
   }
 
-  const material = form.mat_code ? options.find(o => o.value === form.mat_code) : null
-  const unit = material ? material.unit : ''
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}BOM明细表单`,
     formItems: [
       {
-        value: 'bom_code',
+        value: 'bomCode',
         label: 'BOM编号',
         component: 'el-input',
         disabled: true
       },
       {
-        value: 'mat_type',
+        value: 'matType',
         label: '物料类型',
         component: 'ex-select',
         options: [{value: 0, label: '成品'}, {value: 1, label: '物料'}],
-        disabled: true
+        disabled: type === 'edit'
       },
       {
-        value: 'mat_code',
+        value: 'matCode',
         label: '物料编号',
         component: 'ex-select',
         options,
         disabled: type === 'edit'
       },
       {
-        value: 'base_qty',
+        value: 'baseQty',
         label: '消耗基数',
         component: 'ex-input-number',
         span: 12,
         disabled: true,
-        unit
+        unit: ''
       },
       {
         value: 'qty',
         label: '消耗数量',
         component: 'ex-input-number',
         span: 12,
-        unit
+        unit: ''
       },
       {
         value: 'wastage',
@@ -50,7 +48,7 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
         unit: '%'
       },
       {
-        value: 'enable_Substitute',
+        value: 'enableSubstitute',
         label: '能否替代',
         component: 'el-switch',
         activeValue: 1,
@@ -58,7 +56,7 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
         span: 8
       },
       {
-        value: 'enable_beyond',
+        value: 'enableBeyond',
         label: '能否超越',
         component: 'el-switch',
         activeValue: 1,
@@ -66,7 +64,7 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
         span: 8
       },
       {
-        value: 'be_ctrl',
+        value: 'beCtrl',
         label: '是否可控',
         component: 'el-switch',
         activeValue: 1,
@@ -75,21 +73,21 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
       }
     ],
     formData: Object.assign({
-      bom_code: '',
-      mat_type: '',
-      mat_code: '',
+      bomCode: '',
+      matType: 0,
+      matCode: '',
       qty: 1,
-      base_qty: 1,
+      baseQty: 1,
       wastage: 0,
-      enable_Substitute: 1,
-      enable_beyond: 1,
-      be_ctrl: 1
+      enableSubstitute: 1,
+      enableBeyond: 1,
+      beCtrl: 1
     }, form),
     rules: {
-      bom_code: [{ required: true, trigger: 'blur' }],
-      mat_type: [{ required: true, trigger: 'blur' }],
-      mat_code: [{ required: true, trigger: 'blur' }],
-      qty: [{ required: true, trigger: 'blur' }]
+      bomCode: [{ required: true, trigger: 'blur' }],
+      matType: [{ required: true, type: 'number', trigger: 'blur' }],
+      matCode: [{ required: true, trigger: 'blur' }],
+      qty: [{ required: true, type: 'number', trigger: 'blur' }]
     }
   })
 }
