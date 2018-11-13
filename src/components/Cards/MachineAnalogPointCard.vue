@@ -14,8 +14,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editAnalogPoint(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteAnalogPoint(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editAnalogPoint(scope)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+            <el-button @click.stop="deleteAnalogPoint(scope)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -60,7 +60,6 @@ export default {
     fetchOptions (machineCode) {
       return axios.all([Api.get('MachineDataPoints', { machineCode }), Api.get('ProcessControlItems', { machineCode })])
         .then(([points, controls]) => {
-          console.log(controls)
           this.dataPointOptions = toOptions(points, 'pointId', 'dataPointName')
           this.formatterMap.pointId = toMap(points, 'pointId', 'dataPointName')
           this.controlOptions = toOptions(controls, 'id', 'controlName')
@@ -89,12 +88,11 @@ export default {
         }))
     },
 
-    editAnalogPoint (row) {
-      getMachineAnalogPointForm(row, 'edit', this.businessOptions, this.dataPointOptions, this.controlOptions)
+    editAnalogPoint (scope) {
+      getMachineAnalogPointForm(scope.row, 'edit', this.businessOptions, this.dataPointOptions, this.controlOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`MachineAnalogPoints/${formData.id}`, formData).then(_ => {
-            const index = this.AnalogPointList.findIndex(b => b.id === formData.id)
-            ~index && this.AnalogPointList.splice(index, 1, formData)
+            this.AnalogPointList.splice(scope.$index, 1, formData)
             this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
@@ -102,15 +100,14 @@ export default {
         }))
     },
 
-    deleteAnalogPoint (row) {
+    deleteAnalogPoint (scope) {
       this.$confirm('此操作将永久删除该数据点, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`MachineAnalogPoints/${row.id}`).then(_ => {
-          const index = this.AnalogPointList.findIndex(s => s.id === row.id)
-          ~index && this.AnalogPointList.splice(index, 1)
+        Api.delete(`MachineAnalogPoints/${scope.row.id}`).then(_ => {
+          this.AnalogPointList.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {

@@ -98,12 +98,11 @@ export default {
         }))
     },
 
-    editStandardPoint (row) {
-      getMachineStandardPointForm(row, 'edit', this.businessOptions, this.dataPointOptions, this.driveOptions)
+    editStandardPoint (scope) {
+      getMachineStandardPointForm(scope.row, 'edit', this.businessOptions, this.dataPointOptions, this.driveOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`MachineStandardPoints/${formData.id}`, formData).then(_ => {
-            const index = this.PointList.findIndex(b => b.id === formData.id)
-            ~index && this.PointList.splice(index, 1, formData)
+            this.PointList.splice(scope.$index, 1, formData)
             this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
@@ -113,15 +112,14 @@ export default {
         }))
     },
 
-    deleteStandardPoint (row) {
+    deleteStandardPoint (scope) {
       this.$confirm('此操作将永久删除该数据点, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`MachineStandardPoints/${row.id}`).then(_ => {
-          const index = this.PointList.findIndex(s => s.id === row.id)
-          ~index && this.PointList.splice(index, 1)
+        Api.delete(`MachineStandardPoints/${scope.row.id}`).then(_ => {
+          this.PointList.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
