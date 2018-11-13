@@ -55,6 +55,11 @@ export default {
       businessOptions: business.map((label, index) => ({value: `0${index + 1}`, label}))
     }
   },
+  watch: {
+    machineCode (value) {
+      this.fetchOptions(value).then(_ => this.fetchPoints(value))
+    }
+  },
   methods: {
     formatter (row, col, cell, index) {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
@@ -124,7 +129,7 @@ export default {
       })
     }
   },
-  mounted () {
+  created () {
     this.fetchOptions(this.machineCode).then(_ => this.fetchPoints(this.machineCode))
     getMachineStandardPointForm().then(form => {
       this.formatterMap.runAt = toMap(form.formItems[2].options, 'value', 'label')
