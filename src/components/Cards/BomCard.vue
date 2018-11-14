@@ -104,7 +104,7 @@ export default {
         Api.delete(`Boms/${row.bomId}`).then(_ => {
           const index = this.bomList.findIndex(b => b.bomId === row.bomId)
           ~index && this.bomList.splice(index, 1)
-          this.$emit('change', {})
+          this.$emit('update:bomDetail', {})
           this.$message.success('删除成功!')
         })
       }).catch(_ => {

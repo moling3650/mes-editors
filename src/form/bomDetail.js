@@ -1,4 +1,4 @@
-export default function getBomDetailForm (form = null, type = 'add', options) {
+export default function getBomDetailForm (form = null, type = 'add', options = [], unit = '') {
   if (!options) {
     return void console.error('缺少物料的Options')
   }
@@ -32,14 +32,14 @@ export default function getBomDetailForm (form = null, type = 'add', options) {
         component: 'ex-input-number',
         span: 12,
         disabled: true,
-        unit: ''
+        unit
       },
       {
         value: 'qty',
         label: '消耗数量',
         component: 'ex-input-number',
         span: 12,
-        unit: ''
+        unit
       },
       {
         value: 'wastage',

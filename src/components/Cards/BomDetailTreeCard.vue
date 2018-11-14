@@ -2,7 +2,7 @@
   <el-card class="h600">
     <div slot="header" class="clearfix">
       <span class="card-header--text">BOM清单： {{ bomCode }}</span>
-      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail">添加BOM明细</el-button>
+      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加BOM明细</el-button>
     </div>
     <v-tree class="tree" ref="tree" :data="treeData" :tpl="tpl" @async-load-nodes='loadNodes'/>
   </el-card>
@@ -11,7 +11,8 @@
 <script>
 import Api from '@/utils/Api'
 import toMap from '@/utils/toMap'
-// import getForm from '@/form/bomDetail'
+import toOptions from '@/utils/toOptions'
+import getForm from '@/form/bomDetail'
 
 export default {
   name: 'BomDetailTreeCard',
@@ -32,10 +33,11 @@ export default {
   },
   data () {
     return {
-      loaded: false,
-      uid: 0,
       treeData: [],
-      names: []
+      names: [],
+      units: [],
+      prodeuctOpts: [],
+      materialOpts: []
     }
   },
   watch: {
@@ -48,6 +50,20 @@ export default {
   },
 
   methods: {
+    _matTypeChanged (matType, _, formItems, rules) {
+      const options = matType ? this.materialOpts : this.prodeuctOpts
+      formItems[2].options = options
+      rules.bomCode[0].form.matCode = ''
+      formItems[3].unit = ''
+      formItems[4].unit = ''
+    },
+
+    _matCodeChanged (matCode, _, formItems) {
+      const unit = this.units[matCode]
+      formItems[3].unit = unit
+      formItems[4].unit = unit
+    },
+
     cancelSelected (nodes) {
       for (const node of nodes) {
         if (Array.isArray(node.children)) {
@@ -61,6 +77,7 @@ export default {
       const root = this.$refs.tree.data
       this.cancelSelected(root)
       this.$set(node, 'selected', !node.selected)
+      this.$emit('update:bomDetail', node.rawData)
     },
 
     addNode (parent, newNode) {
@@ -90,7 +107,26 @@ export default {
       }
     },
 
-    addBomDetail () {},
+    newNode (item) {
+      return {
+        id: item.bomDetailId,
+        title: this.names[item.matType] && this.names[item.matType][item.matCode],
+        async: !item.matType,
+        rawData: item
+      }
+    },
+
+    addBomDetail (node) {
+      const bomCode = node ? node.rawData.bomCode : this.bomCode
+      getForm({ bomCode }, 'add', this.prodeuctOpts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.post('BomDetails', formData).then(item => {
+          if (!node) {
+            this.treeData.push(this.newNode(item))
+          }
+          close()
+        })
+      }).$on('update:matType', this._matTypeChanged).$on('update:matCode', this._matCodeChanged))
+    },
     getBomDetails (bomCode) {
       Api.get('BomDetails', { bomCode }).then(data => {
         this.treeData = data.map(item => {
@@ -114,47 +150,72 @@ export default {
     },
 
     editNode (node) {
-
+      const options = node.rawData.matType ? this.materialOpts : this.prodeuctOpts
+      const unit = this.units[node.rawData.matCode]
+      getForm(node.rawData, 'edit', options, unit).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.put(`BomDetails/${formData.bomDetailId}`, formData).then(_ => {
+          const children = node.parent === null ? this.treeData : node.parent.children
+          const index = children.indexOf(node)
+          if (~index) {
+            children.splice(index, 1, this.newNode(formData))
+            this.$emit('update:bomDetail', formData)
+          }
+          close()
+        })
+      }).$on('update:matType', this._matTypeChanged).$on('update:matCode', this._matCodeChanged))
     },
 
-    deleteNode (node, parent, index) {
-      this.$refs.tree.delNode(node, parent, index)
+    deleteNode (node) {
+      this.$confirm('此操作将永久删除该BOM明细, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        Api.delete(`BomDetails/${node.rawData.bomDetailId}`).then(_ => {
+          const children = node.parent === null ? this.treeData : node.parent.children
+          const index = children.indexOf(node)
+          if (~index) {
+            children.splice(index, 1)
+            this.$emit('change', {})
+            this.$message.success('删除成功!')
+          }
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
     },
 
     loadNodes (node) {
       this.$set(node, 'loading', true)
       Api.get('BomDetails', { productCode: node.rawData.matCode, version: this.version }).then(data => {
-        const nodes = data.map(item => {
-          return {
-            id: item.bomDetailId,
-            title: this.names[item.matType] && this.names[item.matType][item.matCode],
-            async: !item.matType,
-            rawData: item
-          }
-        })
+        const nodes = data.map(item => this.newNode(item))
         this.addNodes(node, nodes)
         this.$set(node, 'loading', false)
       })
     },
 
     // tpl (node, ctx, parent, index, props) {
-    tpl (node, ctx, parent, index) {
+    tpl (node, ctx) {
       let titleClass = node.selected ? 'node-title node-selected' : 'node-title'
       titleClass += node.searched ? ' node-searched' : ''
       return <span>
         <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
         <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
-        <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node, parent, index)}/>
+        <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
       </span>
     }
   },
 
-  mounted () {
+  created () {
     Api.get('Products').then(products => {
       this.names[0] = toMap(products, 'productCode', 'productName')
+      this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
+      this.units = Object.assign({}, this.units, toMap(products, 'productCode', 'unit'))
     })
     Api.get('Materials').then(materials => {
       this.names[1] = toMap(materials, 'matCode', 'matName')
+      this.materialOpts = toOptions(materials, 'matCode', 'matName')
+      this.units = Object.assign({}, this.units, toMap(materials, 'matCode', 'unit'))
     })
   }
 }
