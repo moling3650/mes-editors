@@ -5,13 +5,13 @@
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addSubstitute">添加替代料</el-button>
     </div>
     <el-table :data="substitutes" stripe header-cell-class-name="thcell" size="mini" class="w100p">
-      <el-table-column prop="Substitute_mat_code" label="替代料编号"/>
-      <el-table-column prop="Substitute_mat_name" label="替代料名称"/>
+      <el-table-column prop="substituteMatCode" label="替代料编号"/>
+      <el-table-column prop="substituteMatCode" label="替代料名称" :formatter="formatter"/>
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editSubstitute(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteSubstitute(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editSubstitute(scope)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteSubstitute(scope)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
@@ -20,7 +20,9 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import Api from '@/utils/Api'
+import toMap from '@/utils/toMap'
+import toOptions from '@/utils/toOptions'
 import getSubstituteForm from '@/form/substitute'
 
 export default {
@@ -33,40 +35,47 @@ export default {
   },
   computed: {
     disabled () {
-      return !this.bomDetail.enable_Substitute
+      return !this.bomDetail.enableSubstitute
+    },
+    options () {
+      return this.bomDetail.matType ? this.materialOpts : this.prodeuctOpts
+    },
+    codes () {
+      const { bomCode, matCode } = this.bomDetail
+      return { bomCode, matCode }
     }
   },
   data () {
     return {
-      substitutes: []
+      substitutes: [],
+      names: [],
+      prodeuctOpts: [],
+      materialOpts: []
     }
   },
   watch: {
-    'bomDetail.mat_code' (value, oldValue) {
+    'bomDetail.matCode' (value, oldValue) {
       this.substitutes = []
-      if (this.bomDetail.enable_Substitute) {
+      if (this.bomDetail.enableSubstitute) {
         this.fetchSubstitutes()
       }
     }
   },
   methods: {
+    formatter (row, col, cell) {
+      return this.names[this.bomDetail.matType][cell]
+    },
     // 操作替代料
     fetchSubstitutes () {
-      apis.fetchSubstituteMaterial(this.bomDetail.bom_code, this.bomDetail.mat_code).then(data => {
+      Api.get('MatSubstitutes', this.codes).then(data => {
         this.substitutes = data
       })
     },
 
     addSubstitute () {
-      const formData = {
-        bom_code: this.bomDetail.bom_code,
-        mat_code: this.bomDetail.mat_code
-      }
-      const optionsApi = this.bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
-      apis[optionsApi]()
-        .then(options => getSubstituteForm(formData, 'add', options))
-        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
-          apis.addSubstitute(substitute).then(substitute => {
+      getSubstituteForm(this.codes, 'add', this.options)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.post('MatSubstitutes', formData).then(substitute => {
             this.substitutes.push(substitute)
             this.$message.success('添加成功!')
             close()
@@ -74,35 +83,41 @@ export default {
         }))
     },
 
-    editSubstitute (row) {
-      const optionsApi = this.bomDetail.mat_type ? 'fetchMaterialOptions' : 'fetchProductOptions'
-      apis[optionsApi]()
-        .then(options => getSubstituteForm(row, 'edit', options))
-        .then(form => this.$showForm(form).$on('submit', (substitute, close) => {
-          apis.updateSubstitute(substitute).then(substitute => {
-            const index = this.substitutes.findIndex(s => s.id === substitute.id)
-            ~index && this.substitutes.splice(index, 1, substitute)
+    editSubstitute (scope) {
+        getSubstituteForm(scope.row, 'edit', this.options)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.put(`MatSubstitutes/${scope.row.id}`, formData).then(_ => {
+            this.substitutes.splice(scope.$index, 1, formData)
             this.$message.success('修改成功!')
             close()
           })
         }))
     },
 
-    deleteSubstitute (substitute) {
+    deleteSubstitute (scope) {
       this.$confirm('此操作将永久删除该替代料, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        apis.deleteSubstitute(substitute).then(_ => {
-          const index = this.substitutes.findIndex(s => s.id === substitute.id)
-          ~index && this.substitutes.splice(index, 1)
+        Api.delete(`MatSubstitutes/${scope.row.id}`).then(_ => {
+          this.substitutes.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
         this.$message.info('已取消删除')
       })
     }
+  },
+  created () {
+    Api.get('Products').then(products => {
+      this.names[0] = toMap(products, 'productCode', 'productName')
+      this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
+    })
+    Api.get('Materials').then(materials => {
+      this.names[1] = toMap(materials, 'matCode', 'matName')
+      this.materialOpts = toOptions(materials, 'matCode', 'matName')
+    })
   }
 }
 </script>
