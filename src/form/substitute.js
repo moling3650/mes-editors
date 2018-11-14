@@ -6,34 +6,34 @@ export default function getSubstituteForm (form = null, type = 'add', options) {
     title: `${type === 'add' ? '新建' : '编辑'}替代料`,
     formItems: [
       {
-        value: 'bom_code',
+        value: 'bomCode',
         label: 'BOM编号',
         component: 'el-input',
         disabled: true
       },
       {
-        value: 'mat_code',
+        value: 'matCode',
         label: '物料',
         component: 'ex-select',
         options,
         disabled: true
       },
       {
-        value: 'Substitute_mat_code',
+        value: 'substituteMatCode',
         label: '替代料',
         component: 'ex-select',
         options
       }
     ],
     formData: Object.assign({
-      bom_code: '',
-      mat_code: '',
-      Substitute_mat_code: ''
+      bomCode: '',
+      matCode: '',
+      substituteMatCode: ''
     }, form),
     rules: {
-      bom_code: [{ required: true, trigger: 'blur' }],
-      mat_code: [{ required: true, trigger: 'blur' }],
-      Substitute_mat_code: [{ required: true, message: '请选择替代料', trigger: 'blur' }]
+      bomCode: [{ required: true, trigger: 'blur' }],
+      matCode: [{ required: true, trigger: 'blur' }],
+      substituteMatCode: [{ required: true, message: '请选择替代料', trigger: 'blur' }]
     }
   })
 }
