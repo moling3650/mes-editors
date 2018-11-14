@@ -21,9 +21,9 @@
       <dt>是否管控：</dt>
       <dd>{{bomDetail.beCtrl === 1 ? '是' : '否'}}</dd>
       <dt>能否超越：</dt>
-      <dd>{{bomDetail.enable_beyond === 1 ? '是' : '否'}}</dd>
+      <dd>{{bomDetail.enableBeyond === 1 ? '是' : '否'}}</dd>
       <dt>可否替代：</dt>
-      <dd>{{bomDetail.enable_Substitute === 1 ? '是' : '否'}}</dd>
+      <dd>{{bomDetail.enableSubstitute === 1 ? '是' : '否'}}</dd>
     </dl>
   </el-card>
 </template>
@@ -50,13 +50,14 @@ dl {
 dt, dd {
   color: #000;
   font-size: 14px;
+  min-height: 18px;
 }
 dt {
   font-weight: normal;
 }
 dd {
-  margin-left: 100px;
-  margin-top: -25px;
+  margin-left: 80px;
+  margin-top: -24px;
 }
 dt {
   line-height: 2;
