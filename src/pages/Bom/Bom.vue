@@ -1,15 +1,15 @@
 <template>
-  <div id="BomEditor">
+  <div id="Bom">
 
-    <el-row :gutter="20" class="row">
+    <el-row :gutter="10" class="row">
       <el-col :span="8">
         <el-cascader :options="products" placeholder="请选择产品" filterable @change="handleProductChange" class="w100p"/>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" class="row">
+    <el-row :gutter="10" class="row">
       <el-col :span="8">
-        <BomCard :productCode="productCode" :productOptions="productOptions" @change="handleBomChange"/>
+        <BomCard :productCode="productCode" :productOptions="productOptions" @change="handleBomChange" @skip="handleSkip"/>
       </el-col>
 
       <el-col :span="10">
@@ -33,7 +33,7 @@ import BomDetailCard from '@/components/Cards/BomDetailCard'
 import SubstituteCard from '@/components/Cards/SubstituteCard'
 
 export default {
-  name: 'BomEditor',
+  name: 'Bom',
   components: {
     BomCard,
     BomDetailTreeCard,
@@ -69,6 +69,15 @@ export default {
       this.bomCode = bom.bomCode
       this.versionCode = bom.versionCode
       this.bomDetail = {}
+    },
+
+    handleSkip (name, bom) {
+      const tab = {
+        name,
+        label: '配方管理',
+        bomCode: bom.bomCode
+      }
+      this.$emit('addTab', tab)
     }
 
   },
@@ -81,7 +90,4 @@ export default {
 </script>
 
 <style scoped>
-#BomEditor {
-  margin: 5px;
-}
 </style>

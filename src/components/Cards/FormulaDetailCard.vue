@@ -4,16 +4,16 @@
       <span class="card-header--text">{{ formulaCode ? `配方(${formulaCode})的明细` : '请先选择配方' }}</span>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addFormulaDetail">添加配方项</el-button>
     </div>
-    <el-table :data="formulaDetailList" stripe size="mini" header-cell-class-name="thcell" class="w100p">
-      <el-table-column prop="formula_item" label="配方项"/>
-      <el-table-column prop="material_code" label="物料"/>
-      <el-table-column prop="feed_idx" label="加料顺序"/>
-      <el-table-column prop="feed_qty" label="加料数量"/>
+    <el-table :data="formulaDetails" stripe size="mini" header-cell-class-name="thcell" class="w100p">
+      <el-table-column prop="formulaItem" label="配方项"/>
+      <el-table-column prop="materialCode" label="物料"/>
+      <el-table-column prop="feedIdx" label="加料顺序"/>
+      <el-table-column prop="feedQty" label="加料数量"/>
       <el-table-column fixed="right" label="操作" width="84" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editFormulaDetail(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteFormulaDetail(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editFormulaDetail(scope)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteFormulaDetail(scope)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
@@ -22,7 +22,8 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import Api from '@/utils/Api'
+import toOptions from '@/utils/toOptions'
 import getFormulaDetailForm from '@/form/formulaDetail'
 
 export default {
@@ -30,10 +31,6 @@ export default {
   props: {
     formulaCode: {
       type: String,
-      required: true
-    },
-    bomMaterials: {
-      type: Array,
       required: true
     }
   },
@@ -44,58 +41,64 @@ export default {
   },
   data () {
     return {
-      formulaDetailList: []
+      formulaDetails: [],
+      materialOpts: []
     }
   },
   watch: {
-    formulaCode (value, oldValue) {
-      this.formulaDetailList = []
-      if (value) {
-        this.getFormulaDetailList(value)
-      }
+    formulaCode: {
+      handler (value, oldValue) {
+        this.formulaDetails = []
+        this.materialOpts = []
+        if (value) {
+          this.getFormulaDetails(value)
+          Api.get('Materials/Options', { formulaCode: value }).then(data => {
+            this.materialOpts = toOptions(data, 'code', 'name')
+          })
+        }
+      },
+      immediate: true
     }
   },
   methods: {
-    getFormulaDetailList (formulaCode) {
-      apis.fetchDetailListByFormula({ formula_code: formulaCode }).then(data => {
-        this.formulaDetailList = data
+    getFormulaDetails (formulaCode) {
+      Api.get('FormulaDetails', { formulaCode }).then(data => {
+        this.formulaDetails = data
       })
     },
 
     addFormulaDetail () {
-      getFormulaDetailForm({formula_code: this.formulaCode}, 'add', this.bomMaterials)
-        .then(form => this.$showForm(form).$on('submit', (formulaDetail, close) => {
-          formulaDetail.create_date = new Date()
-          apis.addFormulaDetail(formulaDetail).then(formulaDetail => {
-            this.formulaDetailList.push(formulaDetail)
+      getFormulaDetailForm({formulaCode: this.formulaCode}, 'add', this.materialOpts)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          formData.createDate = new Date()
+          Api.post('FormulaDetails', formData).then(formulaDetail => {
+            this.formulaDetails.push(formulaDetail)
             this.$message.success('添加成功!')
             close()
           })
         }))
     },
 
-    editFormulaDetail (formulaDetail) {
-      getFormulaDetailForm(formulaDetail, 'edit', this.bomMaterials)
-        .then(form => this.$showForm(form).$on('submit', (formulaDetail, close) => {
-          apis.updateFormulaDetail(formulaDetail).then(formulaDetail => {
-            const index = this.formulaDetailList.findIndex(f => f.ID === formulaDetail.ID)
-            ~index && this.formulaDetailList.splice(index, 1, formulaDetail)
+    editFormulaDetail (scope) {
+      getFormulaDetailForm(scope.row, 'edit', this.materialOpts)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.put(`FormulaDetails/${scope.row.id}`, formData).then(_ => {
+            this.formulaDetails.splice(this.$index, 1, formData)
             this.$message.success('修改成功!')
             close()
           })
         }))
     },
 
-    deleteFormulaDetail (formulaDetail) {
+    deleteFormulaDetail (scope) {
       this.$confirm('此操作将永久删除该配方明细, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(_ => apis.deleteFormulaDetail(formulaDetail))
+        .then(_ => Api.delete(`FormulaDetails/${scope.row.id}`))
         .then(_ => {
-          const index = this.formulaDetailList.findIndex(f => f.ID === formulaDetail.ID)
-          ~index && this.formulaDetailList.splice(index, 1)
+          this.formulaDetails.splice(this.$index, 1)
           this.$message.success('删除成功!')
         })
         .catch(_ => {

@@ -11,8 +11,9 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editBom(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteBom(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="$emit('skip', 'Formula', scope.row)" type="text" icon="el-icon-tickets" size="mini"/>
+            <el-button @click.stop="editBom(scope.row)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteBom(scope.row)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
