@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 
 function checkBusinessCode (rule, value, callback) {
   console.log(rule)
@@ -8,14 +8,8 @@ function checkBusinessCode (rule, value, callback) {
   if (!value) {
     return callback(new Error('请选择业务'))
   }
-  request({
-    method: 'get',
-    url: 'MachineStandardPoints/Validate',
-    params: {
-      machineCode: rule.form.machineCode,
-      businessCode: rule.form.businessCode
-    }
-  }).then(valid => {
+  const { machineCode, businessCode } = rule.form
+  Api.get('MachineStandardPoints/Validate', { machineCode, businessCode }).then(valid => {
     if (valid) {
       return callback()
     } else {

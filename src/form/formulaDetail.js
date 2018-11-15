@@ -6,30 +6,30 @@ export default function getFormulaDetailForm (form = null, type = 'add', options
     title: `${type === 'add' ? '新建' : '编辑'}配方明细`,
     formItems: [
       {
-        value: 'formula_code',
+        value: 'formulaCode',
         label: '配方编号',
         component: 'el-input',
         disabled: true
       },
       {
-        value: 'formula_item',
+        value: 'formulaItem',
         label: '配方项',
         component: 'el-input'
       },
       {
-        value: 'material_code',
+        value: 'materialCode',
         label: '物料',
         component: 'ex-select',
         options,
         disabled: type === 'edit'
       },
       {
-        value: 'feed_idx',
+        value: 'feedIdx',
         label: '加料顺序',
         component: 'el-input-number'
       },
       {
-        value: 'feed_qty',
+        value: 'feedQty',
         label: '加料数量',
         component: 'ex-input-number'
       },
@@ -40,17 +40,17 @@ export default function getFormulaDetailForm (form = null, type = 'add', options
       }
     ],
     formData: Object.assign({
-      formula_code: '',
-      formula_item: '',
-      material_code: '',
-      feed_idx: 1,
-      feed_qty: 1,
+      formulaCode: '',
+      formulaItem: '',
+      materialCode: '',
+      feedIdx: 1,
+      feedQty: 1,
       deviate: 0
     }, form),
     rules: {
-      formula_code: [{ required: true, message: '请输入配方编号', trigger: 'blur' }],
-      formula_item: [{ required: true, message: '请输入配方项', trigger: 'blur' }],
-      material_code: [{ required: true, message: '请选择物料', trigger: 'blur' }]
+      formulaCode: [{ required: true, message: '请输入配方编号', trigger: 'blur' }],
+      formulaItem: [{ required: true, message: '请输入配方项', trigger: 'blur' }],
+      materialCode: [{ required: true, message: '请选择物料', trigger: 'blur' }]
     }
   })
 }

@@ -1,10 +1,13 @@
-import apis from '@/apis'
+import Api from '@/utils/Api'
 
 function checkFormulaCode (rule, value, callback) {
+  if (rule.type === 'edit') {
+    return callback()
+  }
   if (!value) {
     return callback(new Error('配方编号不能为空'))
   }
-  apis.validateFormulaCode(value).then(valid => {
+  Api.get('Formulas/Validate', { formulaCode: value }).then(valid => {
     if (valid) {
       callback()
     } else {
@@ -18,27 +21,27 @@ export default function getFormulaForm (form = null, type = 'add') {
     title: `${type === 'add' ? '新建' : '编辑'}配方`,
     formItems: [
       {
-        value: 'bom_code',
+        value: 'bomCode',
         label: 'BOM编号',
         component: 'el-input',
         disabled: true
       },
       {
-        value: 'formula_code',
+        value: 'formulaCode',
         label: '配方编号',
         component: 'el-input',
         disabled: type !== 'add',
         span: 12
       },
       {
-        value: 'formula_name',
+        value: 'formulaName',
         label: '配方名称',
         component: 'el-input',
         disabled: type === 'view',
         span: 12
       },
       {
-        value: 'base_qty',
+        value: 'baseQty',
         label: '耗料基数',
         component: 'ex-input-number',
         disabled: type === 'view'
@@ -67,18 +70,18 @@ export default function getFormulaForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      bom_code: '',
-      formula_code: '',
-      formula_name: '',
-      base_qty: 1,
+      bomCode: '',
+      formulaCode: '',
+      formulaName: '',
+      baseQty: 1,
       designator: '',
       description: '',
       enable: 1
     }, form),
     rules: {
-      bom_code: [{ required: true, message: '请输入BOM编号', trigger: 'blur' }],
-      formula_code: type === 'add' ? [{ required: true, validator: checkFormulaCode, trigger: 'blur' }] : [{ required: true }],
-      formula_name: [{ required: true, message: '请输入配方名称', trigger: 'blur' }]
+      bomCode: [{ required: true, message: '请输入BOM编号', trigger: 'blur' }],
+      formulaCode: [{ required: true, type, validator: checkFormulaCode, trigger: 'blur' }],
+      formulaName: [{ required: true, message: '请输入配方名称', trigger: 'blur' }]
     }
   })
 }
