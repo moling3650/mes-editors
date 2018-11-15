@@ -18,21 +18,19 @@ export default {
   components: {
     ProcessStepCard
   },
-  data () {
-    return {
-      pId: 0,
-      processFrom: '',
-      flowCode: ''
+  props: {
+    pId: {
+      type: Number,
+      required: true
+    },
+    processFrom: {
+      type: String,
+      required: true
+    },
+    flowCode: {
+      type: String,
+      required: true
     }
-  },
-  computed: {
-  },
-  methods: {
-  },
-  mounted () {
-    this.processFrom = this.$route.query.processFrom
-    this.pId = parseInt(this.$route.query.pId)
-    this.flowCode = this.$route.query.flowCode
   }
 }
 </script>

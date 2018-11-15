@@ -46,15 +46,19 @@ const editors = [
   },
   {
     path: 'processFlowDetail',
-    component: () => import('@/pages/ProcessFlowDetailEditor')
+    component: () => import('@/pages/Process/ProcessFlowDetailEditor')
   },
   {
     path: 'processControlItemDetail',
-    component: () => import('@/pages/ProcessControlItemDetailEditor')
+    component: () => import('@/pages/Process/ProcessControlItemDetailEditor')
   },
   {
     path: 'processStep',
-    component: () => import('@/pages/ProcessStepEditor')
+    component: () => import('@/pages/Process/ProcessStepEditor')
+  },
+  {
+    path: 'processFlow',
+    component: () => import('@/pages/Process/processFlow')
   }
 
 ]

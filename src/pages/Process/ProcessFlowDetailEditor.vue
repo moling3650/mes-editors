@@ -3,11 +3,11 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="7">
-        <ProcessFlowCard @change="handleProcessFlowChange"/>
+        <ProcessFlowCard height="500" @change="handleProcessFlowChange"/>
       </el-col>
 
       <el-col :span="17">
-        <ProcessFlowDetailCard :flowCode="flowCode"/>
+        <ProcessFlowDetailCard :flowCode="flowCode" @skip="handleSkip"/>
       </el-col>
     </el-row>
 
@@ -33,8 +33,21 @@ export default {
   },
   methods: {
     handleProcessFlowChange (data) {
-      console.log(data)
       this.flowCode = data.flowCode
+    },
+    handleSkip (name, item) {
+      const labels = {
+        ProcessStep: '后工序步骤',
+        ProcessControlItemDetail: '管控细则'
+      }
+      const tab = {
+        name,
+        label: labels[name],
+        pId: item.pId,
+        processFrom: item.processFrom,
+        flowCode: item.flowCode
+      }
+      this.$emit('addTab', tab)
     }
   }
 }

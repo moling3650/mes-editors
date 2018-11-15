@@ -10,13 +10,13 @@
       <el-table-column prop="stepCode" label="步骤编号"/>
       <el-table-column prop="stepName" label="步骤名称"/>
       <el-table-column prop="stepType" label="步骤类型"/>
-      <el-table-column prop="flowCode" label="工艺编号"/>
+      <el-table-column prop="flowCode" label="工艺编号" width="200"/>
       <el-table-column prop="consumeType" label="消耗类型"/>
       <el-table-column prop="isRecord" label="是否记录" :formatter="formatter"/>
       <el-table-column prop="consumePercent" label="耗料比例"/>
       <el-table-column prop="ctrlType" label="控制类型" :formatter="formatter"/>
       <el-table-column prop="typeId" label="驱动类型" :formatter="formatter"/>
-      <el-table-column prop="driveCode" label="驱动编号" :formatter="formatter"/>
+      <el-table-column prop="driveCode" label="驱动编号" :formatter="formatter" width="100"/>
       <el-table-column prop="parameter" label="参数"/>
       <el-table-column prop="matCode" label="物料编号" :formatter="formatter"/>
       <el-table-column prop="timeOut" label="响应时间"/>
@@ -79,21 +79,27 @@ export default {
     }
   },
   watch: {
-    'pId' (value, oldValue) {
-      this.ProcessStepList = []
-      if (value) {
-        this.fetchOptions().then(_ => this.fetchPoints(value))
-      }
+    pId: {
+      handler (value, oldValue) {
+        this.ProcessStepList = []
+        if (value) {
+          this.fetchOptions().then(_ => this.fetchPoints(value))
+        }
+      },
+      immediate: true
     },
 
-    'processFrom' (value, oldValue) {
-      if (value) {
-        Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
-          if (data.length) {
-            this.controlId = data[0].processCode
-          }
-        })
-      }
+    processFrom: {
+      handler (value, oldValue) {
+        if (value) {
+          Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
+            if (data.length) {
+              this.controlId = data[0].processCode
+            }
+          })
+        }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -115,6 +121,7 @@ export default {
 
     // 步骤列表
     fetchPoints (pId) {
+      console.log(pId)
       Api.get(`ProcessSteps`, { pId }).then(data => {
         this.ProcessStepList = data
       })

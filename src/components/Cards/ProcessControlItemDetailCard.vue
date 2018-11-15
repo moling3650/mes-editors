@@ -61,21 +61,27 @@ export default {
     }
   },
   watch: {
-    'pId' (value, oldValue) {
-      this.ControlItemDetailList = []
-      if (value) {
-        this.fetchOptions().then(_ => this.fetchPoints(value))
-      }
+    pId: {
+      handler (value, oldValue) {
+        this.ControlItemDetailList = []
+        if (value) {
+          this.fetchOptions().then(_ => this.fetchPoints(value))
+        }
+      },
+      immediate: true
     },
 
-    'processFrom' (value, oldValue) {
-      if (value) {
-        Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
-          if (data.length) {
-            this.controlId = data[0].processCode
-          }
-        })
-      }
+    processFrom: {
+      handler (value, oldValue) {
+        if (value) {
+          Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
+            if (data.length) {
+              this.controlId = data[0].processCode
+            }
+          })
+        }
+      },
+      immediate: true
     }
   },
   methods: {

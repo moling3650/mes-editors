@@ -1,5 +1,5 @@
 <template>
-  <el-card class="h600">
+  <el-card :style="{ height: (/(%|px)$/i.test(height)) ? height : `${height}px` }">
     <div slot="header" class="clearfix">
       <span class="card-header--text">工艺流程的工序</span>
     </div>
@@ -19,6 +19,10 @@ export default {
     flowCode: {
       type: String,
       required: true
+    },
+    height: {
+      type: String,
+      default: '100%'
     }
   },
   data () {
