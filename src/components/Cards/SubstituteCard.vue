@@ -84,7 +84,7 @@ export default {
     },
 
     editSubstitute (scope) {
-        getSubstituteForm(scope.row, 'edit', this.options)
+      getSubstituteForm(scope.row, 'edit', this.options)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`MatSubstitutes/${scope.row.id}`, formData).then(_ => {
             this.substitutes.splice(scope.$index, 1, formData)
