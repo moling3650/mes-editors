@@ -32,7 +32,6 @@
               <span>物料</span>
             </template>
             <el-menu-item index="/editors/bom">物料清单</el-menu-item>
-            <el-menu-item index="/editors/formula">物料配方</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>

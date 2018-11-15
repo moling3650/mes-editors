@@ -5,16 +5,8 @@ Vue.use(Router)
 
 const editors = [
   {
-    path: 'report',
-    component: () => import('@/pages/ReportEditor')
-  },
-  {
     path: 'bom',
-    component: () => import('@/pages/BomEditor')
-  },
-  {
-    path: 'formula',
-    component: () => import('@/pages/FormulaEditor')
+    component: () => import('@/pages/Bom/BomEditor')
   },
   {
     path: 'control_point',
