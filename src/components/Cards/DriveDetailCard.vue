@@ -4,7 +4,7 @@
       <span class="card-header--text">驱动维护</span>
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addDrive">添加驱动</el-button>
     </div>
-    <el-table :data="drivesList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+    <el-table :data="drives" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="driveCode" label="驱动编号"/>
       <el-table-column prop="driveName" label="驱动名称"/>
       <el-table-column prop="fileName" label="文件名称"/>
@@ -15,8 +15,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editDrive(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteDrive(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editDrive(scope)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteDrive(scope)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import getDriveForm from '@/form/drive'
 
 export default {
@@ -43,12 +43,12 @@ export default {
   },
   data () {
     return {
-      drivesList: []
+      drives: []
     }
   },
   watch: {
     'typeId' (value, oldValue) {
-      this.drivesList = []
+      this.drives = []
       if (value) {
         this.fetchDrives(value)
       }
@@ -70,28 +70,17 @@ export default {
 
     // 驱动列表
     fetchDrives (typeId) {
-      request({
-        method: 'get',
-        url: `Drives`,
-        params: {
-          typeId
-        }
-      }).then(data => {
-        console.log(data)
-        this.drivesList = data
+      Api.get('Drives', { typeId }).then(data => {
+        this.drives = data
       })
     },
 
     addDrive () {
       getDriveForm(null, 'add')
-        .then(form => this.$showForm(form).$on('submit', (drive, close) => {
-          drive.typeId = this.typeId
-          request({
-            method: 'post',
-            url: 'Drives',
-            data: drive
-          }).then(drive => {
-            this.drivesList.push(drive)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          formData.typeId = this.typeId
+          Api.post('Drives', formData).then(drive => {
+            this.drives.push(drive)
             this.$emit('change', drive)
             this.$message.success('添加成功')
             close()
@@ -99,35 +88,26 @@ export default {
         }))
     },
 
-    editDrive (drive) {
-      getDriveForm(drive, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (drive, close) => {
-          request({
-            method: 'put',
-            url: `Drives/${drive.driveId}`,
-            data: drive
-          }).then(_ => {
-            const index = this.drivesList.findIndex(b => b.driveId === drive.driveId)
-            ~index && this.drivesList.splice(index, 1, drive)
-            this.$emit('change', drive)
+    editDrive (scope) {
+      getDriveForm(scope.row, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.put(`Drives/${formData.driveId}`, formData).then(_ => {
+            this.drives.splice(scope.$index, 1, formData)
+            this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
           })
         }))
     },
 
-    deleteDrive (drive) {
+    deleteDrive (scope) {
       this.$confirm('此操作将永久删除该驱动, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        request({
-          method: 'delete',
-          url: `Drives/${drive.driveId}`
-        }).then(_ => {
-          const index = this.drivesList.findIndex(s => s.driveId === drive.driveId)
-          ~index && this.drivesList.splice(index, 1)
+        Api.delete(`Drives/${scope.row.driveId}`).then(_ => {
+          this.drives.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
