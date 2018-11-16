@@ -4,7 +4,7 @@
       <span class="card-header--text">工序管控细则管理</span>
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addControlItemDetail">添加细则</el-button>
     </div>
-    <el-table :data="ControlItemDetailList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+    <el-table :data="controlItemDetails" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="driveCode" label="驱动名称" :formatter="formatter"/>
       <el-table-column prop="parameter" label="参数"/>
       <el-table-column prop="triggerType" label="触发类型" :formatter="formatter"/>
@@ -20,8 +20,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editControlItemDetail(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteControlItemDetail(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editControlItemDetail(scope)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteControlItemDetail(scope)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       formatterMap: {},
-      ControlItemDetailList: [],
+      controlItemDetails: [],
       controlOptions: [],
       driveOptions: [],
       controlId: 0
@@ -63,7 +63,7 @@ export default {
   watch: {
     pId: {
       handler (value, oldValue) {
-        this.ControlItemDetailList = []
+        this.controlItemDetails = []
         if (value) {
           this.fetchOptions().then(_ => this.fetchPoints(value))
         }
@@ -90,18 +90,16 @@ export default {
     },
 
     fetchOptions () {
-      return Api.get('Drives', { driveClass: 3 })
-        .then(drives => {
-          console.log(drives)
-          this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
-          this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
-        })
+      return Api.get('Drives', { driveClass: 3 }).then(drives => {
+        this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
+        this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
+      })
     },
 
     // 数据点列表
     fetchPoints (pId) {
       Api.get(`ProcessControlItemDetails`, { pId }).then(data => {
-        this.ControlItemDetailList = data
+        this.controlItemDetails = data
       })
     },
 
@@ -111,7 +109,7 @@ export default {
           formData.controlId = this.controlId
           formData.pId = this.pId
           Api.post('ProcessControlItemDetails', formData).then(itemDetail => {
-            this.ControlItemDetailList.push(itemDetail)
+            this.controlItemDetails.push(itemDetail)
             this.$emit('change', itemDetail)
             this.$message.success('添加成功')
             close()
@@ -121,12 +119,11 @@ export default {
         }))
     },
 
-    editControlItemDetail (row) {
-      getControlItemDetailForm(row, 'edit', this.driveOptions)
+    editControlItemDetail (scope) {
+      getControlItemDetailForm(scope.row, 'edit', this.driveOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`ProcessControlItemDetails/${formData.id}`, formData).then(_ => {
-            const index = this.ControlItemDetailList.findIndex(b => b.id === formData.id)
-            ~index && this.ControlItemDetailList.splice(index, 1, formData)
+            this.controlItemDetails.splice(scope.$index, 1, formData)
             this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
@@ -136,15 +133,14 @@ export default {
         }))
     },
 
-    deleteControlItemDetail (row) {
+    deleteControlItemDetail (scope) {
       this.$confirm('此操作将永久删除该管控细则, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`ProcessControlItemDetails/${row.id}`).then(_ => {
-          const index = this.ControlItemDetailList.findIndex(s => s.id === row.id)
-          ~index && this.ControlItemDetailList.splice(index, 1)
+        Api.delete(`ProcessControlItemDetails/${scope.row.id}`).then(_ => {
+          this.controlItemDetails.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
