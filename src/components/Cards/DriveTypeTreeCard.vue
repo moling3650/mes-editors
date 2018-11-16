@@ -4,7 +4,7 @@
       <span class="card-header--text">驱动类型清单</span>
       <el-button :disabled="addType" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addDriveType">添加驱动类型</el-button>
     </div>
-    <el-tree :data="driveTypeList" :props="props" :expand-on-click-node="false"
+    <el-tree :data="driveTypes" :props="props" :expand-on-click-node="false"
       node-key="id" @node-click="handleNodeClick">
       <span slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -19,7 +19,7 @@
 
 <script>
 import getDriveTypeForm from '@/form/driveType'
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 
 export default {
   name: 'DriveTypeTreeCard',
@@ -30,7 +30,7 @@ export default {
   },
   data () {
     return {
-      driveTypeList: [{
+      driveTypes: [{
         value: 1,
         typeName: '数采驱动'
       }, {
@@ -54,14 +54,9 @@ export default {
   methods: {
     addDriveType () {
       getDriveTypeForm(null, 'add')
-        .then(form => this.$showForm(form).$on('submit', (driveType, close) => {
-          driveType.driveClass = this.typeCode
-          request({
-            method: 'post',
-            url: 'DriveTypes',
-            data: driveType
-          }).then(driveType => {
-            console.log(driveType)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          formData.driveClass = this.typeCode
+          Api.post('DriveTypes', formData).then(driveType => {
             this.$nextTick(_ => {
               this.checkedNode.data.children.push(driveType)
             })
@@ -71,18 +66,14 @@ export default {
         }))
     },
 
-    editDriveType (node, data) {
-      getDriveTypeForm(data, 'edit')
-        .then(form => this.$showForm(form).$on('submit', (data, close) => {
-          request({
-            method: 'put',
-            url: `DriveTypes/${data.typeId}`,
-            data: data
-          }).then(_ => {
+    editDriveType (node, nodeData) {
+      getDriveTypeForm(nodeData, 'edit')
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.put(`DriveTypes/${formData.typeId}`, formData).then(_ => {
             const children = node.parent.childNodes
-            const index = children.findIndex(c => c.data.typeId === data.typeId)
+            const index = children.findIndex(c => c.data.typeId === formData.typeId)
             if (~index) {
-              this.$set(children[index], 'data', data)
+              this.$set(children[index], 'data', formData)
               this.$message.success('编辑成功!')
             } else {
               this.$message.danger('编辑失败!')
@@ -92,16 +83,13 @@ export default {
         }))
     },
 
-    deleteDriveType (node, data) {
+    deleteDriveType (node, nodeData) {
       this.$confirm(`此操作将永久删除该类型, 是否继续?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        request({
-          method: 'delete',
-          url: `DriveTypes/${data.typeId}`
-        }).then(_ => {
+        Api.delete(`DriveTypes/${nodeData.typeId}`).then(_ => {
           const parent = node.parent
           const children = parent.data.children
           const index = children.findIndex(d => d.typeId === data.typeId)
@@ -128,11 +116,8 @@ export default {
   },
 
   created () {
-    request({
-      method: 'get',
-      url: 'DriveTypes'
-    }).then(data => {
-      this.driveTypeList.map(d => {
+    Api.get('DriveTypes').then(data => {
+      this.driveTypes.map(d => {
         this.$set(d, 'children', [])
         d.children = data.filter(item => item.driveClass === d.value)
       })
