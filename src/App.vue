@@ -75,8 +75,9 @@ export default {
 #app .el-button--text {
   padding: 0 2px;
 }
-.el-table .cell {
+#app .el-table .cell {
   cursor: pointer;
+  line-height: 1.2;
 }
 .panel {
   height: 600px;
@@ -118,6 +119,9 @@ export default {
 }
 .p3-0 {
   padding: 3px 0%;
+}
+.fz10 {
+  font-size: 10px;
 }
 #app .edit, #app .delete {
   padding: 3px 5px;

@@ -1,8 +1,11 @@
 <template>
   <el-card class="h600">
     <div slot="header" class="clearfix">
-      <span class="card-header--text">BOM清单： {{ bomCode }}</span>
-      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加BOM明细</el-button>
+      <span class="card-header--text">
+        <span v-show="!disabled">{{ bomCode }}的明细</span>
+        <span v-show="disabled">请先选择BOM</span>
+      </span>
+      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加明细</el-button>
     </div>
     <v-tree class="tree" ref="tree" :data="treeData" :tpl="tpl" @async-load-nodes='loadNodes'/>
   </el-card>
