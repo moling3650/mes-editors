@@ -2,11 +2,11 @@
   <div id="DriveEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="10">
+      <el-col :span="6">
         <DriveTypeTreeCard @change="handleDriveTypeChange"/>
       </el-col>
 
-      <el-col :span="14">
+      <el-col :span="18">
         <DriveDetailCard :typeId="typeId"/>
       </el-col>
     </el-row>

@@ -8,10 +8,10 @@
       node-key="id" @node-click="handleNodeClick">
       <span slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
-        <span>
-          <el-button v-if="node.level === 2" class="edit" type="text" icon="el-icon-edit" @click.stop="() => editDriveType(node, data)">编辑</el-button>
-          <el-button v-if="node.level === 2" class="delete" type="text" icon="el-icon-delete" @click.stop="() => deleteDriveType(node, data)">删除</el-button>
-        </span>
+        <el-button-group v-if="node.level === 2">
+          <el-button type="text" icon="el-icon-edit" @click.stop="() => editDriveType(node, data)"/>
+          <el-button type="text" icon="el-icon-delete" @click.stop="() => deleteDriveType(node, data)"/>
+        </el-button-group>
       </span>
     </el-tree>
   </el-card>
@@ -92,7 +92,7 @@ export default {
         Api.delete(`DriveTypes/${nodeData.typeId}`).then(_ => {
           const parent = node.parent
           const children = parent.data.children
-          const index = children.findIndex(d => d.typeId === data.typeId)
+          const index = children.findIndex(d => d.typeId === nodeData.typeId)
           children.splice(index, 1)
           parent.childNodes.splice(index, 1)
           this.$message.success('删除成功!')
