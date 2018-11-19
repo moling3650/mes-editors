@@ -9,6 +9,7 @@
     <div class="tree-wrap" :style="{ height: `${parseInt(height) - 40}px`, overflowY: 'auto' }">
       <el-tree :data="treeData" :props="props" :load="loadNode" :expand-on-click-node="false" lazy ref="tree" highlight-current @node-click="handleNodeClick">
         <span class="tree-node" slot-scope="{ node, data }">
+          <font-awesome-icon :icon="['', 'th', 'th-list', 'th-large', 'square'][node.level]"/>
           <span>{{ node.label }}</span>
           <span v-if="node.level < 4">
             <el-button type="text" size="mini" icon="el-icon-plus" @click="() => append(node)">
