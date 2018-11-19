@@ -41,7 +41,6 @@ export default {
 
 </script>
 
-
 <style scoped>
 #app .tree .halo-tree {
   padding-left: 0;

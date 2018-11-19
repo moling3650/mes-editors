@@ -2,13 +2,13 @@
   <div id="MachineEditor">
     <el-row :gutter="20">
       <el-col :span="8">
-        <ExTreeCard title="设备管理" model="Machine" height="500" @change="handleChange" ref="tree"/>
+        <ExTreeCard title="设备管理" model="Machine" height="500px" @change="handleChange" ref="tree"/>
       </el-col>
       <el-col :span="8">
-        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem" @skip="handleSkip"/>
+        <ExItemCard :model="model" :item="item" height="500px" @deleted="removeItem" @updated="updateItem" @skip="handleSkip"/>
       </el-col>
       <el-col :span="8">
-        <ExPropsCard :model="model" :item="item" height="500" type="Machine"/>
+        <ExPropsCard :model="model" :item="item" height="500px" type="Machine"/>
       </el-col>
     </el-row>
   </div>

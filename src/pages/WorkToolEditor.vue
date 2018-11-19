@@ -2,13 +2,13 @@
   <div id="WorkToolEditor">
     <el-row :gutter="20">
       <el-col :span="8">
-        <ExTreeCard title="工装管理" model="WorkTool" height="500" @change="handleChange" ref="tree"/>
+        <ExTreeCard title="工装管理" model="WorkTool" height="500px" @change="handleChange" ref="tree"/>
       </el-col>
       <el-col :span="8">
-        <ExItemCard :model="model" :item="item" height="500" @deleted="removeItem" @updated="updateItem"/>
+        <ExItemCard :model="model" :item="item" height="500px" @deleted="removeItem" @updated="updateItem"/>
       </el-col>
       <el-col :span="8">
-        <ExPropsCard :model="model" :item="item" height="500" type="WorkTool"/>
+        <ExPropsCard :model="model" :item="item" height="500px" type="WorkTool"/>
       </el-col>
     </el-row>
   </div>
