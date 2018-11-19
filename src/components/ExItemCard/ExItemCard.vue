@@ -7,9 +7,11 @@
         <el-button type="text" size="mini" icon="el-icon-delete" @click="deleteItem">删除</el-button>
       </span>
     </div>
-    <div v-if="this.model === 'Machines'" class="fl-r">
-      <el-button size="mini" round @click="$emit('skip', 'MachineAnalogPoint', item)">模拟量</el-button>
-      <el-button size="mini" round @click="$emit('skip', 'MachineStandardPoint', item)">数据点</el-button>
+    <div class="clearfix">
+      <div v-if="this.model === 'Machines'" class="fl-r">
+        <el-button size="mini" round @click="$emit('skip', 'MachineAnalogPoint', item)">模拟量</el-button>
+        <el-button size="mini" round @click="$emit('skip', 'MachineStandardPoint', item)">数据点</el-button>
+      </div>
     </div>
     <ul>
       <li v-for="(value, key) in item" :key="key">
@@ -22,7 +24,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import forms from '@/form'
 
 export default {
@@ -94,11 +96,7 @@ export default {
     editItem () {
       forms[this.model](this.item, 'edit', [])
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          request({
-            method: 'put',
-            url: `${this.model}/${this.id}`,
-            data: formData
-          }).then(_ => {
+          Api.put(`${this.model}/${this.id}`, formData).then(_ => {
             this.$emit('updated', formData)
             this.$message.success('修改成功')
             close()
@@ -112,10 +110,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        request({
-          method: 'delete',
-          url: `${this.model}/${this.id}`
-        }).then(_ => {
+        Api.delete(`${this.model}/${this.id}`).then(_ => {
           this.title = '请先选择'
           this.$emit('deleted')
           this.$message.success('删除成功!')

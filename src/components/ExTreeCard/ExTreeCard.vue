@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import Api from '@/utils/Api'
 import forms from '@/form'
 
 export default {
@@ -94,11 +94,7 @@ export default {
         const key = this._getKey(node.level - 1)
         params[key] = node.data[key]
       }
-      request({
-        method: 'get',
-        url: this._getModel(node.level),
-        params: node.data
-      }).then(data => {
+      Api.get(this._getModel(node.level), node.data).then(data => {
         if (node.level) {
           return resolve(data.map(item => this._addLabel(item, node.level)))
         } else {
@@ -136,11 +132,7 @@ export default {
       options.push({ value: node.data[key], label: node.data[labelKey] })
 
       forms[modelType](data, 'add', options).then(form => this.$showForm(form).$on('submit', (formData, close) => {
-        request({
-          method: 'post',
-          url: modelType,
-          data: formData
-        }).then(newItem => {
+        Api.post(modelType, formData).then(newItem => {
           this._updateChildNodes(node, newItem)
           this.$message.success('添加成功!')
           close()
