@@ -152,7 +152,8 @@ export default {
 .thcell .cell {
   color: #04408c;
   font-size: 12px;
-  font-weight: normal;
+}
+#app .thcell {
   background-color: #efefef;
 }
 </style>
