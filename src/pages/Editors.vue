@@ -3,10 +3,6 @@
     <el-container>
       <el-aside width="200px" style="margin-top: 35px">
         <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true" :unique-opened="true">
-          <el-menu-item index="/editors/report">
-            <i class="el-icon-setting"></i>
-            <span slot="title">报表模块</span>
-          </el-menu-item>
           <el-submenu index="machine">
             <template slot="title">
               <i class="el-icon-setting"></i>
