@@ -6,6 +6,7 @@
           <el-col v-for="item in formItems" :key="item.value" :span="item.span || 24">
             <el-form-item :label="item.label" :prop="item.value">
               <component :is="item.component" v-model.trim="form[item.value]"
+                :type="item.type"
                 :options="item.options"
                 :active-value="item.activeValue"
                 :inactive-value="item.inactiveValue"
