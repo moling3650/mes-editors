@@ -1,11 +1,11 @@
 <template>
-  <el-card :style="{ height: (/(%|px)$/i.test(height)) ? height : `${height}px` }" :body-style="{ padding: '10px' }">
+  <el-card :style="{ height: (/(%|px)$/i.test(height)) ? height : `${height}px` }">
     <div slot="header" class="clearfix">
       <span class="card-header--text">属性明细</span>
+      <el-button v-if="item.kindId" class="fl-r" type="text" size="mini" icon="el-icon-plus" @click="addKindProp">添加属性</el-button>
     </div>
 
     <div class="kind-parameter" v-if="item.kindId">
-      <el-button class="fl-r" type="text" @click="addKindProp">添加属性</el-button>
       <el-table :data="kindProps" stripe header-cell-class-name="thcell" size="mini" class="w100p">
         <el-table-column prop="pptType" label="属性类型" :formatter="formatter"></el-table-column>
         <el-table-column prop="pptName" label="属性名称"></el-table-column>
@@ -255,6 +255,7 @@ ul {
   position: relative;
   min-height: 50px;
   border: 1px solid;
+  margin: 0 10px;
 }
 
 .common-parameter > h3,
