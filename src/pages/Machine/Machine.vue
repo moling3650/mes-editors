@@ -15,13 +15,15 @@
 import MachineManagement from '@/pages/Machine/MachineManagement'
 import MachineAnalogPoint from '@/pages/Machine/MachineAnalogPoint'
 import MachineStandardPoint from '@/pages/Machine/MachineStandardPoint'
+import MachineDataPoint from '@/pages/Machine/MachineDataPoint'
 
 export default {
   name: 'Machine',
   components: {
     MachineManagement,
     MachineAnalogPoint,
-    MachineStandardPoint
+    MachineStandardPoint,
+    MachineDataPoint
   },
   data () {
     return {

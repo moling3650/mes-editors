@@ -5,6 +5,7 @@
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addControlItemDetail">添加细则</el-button>
     </div>
     <el-table :data="controlItemDetails" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+      <el-table-column prop="controlId" label="管控项" :formatter="formatter"/>
       <el-table-column prop="driveCode" label="驱动名称" :formatter="formatter"/>
       <el-table-column prop="parameter" label="参数"/>
       <el-table-column prop="triggerType" label="触发类型" :formatter="formatter"/>
@@ -33,6 +34,7 @@
 import toOptions from '@/utils/toOptions'
 import toMap from '@/utils/toMap'
 import Api from '@/utils/Api'
+import axios from 'axios'
 import getControlItemDetailForm from '@/form/processControlItemDetail'
 export default {
   name: 'ProcessControlItemDetailCard',
@@ -69,20 +71,20 @@ export default {
         }
       },
       immediate: true
-    },
-
-    processFrom: {
-      handler (value, oldValue) {
-        if (value) {
-          Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
-            if (data.length) {
-              this.controlId = data[0].processCode
-            }
-          })
-        }
-      },
-      immediate: true
     }
+
+    // processFrom: {
+    //   handler (value, oldValue) {
+    //     if (value) {
+    //       Api.get(`ProcessControlItems`, { processCode: value }).then(data => {
+    //         if (data.length) {
+    //           this.controlId = data[0].processCode
+    //         }
+    //       })
+    //     }
+    //   },
+    //   immediate: true
+    // }
   },
   methods: {
     formatter (row, col, cell, index) {
@@ -90,10 +92,13 @@ export default {
     },
 
     fetchOptions () {
-      return Api.get('Drives', { driveClass: 3 }).then(drives => {
-        this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
-        this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
-      })
+      return axios.all([Api.get('Drives', { driveClass: 3 }), Api.get('ProcessControlItems', {processCode: this.processFrom})])
+        .then(([drives, processLists]) => {
+          this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
+          this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
+          this.controlOptions = toOptions(processLists, 'id', 'controlName')
+          this.formatterMap.controlId = toMap(processLists, 'id', 'controlName')
+        })
     },
 
     // 数据点列表
@@ -104,10 +109,9 @@ export default {
     },
 
     addControlItemDetail () {
-      getControlItemDetailForm(null, 'add', this.driveOptions)
+      console.log(this.controlOptions)
+      getControlItemDetailForm({pid: this.pId}, 'add', this.driveOptions, this.controlOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          formData.controlId = this.controlId
-          formData.pId = this.pId
           Api.post('ProcessControlItemDetails', formData).then(itemDetail => {
             this.controlItemDetails.push(itemDetail)
             this.$emit('change', itemDetail)
@@ -115,12 +119,12 @@ export default {
             close()
           })
         }).$on('update:triggerType', (value, item, formItems) => {
-          formItems[5].unit = ['秒', '次'][value]
+          formItems[6].unit = ['秒', '次'][value]
         }))
     },
 
     editControlItemDetail (scope) {
-      getControlItemDetailForm(scope.row, 'edit', this.driveOptions)
+      getControlItemDetailForm(scope.row, 'edit', this.driveOptions, this.controlOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`ProcessControlItemDetails/${formData.id}`, formData).then(_ => {
             this.controlItemDetails.splice(scope.$index, 1, formData)
@@ -129,7 +133,7 @@ export default {
             close()
           })
         }).$on('update:triggerType', (value, item, formItems) => {
-          formItems[5].unit = ['秒', '次'][value]
+          formItems[6].unit = ['秒', '次'][value]
         }))
     },
 
@@ -150,8 +154,8 @@ export default {
   },
   mounted () {
     getControlItemDetailForm().then(form => {
-      this.formatterMap.toMonitor = toMap(form.formItems[7].options, 'value', 'label')
-      this.formatterMap.triggerType = toMap(form.formItems[4].options, 'value', 'label')
+      this.formatterMap.toMonitor = toMap(form.formItems[8].options, 'value', 'label')
+      this.formatterMap.triggerType = toMap(form.formItems[6].options, 'value', 'label')
     })
   }
 }

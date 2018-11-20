@@ -1,8 +1,8 @@
 <template>
   <el-card>
     <div slot="header" class="clearfix">
-      <span class="card-header--text">设备({{machineCode}})模拟量维护</span>
-      <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addAnalogPoint">添加模拟量</el-button>
+      <span class="card-header--text">设备({{machineCode}})过程点位维护</span>
+      <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addAnalogPoint">添加过程点位</el-button>
     </div>
     <el-table :data="AnalogPointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="machineCode" label="设备编号"/>
@@ -14,8 +14,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editAnalogPoint(scope)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteAnalogPoint(scope)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editAnalogPoint(scope)" type="text" icon="el-icon-edit" size="mini"></el-button>
+            <el-button @click.stop="deleteAnalogPoint(scope)" type="text" icon="el-icon-delete" size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>

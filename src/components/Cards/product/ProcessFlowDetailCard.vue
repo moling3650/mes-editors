@@ -13,21 +13,21 @@
       <el-button size="mini" round @click="$emit('skip', 'ProcessControlItemDetail', item)">管控细则</el-button>
     </div>
     <el-table :data="processFlowDetailList" @row-click="selelctRow" highlight-current-row stripe header-cell-class-name="thcell" size="mini" class="w100p">
-      <el-table-column prop="flowCode" label="工艺代码"/>
+      <el-table-column prop="flowCode" label="工艺代码" width="150"/>
       <el-table-column prop="processFromGroup" label="当前工序组" :formatter="formatter"/>
       <el-table-column prop="processFrom" label="当前工序" :formatter="formatter"/>
       <el-table-column prop="processResult" label="结果"/>
       <el-table-column prop="processNextGroup" label="下一工序组" :formatter="formatter"/>
       <el-table-column prop="processNext" label="下一工序" :formatter="formatter"/>
       <el-table-column prop="disposalCode" label="处置代码"/>
-      <el-table-column prop="processMinTime" label="当前工序用时(分)"/>
+      <el-table-column prop="processMinTime" label="标准工时(分)" width="150"/>
       <el-table-column prop="strict" label="控制类型" :formatter="toStrictType"/>
       <el-table-column prop="standardTime" label="标准工时"/>
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editProcessFlowDetail(scope.row)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteProcessFlowDetail(scope.row)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editProcessFlowDetail(scope.row)" type="text" icon="el-icon-edit" size="mini"></el-button>
+            <el-button @click.stop="deleteProcessFlowDetail(scope.row)" type="text" icon="el-icon-delete" size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>

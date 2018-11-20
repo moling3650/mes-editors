@@ -42,8 +42,9 @@ export default {
 
     handleSkip (name, machine) {
       const labels = {
-        MachineAnalogPoint: '模拟量',
-        MachineStandardPoint: '数据点'
+        MachineDataPoint: '数据点',
+        MachineAnalogPoint: '过程点位',
+        MachineStandardPoint: '标准点位'
       }
       const tab = {
         name,

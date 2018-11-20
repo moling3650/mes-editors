@@ -10,7 +10,7 @@ function checkBusinessCode (rule, value, callback) {
 
 export default function getMachineAnalogPointForm (form = null, type = 'add', businessOptions, pointOptions, controlOptions) {
   return Promise.resolve({
-    title: `${type === 'add' ? '新建' : '编辑'}设备模拟量表单`,
+    title: `${type === 'add' ? '新建' : '编辑'}设备过程点位表单`,
     formItems: [
       {
         value: 'machineCode',
@@ -25,7 +25,7 @@ export default function getMachineAnalogPointForm (form = null, type = 'add', bu
         component: 'ex-select',
         options: businessOptions,
         span: 12,
-        disabled: type === 'edit'
+        disabled: true
       },
       {
         value: 'runAt',

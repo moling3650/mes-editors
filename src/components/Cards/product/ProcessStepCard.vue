@@ -30,8 +30,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editProcessStep(scope)" type="primary" icon="el-icon-edit" circle size="mini"></el-button>
-            <el-button @click.stop="deleteProcessStep(scope)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            <el-button @click.stop="editProcessStep(scope)" type="text" icon="el-icon-edit" size="mini"></el-button>
+            <el-button @click.stop="deleteProcessStep(scope)" type="text" icon="el-icon-delete" size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>

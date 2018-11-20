@@ -1,8 +1,8 @@
 <template>
   <el-card>
     <div slot="header" class="clearfix">
-      <span class="card-header--text">设备({{machineCode}})标准数据点维护</span>
-      <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addStandardPoint">添加数据点</el-button>
+      <span class="card-header--text">设备({{machineCode}})标准点位维护</span>
+      <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addStandardPoint">添加标准点位</el-button>
     </div>
     <el-table :data="PointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="machineCode" label="设备编号"/>

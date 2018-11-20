@@ -21,7 +21,7 @@ function checkBusinessCode (rule, value, callback) {
 export default function getMachineStandardPointForm (form = null, type = 'add', businessOptions, pointOptions, driveOptions) {
   const triggerType = (form && form.triggerType) ? 1 : 0
   return Promise.resolve({
-    title: `${type === 'add' ? '新建' : '编辑'}设备标准数据点表单`,
+    title: `${type === 'add' ? '新建' : '编辑'}设备标准点位表单`,
     formItems: [
       {
         value: 'machineCode',

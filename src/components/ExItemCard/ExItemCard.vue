@@ -9,8 +9,9 @@
     </div>
     <div class="clearfix">
       <div v-if="this.model === 'Machines'" class="fl-r">
-        <el-button size="mini" round @click="$emit('skip', 'MachineAnalogPoint', item)">模拟量</el-button>
-        <el-button size="mini" round @click="$emit('skip', 'MachineStandardPoint', item)">数据点</el-button>
+        <el-button size="mini" round @click="$emit('skip', 'MachineDataPoint', item)">数据点</el-button>
+        <el-button size="mini" round @click="$emit('skip', 'MachineAnalogPoint', item)">过程点位</el-button>
+        <el-button size="mini" round @click="$emit('skip', 'MachineStandardPoint', item)">标准点位</el-button>
       </div>
     </div>
     <ul>
@@ -83,14 +84,6 @@ export default {
       } else {
         return 'id'
       }
-    },
-
-    editAnalogPoint () {
-      this.$router.push({ path: '/editors/machineAnalogPoint', query: { machineCode: this.item.machineCode } })
-    },
-
-    editStandardPoint () {
-      this.$router.push({ path: '/editors/machineStandardPoint', query: { machineCode: this.item.machineCode } })
     },
 
     editItem () {

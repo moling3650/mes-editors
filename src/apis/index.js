@@ -58,7 +58,7 @@ export default {
   },
 
   fetchIP () {
-    return Promise.resolve('192.168.0.28')
+    return Promise.resolve('192.168.0.36')
   },
 
   fetchStationOptionsByIp (ip) {
