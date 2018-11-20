@@ -14,7 +14,7 @@
       </div>
     </div>
     <ul>
-      <li v-for="(value, key) in item" :key="key">
+      <li v-for="(value, key) in item" :key="key" v-if="formItems[key]">
         <span class="label">{{formItems[key] || key}}: </span>
         <span class="value">{{value}}</span>
       </li>
@@ -134,11 +134,10 @@ li {
   display: inline-block;
 }
 .label {
-  width: 120px;
+  width: 80px;
   text-align: right;
-  font-weight: bold;
 }
 .value {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 </style>
