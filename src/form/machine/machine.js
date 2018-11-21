@@ -1,4 +1,4 @@
-import apis from '@/apis'
+import Api from '@/utils/Api'
 
 function checkMachineCode (rule, value, callback) {
   if (!value) {
@@ -7,7 +7,7 @@ function checkMachineCode (rule, value, callback) {
   if (rule.type === 'edit') {
     return callback()
   }
-  apis.validataMachineCode(value).then(valid => {
+  Api.get('Machines/Validate', { machineCode: value }).then(valid => {
     if (valid) {
       callback()
     } else {

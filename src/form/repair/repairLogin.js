@@ -4,13 +4,13 @@ export default function getRepairLoginForm (form = null) {
     width: '350px',
     formItems: [
       {
-        value: 'user_code',
+        value: 'empCode',
         label: '用户编号',
         component: 'el-input',
         span: 22
       },
       {
-        value: 'user_pwd',
+        value: 'password',
         label: '密  码',
         type: 'password',
         component: 'el-input',
@@ -18,12 +18,12 @@ export default function getRepairLoginForm (form = null) {
       }
     ],
     formData: Object.assign({
-      user_code: '',
-      user_pwd: ''
+      empCode: '',
+      password: ''
     }, form),
     rules: {
-      user_code: [{ required: true, message: '用户编号不能为空', trigger: 'blur' }],
-      user_pwd: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+      empCode: [{ required: true, message: '用户编号不能为空', trigger: 'blur' }],
+      password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
     }
   })
 }

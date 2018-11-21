@@ -1,4 +1,4 @@
-import apis from '@/apis'
+import Api from '@/utils/Api'
 
 function checkMouldCode (rule, value, callback) {
   if (!value) {
@@ -7,7 +7,7 @@ function checkMouldCode (rule, value, callback) {
   if (rule.type === 'edit') {
     return callback()
   }
-  apis.validataMouldCode(value).then(valid => {
+  Api.get('Moulds/Validate', { mouldCode: value }).then(valid => {
     if (valid) {
       callback()
     } else {

@@ -1,4 +1,4 @@
-import apis from '@/apis'
+import Api from '@/utils/Api'
 
 function checkWorkToolCode (rule, value, callback) {
   if (!value) {
@@ -7,7 +7,7 @@ function checkWorkToolCode (rule, value, callback) {
   if (rule.type === 'edit') {
     return callback()
   }
-  apis.validataWorkToolCode(value).then(valid => {
+  Api.get('WorkTools/Validate', { workToolCode: value }).then(valid => {
     if (valid) {
       callback()
     } else {

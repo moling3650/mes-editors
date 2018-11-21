@@ -1,11 +1,11 @@
 import Api from '@/utils/Api'
 
 function checkFormulaCode (rule, value, callback) {
-  if (rule.type === 'edit') {
-    return callback()
-  }
   if (!value) {
     return callback(new Error('配方编号不能为空'))
+  }
+  if (rule.type === 'edit') {
+    return callback()
   }
   Api.get('Formulas/Validate', { formulaCode: value }).then(valid => {
     if (valid) {

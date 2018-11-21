@@ -38,6 +38,7 @@
 
 <script>
 import apis from '@/apis'
+import Api from '@/utils/Api'
 import getRepairLoginForm from '@/form/repair/repairLogin'
 import RegisterCard from '@/components/Cards/repair/RegisterCard'
 import RepairCard from '@/components/Cards/repair/RepairCard'
@@ -71,12 +72,12 @@ export default {
 
     repairLogin () {
       getRepairLoginForm()
-        .then(form => this.$showForm(form).$on('submit', (user, close) => {
-          apis.validateUserLogin(user.user_code, user.user_pwd).then(valid => {
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.get('Employees/Authorization', formData).then(valid => {
             if (valid) {
               this.$message.success('登录成功')
               this.registerRepair = true
-              this.userCode = user.user_code
+              this.userCode = formData.empCode
               close()
             } else {
               this.$message.error('登录失败')
@@ -89,7 +90,7 @@ export default {
   mounted () {
     apis.fetchIP().then(ip => {
       this.ip = ip
-      apis.fetchStationOptionsByIp(ip).then(options => {
+      Api.get('StationLists/CascaderOptions', { ip }).then(options => {
         this.stationOptions = options
       })
     })
