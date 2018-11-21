@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import apis from '@/apis'
+import Api from '@/utils/Api'
 import ProcessFlowCard from '@/components/Cards/ProcessFlowCard'
 import ControlPointCard from '@/components/Cards/ControlPointCard'
 
@@ -30,17 +30,17 @@ export default {
   },
   data () {
     return {
-      flowList: [],
+      flows: [],
       flowCode: '',
       processCode: ''
     }
   },
   computed: {
     flowOptions () {
-      return this.flowList.map(f => {
+      return this.flows.map(f => {
         return {
-          value: f.flow_code,
-          label: `${f.flow_name} (${f.version_code})`
+          value: f.flowCode,
+          label: `${f.flowName} (${f.versionCode})`
         }
       })
     }
@@ -51,8 +51,8 @@ export default {
     }
   },
   mounted () {
-    apis.fetchProcessFlowList().then(data => {
-      this.flowList = data
+    Api.get('ProcessFlows').then(data => {
+      this.flows = data
     })
   }
 }

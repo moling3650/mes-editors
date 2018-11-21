@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import apis from '@/apis'
 
 export default {
   name: 'ControlPointCard',
@@ -47,13 +46,6 @@ export default {
           label: '设备状态代码'
         }]
       }]
-    }
-  },
-  watch: {
-    processCode (value, oldValue) {
-      apis.fetchControlPointListByProcess({ process_code: this.processCode }).then(data => {
-        this.controlPointList = data
-      })
     }
   },
   methods: {
