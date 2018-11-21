@@ -1,6 +1,4 @@
 import execSQL from '@/apis/executeSQL'
-import formulaApis from '@/apis/formula'
-import reportApis from '@/apis/report'
 import processFlowApis from '@/apis/processFlow'
 import controlPointApis from '@/apis/controlPoint'
 import mouldKindsBind from '@/apis/mouldKindsBind'
@@ -191,8 +189,6 @@ export default {
     return execSQL(sql, { orderNo })
   },
 
-  ...formulaApis,
-  ...reportApis,
   ...processFlowApis,
   ...controlPointApis,
   ...mouldKindsBind
