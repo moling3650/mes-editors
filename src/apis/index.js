@@ -5,21 +5,6 @@ import mouldKindsBind from '@/apis/mouldKindsBind'
 
 export default {
 
-  validataMachineModelCode (modelCode) {
-    const sql = 'SELECT COUNT(*) AS c FROM B_Machine_Model WHERE model_code = @modelCode'
-    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
-  },
-
-  validataWorkToolModelCode (modelCode) {
-    const sql = 'SELECT COUNT(*) AS c FROM B_WorkTool_Model WHERE model_code = @modelCode'
-    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
-  },
-
-  validataMouldModelCode (modelCode) {
-    const sql = 'SELECT COUNT(*) AS c FROM B_Mould_Model WHERE model_code = @modelCode'
-    return execSQL(sql, { modelCode }).then(data => data[0].c === 0)
-  },
-
   validataMachineCode (machineCode) {
     const sql = 'SELECT COUNT(*) AS c FROM B_Machine WHERE machine_code = @machineCode'
     return execSQL(sql, { machineCode }).then(data => data[0].c === 0)
