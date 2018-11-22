@@ -16,9 +16,12 @@ function checkMachineCode (rule, value, callback) {
   })
 }
 
-export default function getMachineForm (form = null, type = 'add', Departmentoptions, WsCodeoptions) {
+export default function getMachineForm (form = null, type = 'add', departmentOpts, workShopOpts) {
+  if (!(form && form.modelCode)) {
+    throw new Error('缺少modelCode字段')
+  }
   return Promise.resolve({
-    title: `${type === 'add' ? '新建' : '编辑'}设备表单`,
+    title: `${type === 'add' ? '新建' : '编辑'}型号${form.modelCode}的设备`,
     formItems: [
       {
         value: 'machineCode',
@@ -55,14 +58,14 @@ export default function getMachineForm (form = null, type = 'add', Departmentopt
         value: 'userdepartment',
         label: '部门',
         component: 'ex-select',
-        options: Departmentoptions,
+        options: departmentOpts,
         span: 12
       },
       {
         value: 'wsCode',
         label: '车间',
         component: 'ex-select',
-        options: WsCodeoptions,
+        options: workShopOpts,
         span: 12
       },
       {

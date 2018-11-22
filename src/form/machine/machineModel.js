@@ -16,9 +16,9 @@ function checkModelCode (rule, value, callback) {
   })
 }
 
-export default function getMachineModelForm (form = null, type = 'add', options) {
-  if (!options) {
-    return void console.error('缺少设备类别的Options')
+export default function getMachineModelForm (form = null, type = 'add') {
+  if (!(form && form.kindId)) {
+    throw new Error('缺少kindId字段')
   }
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}设备型号表单`,
@@ -28,25 +28,25 @@ export default function getMachineModelForm (form = null, type = 'add', options)
         label: '型号编号',
         component: 'el-input',
         disabled: type === 'edit',
-        span: 12
+        span: 22
       },
       {
         value: 'manufacturer',
         label: '制造商',
         component: 'el-input',
-        span: 12
+        span: 22
       },
       {
         value: 'madeIn',
         label: '产地',
         component: 'el-input',
-        span: 12
+        span: 22
       },
       {
         value: 'description',
         label: '描述',
         component: 'el-input',
-        span: 12
+        span: 22
       }
     ],
     formData: Object.assign({
