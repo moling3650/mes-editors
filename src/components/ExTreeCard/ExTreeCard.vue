@@ -40,6 +40,10 @@ export default {
     height: {
       type: String,
       default: '500px'
+    },
+    optionMap: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -128,13 +132,14 @@ export default {
     append (node) {
       const modelType = this._getModel(node.level)
       const data = {}
-      const options = []
+      // const options = []
       const key = this._getKey(node.level - 1)
-      const labelKey = this._getLabelKey(node.level - 1)
+      // const labelKey = this._getLabelKey(node.level - 1)
       data[key] = node.data[key]
-      options.push({ value: node.data[key], label: node.data[labelKey] })
-
-      forms[modelType](data, 'add', options).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+      // options.push({ value: node.data[key], label: node.data[labelKey] })
+      const departments = this.optionMap && this.optionMap.departments
+      const workShops = this.optionMap && this.optionMap.workShops
+      forms[modelType](data, 'add', departments, workShops).then(form => this.$showForm(form).$on('submit', (formData, close) => {
         Api.post(modelType, formData).then(newItem => {
           this._updateChildNodes(node, newItem)
           this.$message.success('添加成功!')

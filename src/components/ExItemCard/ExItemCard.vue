@@ -42,6 +42,10 @@ export default {
     height: {
       type: String,
       default: '100%'
+    },
+    optionMap: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -66,7 +70,7 @@ export default {
       if (!value) {
         return
       }
-      forms[value](null, 'add', []).then(form => {
+      forms[value]({typeId: 1, kindId: 1, modelCode: 1}, 'add').then(form => {
         this.title = form.title.replace(/(新建|表单)/g, '')
         this.formItems = {}
         form.formItems.map(item => {
@@ -87,7 +91,9 @@ export default {
     },
 
     editItem () {
-      forms[this.model](this.item, 'edit', [])
+      const departments = this.optionMap && this.optionMap.departments
+      const workShops = this.optionMap && this.optionMap.workShops
+      forms[this.model](this.item, 'edit', departments, workShops)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`${this.model}/${this.id}`, formData).then(_ => {
             this.$emit('updated', formData)
