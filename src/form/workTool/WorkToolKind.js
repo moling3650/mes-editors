@@ -1,4 +1,7 @@
 export default function getWorkToolKindForm (form = null, type = 'add') {
+  if (!(form && form.typeId)) {
+    throw new Error('缺少typeId字段')
+  }
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}工装类别表单`,
     formItems: [
@@ -16,7 +19,6 @@ export default function getWorkToolKindForm (form = null, type = 'add') {
       }
     ],
     formData: Object.assign({
-      typeId: 0,
       kindName: '',
       description: ''
     }, form),

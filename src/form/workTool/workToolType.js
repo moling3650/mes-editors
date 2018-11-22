@@ -5,12 +5,14 @@ export default function getWorkToolTypeForm (form = null, type = 'add') {
       {
         value: 'typeName',
         label: '类型名称',
-        component: 'el-input'
+        component: 'el-input',
+        span: 22
       },
       {
         value: 'description',
         label: '描述',
-        component: 'el-input'
+        component: 'el-input',
+        span: 22
       }
     ],
     formData: Object.assign({

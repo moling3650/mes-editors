@@ -17,8 +17,11 @@ function checkWorkToolCode (rule, value, callback) {
 }
 
 export default function getWorkToolForm (form = null, type = 'add') {
+  if (!(form && form.modelCode)) {
+    throw new Error('缺少modelCode字段')
+  }
   return Promise.resolve({
-    title: `${type === 'add' ? '新建' : '编辑'}工装表单`,
+    title: `${type === 'add' ? '新建' : '编辑'}型号${form.modelCode}的工装`,
     formItems: [
       {
         value: 'workToolCode',
@@ -83,7 +86,6 @@ export default function getWorkToolForm (form = null, type = 'add') {
       workToolName: '',
       state: 0,
       supplier: '',
-      modelCode: '',
       storageRoom: '',
       storePlace: '',
       usePlace: '',
