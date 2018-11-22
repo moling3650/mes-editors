@@ -17,65 +17,57 @@ function checkMouldCode (rule, value, callback) {
 }
 
 export default function getMouldForm (form = null, type = 'add') {
-  const formItems = [
-    {
-      value: 'mouldCode',
-      label: '模具编号',
-      component: 'el-input',
-      span: 11
-    },
-    {
-      value: 'mouldName',
-      label: '模具名称',
-      component: 'el-input',
-      span: 11
-    },
-    {
-      value: 'supplier',
-      label: '供应商',
-      component: 'el-input',
-      span: 11
-    },
-    {
-      value: 'state',
-      label: '状态',
-      component: 'ex-select',
-      options: [
-        {value: -1, label: '报废'},
-        {value: 0, label: '禁用'},
-        {value: 1, label: '启用'},
-        {value: 2, label: '已使用'},
-        {value: 3, label: '保养'},
-        {value: 4, label: '维修'}
-      ],
-      span: 11
-    },
-    {
-      value: 'description',
-      label: '说明',
-      component: 'el-input',
-      span: 11
-    }
-  ]
-  if (type === 'add') {
-    formItems.unshift({
-      value: 'modelCode',
-      label: '型号编号',
-      component: 'el-input',
-      disabled: true,
-      span: 22
-    })
+  if (!(form && form.modelCode)) {
+    throw new Error('缺少modelCode字段')
   }
   return Promise.resolve({
-    title: `${type === 'add' ? '新建' : '编辑'}模具表单`,
-    formItems,
+    title: `${type === 'add' ? '新建' : '编辑'}型号${form.modelCode}的模具`,
+    formItems: [
+      {
+        value: 'mouldCode',
+        label: '模具编号',
+        component: 'el-input',
+        span: 11
+      },
+      {
+        value: 'mouldName',
+        label: '模具名称',
+        component: 'el-input',
+        span: 11
+      },
+      {
+        value: 'supplier',
+        label: '供应商',
+        component: 'el-input',
+        span: 11
+      },
+      {
+        value: 'state',
+        label: '状态',
+        component: 'ex-select',
+        options: [
+          {value: -1, label: '报废'},
+          {value: 0, label: '禁用'},
+          {value: 1, label: '启用'},
+          {value: 2, label: '已使用'},
+          {value: 3, label: '保养'},
+          {value: 4, label: '维修'}
+        ],
+        span: 11
+      },
+      {
+        value: 'description',
+        label: '说明',
+        component: 'el-input',
+        span: 11
+      }
+    ],
     formData: Object.assign({
       mouldCode: '',
       mouldName: '',
       state: 1,
-      inputTime: '',
+      inputTime: null,
       supplier: '',
-      modelCode: '',
       description: ''
     }, form),
     rules: {

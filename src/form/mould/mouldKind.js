@@ -1,18 +1,10 @@
-export default function getMouldKindForm (form = null, type = 'add', options) {
-  if (!options) {
-    return void console.error('缺少模具类型的Options')
+export default function getMouldKindForm (form = null, type = 'add') {
+  if (!(form && form.typeId)) {
+    throw new Error('缺少typeId字段')
   }
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}模具类别表单`,
     formItems: [
-      {
-        value: 'typeId',
-        label: '模具类型',
-        component: 'ex-select',
-        span: 22,
-        options,
-        disabled: true
-      },
       {
         value: 'kindName',
         label: '类别名称',
@@ -27,7 +19,6 @@ export default function getMouldKindForm (form = null, type = 'add', options) {
       }
     ],
     formData: Object.assign({
-      typeId: 0,
       kindName: '',
       description: ''
     }, form),

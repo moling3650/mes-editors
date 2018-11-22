@@ -16,52 +16,40 @@ function checkModelCode (rule, value, callback) {
   })
 }
 
-export default function getMouldModelForm (form = null, type = 'add', options) {
-  if (!options) {
-    return void console.error('缺少模具类别的Options')
-  }
-  const formItems = [
-    {
-      value: 'manufacturer',
-      label: '制造商',
-      component: 'el-input',
-      span: 11
-    },
-    {
-      value: 'madeIn',
-      label: '产地',
-      component: 'el-input',
-      span: 11
-    },
-    {
-      value: 'description',
-      label: '描述',
-      component: 'el-input',
-      span: 22
-    }
-  ]
-  if (type === 'add') {
-    formItems.unshift({
-      value: 'kindId',
-      label: '模具类别',
-      component: 'ex-select',
-      span: 22,
-      options,
-      disabled: true
-    },
-    {
-      value: 'modelCode',
-      label: '型号编号',
-      component: 'el-input',
-      disabled: type === 'edit',
-      span: 22
-    })
+export default function getMouldModelForm (form = null, type = 'add') {
+  if (!(form && form.kindId)) {
+    throw new Error('缺少kindId字段')
   }
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}模具型号表单`,
-    formItems,
+    formItems: [
+      {
+        value: 'modelCode',
+        label: '型号编号',
+        component: 'el-input',
+        disabled: type === 'edit',
+        span: 22
+      },
+      {
+        value: 'manufacturer',
+        label: '制造商',
+        component: 'el-input',
+        span: 22
+      },
+      {
+        value: 'madeIn',
+        label: '产地',
+        component: 'el-input',
+        span: 22
+      },
+      {
+        value: 'description',
+        label: '描述',
+        component: 'el-input',
+        span: 22
+      }
+    ],
     formData: Object.assign({
-      kindId: 0,
       modelCode: '',
       manufacturer: '',
       madeIn: '',
