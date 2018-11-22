@@ -53,12 +53,12 @@ export default {
   },
 
   methods: {
-    _matTypeChanged (matType, _, formItems, rules) {
+    _matTypeChanged (matType, _, formItems, rules, form) {
       const options = matType ? this.materialOpts : this.prodeuctOpts
       formItems[2].options = options
-      rules.bomCode[0].form.matCode = ''
       formItems[3].unit = ''
       formItems[4].unit = ''
+      form.matCode = ''
     },
 
     _matCodeChanged (matCode, _, formItems) {

@@ -56,6 +56,11 @@ export default {
     }
   },
   methods: {
+    _driveTypeChanged (newType, item, formItems, rules, form) {
+      formItems[3].options = this.driveMap[newType]
+      form.driveCode = ''
+    },
+
     formatter (row, col, cell, index) {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
@@ -63,7 +68,6 @@ export default {
     fetchOptions (machineCode) {
       return axios.all([Api.get('PointTypes'), Api.get('ProcessControlItems', { machineCode })])
         .then(([pointTypes, controls]) => {
-          console.log(pointTypes)
           this.pointTypeOptions = toOptions(pointTypes, 'typeId', 'typeName')
           this.formatterMap.pointType = toMap(pointTypes, 'typeId', 'typeName')
           this.controlOptions = toOptions(controls, 'id', 'controlName')
@@ -81,18 +85,13 @@ export default {
     addDataPoint () {
       getMachineDataPointForm({machineCode: this.machineCode}, 'add', this.pointTypeOptions, [])
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-          formData.machineCode = this.machineCode
           Api.post('MachineDataPoints', formData).then(dataPoint => {
             this.DataPointList.push(dataPoint)
             this.$emit('change', dataPoint)
             this.$message.success('添加成功')
             close()
           })
-        }).$on('update:driveType', (newType, item, formItems, rules) => {
-          const drives = this.driveMap[newType]
-          formItems[3].options = toOptions(drives, 'driveCode', 'driveName')
-          rules.dataPointName[0].form.driveCode = ''
-        }))
+        }).$on('update:driveType', this._driveTypeChanged))
     },
 
     editDataPoint (scope) {
@@ -104,11 +103,7 @@ export default {
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:driveType', (newType, item, formItems, rules) => {
-          const drives = this.driveMap[newType]
-          formItems[3].options = toOptions(drives, 'driveCode', 'driveName')
-          rules.dataPointName[0].form.driveCode = ''
-        }))
+        }).$on('update:driveType', this._driveTypeChanged))
     },
 
     deleteDataPoint (scope) {
@@ -129,8 +124,8 @@ export default {
   created () {
     Api.get(`Drives/GroupByClass`).then(data => {
       const driveMap = {}
-      data.map(item => {
-        driveMap[item.driveClass] = item.drives
+      data.forEach(item => {
+        driveMap[item.driveClass] = toOptions(item.drives, 'driveCode', 'driveName')
       })
       this.driveMap = driveMap
     })
