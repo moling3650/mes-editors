@@ -51,6 +51,10 @@ const editors = [
   {
     path: 'processFlow',
     component: () => import('@/pages/Process/processFlow')
+  },
+  {
+    path: 'workOrder',
+    component: () => import('@/pages/workOrder/workOrder')
   }
 
 ]

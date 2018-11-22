@@ -104,6 +104,10 @@ export default {
             this.$message.success('修改成功')
             close()
           })
+        }).$on('update:driveType', (newType, item, formItems, rules) => {
+          const drives = this.driveMap[newType]
+          formItems[3].options = toOptions(drives, 'driveCode', 'driveName')
+          rules.dataPointName[0].form.driveCode = ''
         }))
     },
 
