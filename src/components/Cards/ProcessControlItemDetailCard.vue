@@ -87,6 +87,10 @@ export default {
     // }
   },
   methods: {
+    _triggerTypeChanged (value, item, formItems) {
+      formItems[6].unit = ['秒', '次'][value]
+    },
+
     formatter (row, col, cell, index) {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
@@ -118,9 +122,7 @@ export default {
             this.$message.success('添加成功')
             close()
           })
-        }).$on('update:triggerType', (value, item, formItems) => {
-          formItems[6].unit = ['秒', '次'][value]
-        }))
+        }).$on('update:triggerType', this._triggerTypeChanged))
     },
 
     editControlItemDetail (scope) {
@@ -132,9 +134,7 @@ export default {
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:triggerType', (value, item, formItems) => {
-          formItems[6].unit = ['秒', '次'][value]
-        }))
+        }).$on('update:triggerType', this._triggerTypeChanged))
     },
 
     deleteControlItemDetail (scope) {

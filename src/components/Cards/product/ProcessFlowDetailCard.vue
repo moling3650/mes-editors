@@ -26,8 +26,8 @@
       <el-table-column fixed="right" label="操作" width="80" align="center">
         <template slot-scope="scope">
           <el-button-group>
-            <el-button @click.stop="editProcessFlowDetail(scope.row)" type="text" icon="el-icon-edit" size="mini"></el-button>
-            <el-button @click.stop="deleteProcessFlowDetail(scope.row)" type="text" icon="el-icon-delete" size="mini"></el-button>
+            <el-button @click.stop="editProcessFlowDetail(scope)" type="text" icon="el-icon-edit" size="mini"></el-button>
+            <el-button @click.stop="deleteProcessFlowDetail(scope)" type="text" icon="el-icon-delete" size="mini"></el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -91,6 +91,15 @@ export default {
     }
   },
   methods: {
+    _processFromGroupChanged (value, item, formItems) {
+      const processList = this.processList.filter(p => p.groupCode === groupCode)
+      formItems[2].options = toOptions(processList, 'processCode', 'processName')
+    },
+
+    _processNextGroupChanged (value, item, formItems) {
+      const processList = this.processList.filter(p => p.groupCode === groupCode)
+      formItems[4].options = toOptions(processList, 'processCode', 'processName')
+    },
 
     toStrictType (row, column, cellValue, index) {
       return ['宽松', '严格'][cellValue] || '未知'
@@ -148,13 +157,8 @@ export default {
                   this.$message.success('添加成功')
                   close()
                 })
-              }).$on('update:processFromGroup', (groupCode, item, formItems) => {
-                const processList = this.processList.filter(p => p.groupCode === groupCode)
-                formItems[2].options = toOptions(processList, 'processCode', 'processName')
-              }).$on('update:processNextGroup', (groupCode, item, formItems) => {
-                const processList = this.processList.filter(p => p.groupCode === groupCode)
-                formItems[4].options = toOptions(processList, 'processCode', 'processName')
-              }))
+              }).$on('update:processFromGroup', this._processFromGroupChanged)
+                .$on('update:processNextGroup', this._processNextGroupChanged))
           } else {
             getNGForm({flowCode: this.flowCode}, 'add', this.processGroupOptions, this.disposalOptions)
               .then(form => this.$showForm(form).$on('submit', (formData, close) => {
@@ -165,58 +169,44 @@ export default {
                   this.$message.success('添加成功')
                   close()
                 })
-              }).$on('update:processFromGroup', (groupCode, item, formItems) => {
-                const processList = this.processList.filter(p => p.groupCode === groupCode)
-                formItems[2].options = toOptions(processList, 'processCode', 'processName')
-              }))
+              }).$on('update:processFromGroup', this._processFromGroupChanged))
           }
         })
     },
 
-    editProcessFlowDetail (row) {
+    editProcessFlowDetail (scope) {
       if (row.processResult === 'OK') {
-        getOkForm(row, 'edit', this.processGroupOptions, this.processOptions)
+        getOkForm(scope.row, 'edit', this.processGroupOptions, this.processOptions)
           .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-            Api.put('ProcessFlowDetails/${formData.id', formData).then(_ => {
-              const index = this.processFlowDetailList.findIndex(b => b.pid === formData.id)
-              ~index && this.processFlowDetailList.splice(index, 1, formData)
+            Api.put(`ProcessFlowDetails/${formData.id}`, formData).then(_ => {
+              this.processFlowDetailList.splice(scope.$index, 1, formData)
               this.$emit('change', formData)
               this.$message.success('修改成功')
               close()
             })
-          }).$on('update:processFromGroup', (groupCode, item, formItems) => {
-            const processList = this.processList.filter(p => p.groupCode === groupCode)
-            formItems[2].options = toOptions(processList, 'processCode', 'processName')
-          }).$on('update:processNextGroup', (groupCode, item, formItems) => {
-            const processList = this.processList.filter(p => p.groupCode === groupCode)
-            formItems[4].options = toOptions(processList, 'processCode', 'processName')
-          }))
+          }).$on('update:processFromGroup', this._processFromGroupChanged)
+            .$on('update:processNextGroup', this._processNextGroupChanged))
       } else {
-        getNGForm(row, 'edit', this.processGroupOptions, this.disposalOptions, this.processOptions)
+        getNGForm(scope.row, 'edit', this.processGroupOptions, this.disposalOptions, this.processOptions)
           .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-            Api.put('ProcessFlowDetails/${formData.id', formData).then(_ => {
-              const index = this.processFlowDetailList.findIndex(b => b.pid === formData.id)
-              ~index && this.processFlowDetailList.splice(index, 1, formData)
+            Api.put(`ProcessFlowDetails/${formData.id}`, formData).then(_ => {
+              this.processFlowDetailList.splice(scope.$index, 1, formData)
               this.$emit('change', formData)
               this.$message.success('修改成功')
               close()
             })
-          }).$on('update:processFromGroup', (groupCode, item, formItems) => {
-            const processList = this.processList.filter(p => p.groupCode === groupCode)
-            formItems[2].options = toOptions(processList, 'processCode', 'processName')
-          }))
+          }).$on('update:processFromGroup', this._processFromGroupChanged))
       }
     },
 
-    deleteProcessFlowDetail (row) {
+    deleteProcessFlowDetail (scope) {
       this.$confirm('此操作将永久删除该工艺步骤, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`ProcessFlowDetails/${row.id}`).then(_ => {
-          const index = this.processFlowDetailList.findIndex(s => s.pid === row.pid)
-          ~index && this.processFlowDetailList.splice(index, 1)
+        Api.delete(`ProcessFlowDetails/${scope.row.id}`).then(_ => {
+          this.processFlowDetailList.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })
       }).catch(_ => {
