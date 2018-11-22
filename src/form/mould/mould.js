@@ -27,7 +27,8 @@ export default function getMouldForm (form = null, type = 'add') {
         value: 'mouldCode',
         label: '模具编号',
         component: 'el-input',
-        span: 11
+        span: 11,
+        disabled: type === 'edit'
       },
       {
         value: 'mouldName',

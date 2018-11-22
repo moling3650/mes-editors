@@ -27,7 +27,8 @@ export default function getMachineForm (form = null, type = 'add', departmentOpt
         value: 'machineCode',
         label: '设备编号',
         component: 'el-input',
-        span: 12
+        span: 12,
+        disabled: type === 'edit'
       },
       {
         value: 'machineName',
@@ -81,7 +82,7 @@ export default function getMachineForm (form = null, type = 'add', departmentOpt
       state: 0,
       simpleName: '',
       manufacturer: '',
-      arrivaldate: '',
+      arrivaldate: new Date(),
       userdepartment: '',
       wsCode: '',
       description: ''
