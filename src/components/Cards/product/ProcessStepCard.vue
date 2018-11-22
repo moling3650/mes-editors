@@ -103,6 +103,13 @@ export default {
     }
   },
   methods: {
+    _typeIdChanged (value, item, formItems) {
+      const driveList = this.driveList.filter(p => p.typeId === value)
+      formItems[6].options = toOptions(driveList, 'driveCode', 'driveName')
+      formItems[10].disabled = (value !== 2)
+      formItems[12].disabled = (value !== 2)
+    },
+
     formatter (row, col, cell, index) {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
@@ -139,12 +146,7 @@ export default {
             this.$message.success('添加成功')
             close()
           })
-        }).$on('update:typeId', (newTypeId, item, formItems) => {
-          const driveList = this.driveList.filter(p => p.typeId === newTypeId)
-          formItems[6].options = toOptions(driveList, 'driveCode', 'driveName')
-          formItems[10].disabled = (newTypeId !== 2)
-          formItems[12].disabled = (newTypeId !== 2)
-        }))
+        }).$on('update:typeId', this._typeIdChanged))
     },
 
     editProcessStep (scope) {
@@ -156,12 +158,7 @@ export default {
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:typeId', (newTypeId, item, formItems) => {
-          const driveList = this.driveList.filter(p => p.typeId === newTypeId)
-          formItems[6].options = toOptions(driveList, 'driveCode', 'driveName')
-          formItems[10].disabled = (newTypeId !== 2)
-          formItems[12].disabled = (newTypeId !== 2)
-        }))
+        }).$on('update:typeId', this._typeIdChanged))
     },
 
     deleteProcessStep (scope) {

@@ -92,12 +92,12 @@ export default {
   },
   methods: {
     _processFromGroupChanged (value, item, formItems) {
-      const processList = this.processList.filter(p => p.groupCode === groupCode)
+      const processList = this.processList.filter(p => p.groupCode === value)
       formItems[2].options = toOptions(processList, 'processCode', 'processName')
     },
 
     _processNextGroupChanged (value, item, formItems) {
-      const processList = this.processList.filter(p => p.groupCode === groupCode)
+      const processList = this.processList.filter(p => p.groupCode === value)
       formItems[4].options = toOptions(processList, 'processCode', 'processName')
     },
 
@@ -175,7 +175,7 @@ export default {
     },
 
     editProcessFlowDetail (scope) {
-      if (row.processResult === 'OK') {
+      if (scope.row.processResult === 'OK') {
         getOkForm(scope.row, 'edit', this.processGroupOptions, this.processOptions)
           .then(form => this.$showForm(form).$on('submit', (formData, close) => {
             Api.put(`ProcessFlowDetails/${formData.id}`, formData).then(_ => {
