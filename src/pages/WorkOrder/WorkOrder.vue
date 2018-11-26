@@ -1,33 +1,29 @@
 <template>
   <div id="WorkOrder">
-    <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab">
-      <el-tab-pane label="工单管理" name="MainOrderManagement">
-        <MainOrderManagement @addTab="addTab"/>
+    <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab" class="tabPanel">
+      <el-tab-pane label="工单管理" name="MainOrderEditor">
+        <MainOrderEditor @addTab="addTab"/>
       </el-tab-pane>
       <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.name" :key="tab.name" :closable="true">
-        <component :is="tab.name" :machineCode="tab.machineCode"/>
+        <component :is="tab.name" :mainOrder="tab.mainOrder"/>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import MainOrderManagement from '@/pages/WorkOrder/MainOrderManagement'
-import MachineAnalogPoint from '@/pages/Machine/MachineAnalogPoint'
-import MachineStandardPoint from '@/pages/Machine/MachineStandardPoint'
-import MachineDataPoint from '@/pages/Machine/MachineDataPoint'
+import MainOrderEditor from '@/pages/WorkOrder/MainOrderEditor'
+import OrderDetail from '@/pages/WorkOrder/OrderDetailEditor'
 
 export default {
   name: 'WorkOrder',
   components: {
-    MainOrderManagement,
-    MachineAnalogPoint,
-    MachineStandardPoint,
-    MachineDataPoint
+    MainOrderEditor,
+    OrderDetail
   },
   data () {
     return {
-      activeTab: 'MainOrderManagement',
+      activeTab: 'MainOrderEditor',
       tabs: []
     }
   },
@@ -47,11 +43,12 @@ export default {
       if (~index) {
         this.tabs.splice(index, 1)
       }
-      this.activeTab = 'MainOrderManagement'
+      this.activeTab = 'MainOrderEditor'
     }
   }
 }
 </script>
 
 <style scoped>
+  .tabPanel { height: 650px; }
 </style>

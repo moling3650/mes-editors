@@ -1,0 +1,229 @@
+<template>
+  <el-card class="h600">
+    <div slot="header" class="clearfix">
+      <span class="card-header--text">
+        <span v-show="!disabled">{{ mainOrder }}的明细</span>
+      </span>
+      <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBomDetail(null)">添加明细</el-button>
+    </div>
+    <v-tree class="tree" ref="tree" :data="treeData" :tpl="tpl" @async-load-nodes='loadNodes'/>
+  </el-card>
+</template>
+
+<script>
+import Api from '@/utils/Api'
+import toMap from '@/utils/toMap'
+import toOptions from '@/utils/toOptions'
+import getForm from '@/form/bomDetail'
+
+export default {
+  name: 'OrderDetailTreeCard',
+  props: {
+    mainOrder: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    disabled () {
+      return !this.mainOrder
+    }
+  },
+  data () {
+    return {
+      treeData: [],
+      names: [],
+      units: [],
+      prodeuctOpts: [],
+      materialOpts: []
+    }
+  },
+  watch: {
+    mainOrder (value, oldValue) {
+      console.log(value)
+      this.treeData = []
+      if (value) {
+        this.getOrderDetails(value)
+      }
+    }
+  },
+
+  methods: {
+    _matTypeChanged (matType, _, formItems, rules) {
+      const options = matType ? this.materialOpts : this.prodeuctOpts
+      formItems[2].options = options
+      rules.bomCode[0].form.matCode = ''
+      formItems[3].unit = ''
+      formItems[4].unit = ''
+    },
+
+    _matCodeChanged (matCode, _, formItems) {
+      const unit = this.units[matCode]
+      formItems[3].unit = unit
+      formItems[4].unit = unit
+    },
+
+    cancelSelected (nodes) {
+      for (const node of nodes) {
+        if (Array.isArray(node.children)) {
+          this.cancelSelected(node.children)
+        }
+        this.$set(node, 'selected', false)
+      }
+    },
+
+    nodeSelected (node) {
+      const root = this.$refs.tree.data
+      this.cancelSelected(root)
+      this.$set(node, 'selected', !node.selected)
+      this.$emit('update:bomDetail', node.rawData)
+    },
+
+    addNode (parent, newNode) {
+      let addNode = null
+      this.$set(parent, 'expanded', true)
+      if (typeof newNode === 'undefined') {
+        throw new ReferenceError('newNode is required but undefined')
+      }
+      if (typeof newNode === 'string') {
+        addNode = { title: newNode }
+      }
+      if (typeof newNode === 'object' && !newNode.hasOwnProperty('title')) {
+        throw new ReferenceError('the title property is missed')
+      }
+      if (typeof newNode === 'object' && newNode.hasOwnProperty('title')) {
+        addNode = newNode
+      }
+      if (!parent.hasOwnProperty('children')) {
+        this.$set(parent, 'children', [])
+      }
+      parent.children.push(addNode)
+    },
+
+    addNodes (parent, nodes) {
+      for (let node of nodes) {
+        this.addNode(parent, node)
+      }
+    },
+
+    newNode (item) {
+      return {
+        id: item.bomDetailId,
+        title: this.names[item.matType] && this.names[item.matType][item.matCode],
+        async: !item.matType,
+        rawData: item
+      }
+    },
+
+    addBomDetail (node) {
+      const bomCode = node ? node.rawData.bomCode : this.bomCode
+      getForm({ bomCode }, 'add', this.prodeuctOpts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.post('BomDetails', formData).then(item => {
+          if (!node) {
+            this.treeData.push(this.newNode(item))
+          }
+          close()
+        })
+      }).$on('update:matType', this._matTypeChanged).$on('update:matCode', this._matCodeChanged))
+    },
+    // 待完善接口
+    getOrderDetails (mainOrder) {
+      console.log(mainOrder)
+      Api.get('WorkOrders', { mainOrder }).then(data => {
+        this.treeData = data.map(item => {
+          return {
+            id: item.bomDetailId,
+            title: this.names[item.matType] && this.names[item.matType][item.matCode],
+            expanded: false,
+            async: !item.matType,
+            rawData: item
+          }
+        })
+      })
+    },
+
+    search () {
+      this.$refs.tree.searchNodes(this.searchword)
+    },
+
+    checkNode () {
+
+    },
+
+    editNode (node) {
+      const options = node.rawData.matType ? this.materialOpts : this.prodeuctOpts
+      const unit = this.units[node.rawData.matCode]
+      getForm(node.rawData, 'edit', options, unit).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        Api.put(`BomDetails/${formData.bomDetailId}`, formData).then(_ => {
+          const children = node.parent === null ? this.treeData : node.parent.children
+          const index = children.indexOf(node)
+          if (~index) {
+            children.splice(index, 1, this.newNode(formData))
+            this.$emit('update:bomDetail', formData)
+          }
+          close()
+        })
+      }).$on('update:matType', this._matTypeChanged).$on('update:matCode', this._matCodeChanged))
+    },
+
+    deleteNode (node) {
+      this.$confirm('此操作将永久删除该BOM明细, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(_ => {
+        Api.delete(`BomDetails/${node.rawData.bomDetailId}`).then(_ => {
+          const children = node.parent === null ? this.treeData : node.parent.children
+          const index = children.indexOf(node)
+          if (~index) {
+            children.splice(index, 1)
+            this.$emit('change', {})
+            this.$message.success('删除成功!')
+          }
+        })
+      }).catch(_ => {
+        this.$message.info('已取消删除')
+      })
+    },
+
+    loadNodes (node) {
+      this.$set(node, 'loading', true)
+      Api.get('BomDetails', { productCode: node.rawData.matCode, version: this.version }).then(data => {
+        const nodes = data.map(item => this.newNode(item))
+        this.addNodes(node, nodes)
+        this.$set(node, 'loading', false)
+      })
+    },
+
+    // tpl (node, ctx, parent, index, props) {
+    tpl (node, ctx) {
+      let titleClass = node.selected ? 'node-title node-selected' : 'node-title'
+      titleClass += node.searched ? ' node-searched' : ''
+      return <span>
+        <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
+        <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
+        <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
+      </span>
+    }
+  },
+
+  created () {
+    Api.get('Products').then(products => {
+      this.names[0] = toMap(products, 'productCode', 'productName')
+      this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
+      this.units = Object.assign({}, this.units, toMap(products, 'productCode', 'unit'))
+    })
+    Api.get('Materials').then(materials => {
+      this.names[1] = toMap(materials, 'matCode', 'matName')
+      this.materialOpts = toOptions(materials, 'matCode', 'matName')
+      this.units = Object.assign({}, this.units, toMap(materials, 'matCode', 'unit'))
+    })
+  }
+}
+</script>
+
+<style scoped>
+.tree {
+  padding: 0;
+}
+</style>
