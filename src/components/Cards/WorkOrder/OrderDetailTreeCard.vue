@@ -12,8 +12,8 @@
 
 <script>
 import Api from '@/utils/Api'
-import toMap from '@/utils/toMap'
-import toOptions from '@/utils/toOptions'
+// import toMap from '@/utils/toMap'
+// import toOptions from '@/utils/toOptions'
 import getForm from '@/form/bomDetail'
 
 export default {
@@ -31,24 +31,40 @@ export default {
   },
   data () {
     return {
-      treeData: [],
-      names: [],
-      units: [],
-      prodeuctOpts: [],
-      materialOpts: []
+      treeData: []
     }
   },
+
   watch: {
-    mainOrder (value, oldValue) {
-      console.log(value)
-      this.treeData = []
-      if (value) {
-        this.getOrderDetails(value)
-      }
+    mainOrder: {
+      handler (value, oldValue) {
+        this.treeData = []
+        if (value) {
+          Api.get('WorkOrders', { mainOrder: value }).then(data => {
+            const rootNode = data.find(n => n.orderNo === value)
+            this.treeData = [this.getTree(rootNode, data)]
+          })
+        }
+      },
+      immediate: true
     }
   },
 
   methods: {
+    getTree (data, list) {
+      const node = {
+        id: data.id,
+        title: data.orderNo,
+        rawData: data
+      }
+      const children = list.filter(item => item.parentOrder === data.orderNo)
+      if (!children.length) {
+        return node
+      }
+      node.children = children.map(item => this.getTree(item, list))
+      return node
+    },
+
     _matTypeChanged (matType, _, formItems, rules) {
       const options = matType ? this.materialOpts : this.prodeuctOpts
       formItems[2].options = options
@@ -208,16 +224,16 @@ export default {
   },
 
   created () {
-    Api.get('Products').then(products => {
-      this.names[0] = toMap(products, 'productCode', 'productName')
-      this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
-      this.units = Object.assign({}, this.units, toMap(products, 'productCode', 'unit'))
-    })
-    Api.get('Materials').then(materials => {
-      this.names[1] = toMap(materials, 'matCode', 'matName')
-      this.materialOpts = toOptions(materials, 'matCode', 'matName')
-      this.units = Object.assign({}, this.units, toMap(materials, 'matCode', 'unit'))
-    })
+    // Api.get('Products').then(products => {
+    //   this.names[0] = toMap(products, 'productCode', 'productName')
+    //   this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
+    //   this.units = Object.assign({}, this.units, toMap(products, 'productCode', 'unit'))
+    // })
+    // Api.get('Materials').then(materials => {
+    //   this.names[1] = toMap(materials, 'matCode', 'matName')
+    //   this.materialOpts = toOptions(materials, 'matCode', 'matName')
+    //   this.units = Object.assign({}, this.units, toMap(materials, 'matCode', 'unit'))
+    // })
   }
 }
 </script>
