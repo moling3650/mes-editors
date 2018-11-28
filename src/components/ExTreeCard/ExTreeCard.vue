@@ -208,7 +208,7 @@ export default {
 
 <style scoped>
 .leaf {
-  color: #1C4267;
+  color: blue;
   font-size: 12px;
 }
 </style>
