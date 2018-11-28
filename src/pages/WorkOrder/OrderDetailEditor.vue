@@ -1,12 +1,12 @@
 <template>
   <div id="OrderDetailEditor">
     <el-row :gutter="10" class="row">
-      <el-col :span="14">
-        <OrderDetailTreeCard :mainOrder="mainOrder"/>
+      <el-col :span="18">
+        <OrderDetailTreeCard :mainOrder="mainOrder" :formatterMap="formatterMap" :orderDetail.sync="orderDetail"/>
       </el-col>
 
       <el-col :span="6">
-        <OrderDetailCard/>
+        <OrderDetailCard :orderDetail="orderDetail" :formatterMap="formatterMap"/>
       </el-col>
     </el-row>
 
@@ -28,11 +28,18 @@ export default {
     mainOrder: {
       type: String,
       required: true
+    },
+    formatterMap: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   data () {
     return {
-      products: []
+      products: [],
+      orderDetail: {}
     }
   },
   computed: {

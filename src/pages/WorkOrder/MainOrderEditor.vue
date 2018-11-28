@@ -2,7 +2,7 @@
   <div id="MainOrderEditor">
     <el-row :gutter="20" class="row">
       <el-col :span="24">
-        <MainOrderCard @skip="handleSkip"></MainOrderCard>
+        <MainOrderCard @skip="handleSkip" :formatterMap="formatterMap"></MainOrderCard>
       </el-col>
     </el-row>
   </div>
@@ -16,6 +16,14 @@ export default {
   components: {
     MainOrderCard
   },
+  props: {
+    formatterMap: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
   data () {
     return {
     }
@@ -23,7 +31,7 @@ export default {
   methods: {
     handleSkip (name, row) {
       const labels = {
-        orderDetail: '工单明细'
+        OrderDetail: '工单明细'
       }
       const tab = {
         name,

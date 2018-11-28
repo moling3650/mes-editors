@@ -14,12 +14,35 @@
       <el-card>
         <div slot="header" class="clearfix">
           <span class="card-header--text">生产计划管理</span>
-          <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="$emit('skip', 'OrderDetail', '1VS17C20SB')">工单明细</el-button>
           <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addWorkOrder">添加工单</el-button>
         </div>
         <el-table :data="WorkOrderList" stripe header-cell-class-name="thcell" highlight-current-row size="mini" class="w100p">
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item class="titleTabel" label="成品名称：">
+                  <span style="font-weight: normal;color: darkcyan;">{{formatter('productCode', scope.row.productCode)}}</span>
+                </el-form-item>
+                <el-form-item class="titleTabel" label="工艺流程：">
+                  <span style="font-weight: normal;color: darkcyan;">{{formatter('flowCode', scope.row.flowCode)}}</span>
+                </el-form-item>
+                <el-form-item class="titleTabel" label="订单编号：">
+                  <span style="font-weight: normal;color: darkcyan;">{{ scope.row.co }}</span>
+                </el-form-item>
+                <el-form-item class="titleTabel" label="工单状态：">
+                  <span style="font-weight: normal;color: darkcyan;">{{formatter('state', scope.row.state)}}</span>
+                </el-form-item>
+                <el-form-item class="titleTabel" label="录入时间：">
+                  <span style="font-weight: normal;color: darkcyan;">{{ scope.row.inputTime }}</span>
+                </el-form-item>
+                <el-form-item class="titleTabel" label="计划时间：">
+                  <span style="font-weight: normal;color: darkcyan;">{{ scope.row.plannedTime }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column prop="orderNo" label="主工单号"/>
-          <el-table-column prop="productCode" label="产品名称" :formatter="formatter"/>
+          <el-table-column prop="productCode" label="产品名称" :formatter="formatterTable"/>
           <el-table-column prop="qty" label="计划数量"/>
           <el-table-column prop="cpltQty" label="已完成数量"/>
           <el-table-column prop="plannedTime" label="计划完成时间"/>
@@ -44,50 +67,44 @@
 </template>
 
 <script>
-import axios from 'axios'
 import toOptions from '@/utils/toOptions'
-import toMap from '@/utils/toMap'
 import Api from '@/utils/Api'
 import getMainOrderForm from '@/form/workOrder/mainOrder'
 
 export default {
   name: 'MainOrderCard',
   props: {
+    formatterMap: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
   },
   data () {
     return {
-      formatterMap: {},
       WorkOrderList: [],
       productOptions: [],
       flowList: [],
-      mainOrder: ''
+      mainOrder: 'YP20181127'
     }
   },
   watch: {
   },
   methods: {
-
-    selectWorkOrder (mainOrder) {
-      this.fetchOptions(mainOrder).then(_ => this.fetchPoints(mainOrder))
-    },
-
-    formatter (row, col, cell, index) {
-      return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
-    },
-
-    fetchOptions () {
-      return axios.all([Api.get('Products')])
-        .then(([products]) => {
-          this.productOptions = toOptions(products, 'productCode', 'productName')
-          this.formatterMap.productCode = toMap(products, 'productCode', 'productName')
-        })
-    },
-
-    // 主工单列表
-    fetchPoints (orderNo) {
+    selectWorkOrder (orderNo) {
       Api.get(`WorkOrders/MainOrders`, { orderNo }).then(data => {
+        console.log(data)
         this.WorkOrderList = data
       })
+    },
+
+    formatter (property, code) {
+      return this.formatterMap && this.formatterMap[property] && this.formatterMap[property][code]
+    },
+
+    formatterTable (row, col, cell, index) {
+      return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
 
     addWorkOrder () {
@@ -155,4 +172,19 @@ export default {
 </script>
 
 <style scoped>
+.demo-table-expand {
+    font-size: 0;
+  }
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 33%;
+}
+.titleTabel {
+  font-weight: bold;
+}
 </style>
