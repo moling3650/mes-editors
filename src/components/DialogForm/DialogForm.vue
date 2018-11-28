@@ -3,7 +3,7 @@
     <el-dialog :title="title" :visible.sync="visible" :before-close="close" @closed="handleClosed" :width="width" top="10vh">
       <el-form :model="form" :rules="formRules" label-width="100px" ref="form">
         <el-row :gutter="20">
-          <el-col v-for="item in formItems" :key="item.value" :span="item.span || 24">
+          <el-col class="col" v-for="item in formItems" :key="item.value" :span="item.span || 24">
             <el-form-item :label="item.label" :prop="item.value">
               <component :is="item.component" v-model.trim="form[item.value]"
                 :type="item.type"
@@ -102,5 +102,8 @@ export default {
 #DialogForm .el-input__inner {
   border: 10px solid #bfc0c1;
   border-radius: 0;
+}
+#DialogForm .col {
+  height: 62px;
 }
 </style>

@@ -9,7 +9,7 @@
     <div class="tree-wrap" :style="{ height: `${parseInt(height) - 40}px`, overflowY: 'auto' }">
       <el-tree :data="treeData" :props="props" :load="loadNode" :expand-on-click-node="false" lazy ref="tree" highlight-current @node-click="handleNodeClick">
         <span class="tree-node" slot-scope="{ node, data }">
-          <font-awesome-icon :icon="['', 'paperclip', 'share-alt', 'tag', 'chevron-right'][node.level]"/>
+          <font-awesome-icon :icon="['', 'folder', 'star', 'tag', 'chevron-right'][node.level]"/>
           <span :class="{ leaf: node.level === 4 }">{{ node.label }}</span>
           <span v-if="node.level < 4">
             <el-button type="text" size="mini" icon="el-icon-plus" @click="() => append(node)">
@@ -208,7 +208,7 @@ export default {
 
 <style scoped>
 .leaf {
-  color: #1C4267;
+  color: blue;
   font-size: 12px;
 }
 </style>
