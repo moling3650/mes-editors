@@ -3,7 +3,7 @@
 
     <el-row :gutter="10" class="row">
       <el-col :span="8">
-        <el-cascader :options="products" placeholder="请选择产品" filterable @change="handleProductChange" class="w100p"/>
+        <el-cascader :options="cascaderOptions" placeholder="请选择产品" filterable @change="handleProductChange" class="w100p"/>
       </el-col>
     </el-row>
 
@@ -13,12 +13,12 @@
       </el-col>
 
       <el-col :span="10">
-        <BomDetailTreeCard :bomCode="bomCode" :version="versionCode" :bomDetail.sync="bomDetail"/>
+        <BomDetailTreeCard :bomCode="bomCode" :products="products" :materials="materials" :bomDetail.sync="bomDetail"/>
       </el-col>
 
       <el-col :span="6">
-        <BomDetailCard :bomDetail="bomDetail"/>
-        <SubstituteCard :bomDetail="bomDetail"/>
+        <BomDetailCard :bomDetail="bomDetail" :products="products" :materials="materials"/>
+        <SubstituteCard :bomDetail="bomDetail" :products="products" :materials="materials"/>
       </el-col>
     </el-row>
 
@@ -27,6 +27,7 @@
 
 <script>
 import Api from '@/utils/Api'
+import toOptions from '@/utils/toOptions'
 import BomCard from '@/components/Cards/BomCard'
 import BomDetailTreeCard from '@/components/Cards/BomDetailTreeCard'
 import BomDetailCard from '@/components/Cards/BomDetailCard'
@@ -34,40 +35,41 @@ import SubstituteCard from '@/components/Cards/SubstituteCard'
 
 export default {
   name: 'Bom',
+
   components: {
     BomCard,
     BomDetailTreeCard,
     BomDetailCard,
     SubstituteCard
   },
+
   data () {
     return {
+      cascaderOptions: [],
       products: [],
+      materials: [],
       productCode: '',
       bomCode: '',
-      versionCode: '',
       bomDetail: {}
     }
   },
+
   computed: {
     productOptions () {
-      const options = []
-      this.products.forEach(item => options.push(...item.children))
-      return options
+      return toOptions(this.products, 'productCode', 'productName')
     }
   },
+
   methods: {
 
     handleProductChange ([typeCode, productCode]) {
       this.productCode = productCode || ''
       this.bomCode = ''
-      this.versionCode = ''
       this.bomDetail = {}
     },
 
     handleBomChange (bom) {
       this.bomCode = bom.bomCode
-      this.versionCode = bom.versionCode
       this.bomDetail = {}
     },
 
@@ -81,9 +83,15 @@ export default {
     }
 
   },
-  mounted () {
+  created () {
     Api.get('Products/CascaderOptions').then(options => {
-      this.products = options
+      this.cascaderOptions = options
+    })
+    Api.get('Products').then(products => {
+      this.products = products
+    })
+    Api.get('Materials').then(materials => {
+      this.materials = materials
     })
   }
 }

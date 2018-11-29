@@ -24,23 +24,35 @@ export default {
       type: String,
       required: true
     },
-    version: {
-      type: String,
-      required: true
+    products: {
+      type: Array,
+      default: () => []
+    },
+    materials: {
+      type: Array,
+      default: () => []
     }
   },
   computed: {
     disabled () {
       return !this.bomCode
+    },
+    prodeuctOpts () {
+      return toOptions(this.products, 'productCode', 'productName')
+    },
+    materialOpts () {
+      return toOptions(this.materials, 'matCode', 'matName')
+    },
+    units () {
+      return Object.assign({}, toMap(this.products, 'productCode', 'unit'), toMap(this.materials, 'matCode', 'unit'))
+    },
+    names () {
+      return [toMap(this.products, 'productCode', 'productName'), toMap(this.materials, 'matCode', 'matName')]
     }
   },
   data () {
     return {
-      treeData: [],
-      names: [],
-      units: [],
-      prodeuctOpts: [],
-      materialOpts: []
+      treeData: []
     }
   },
   watch: {
@@ -80,7 +92,10 @@ export default {
       const root = this.$refs.tree.data
       this.cancelSelected(root)
       this.$set(node, 'selected', !node.selected)
-      this.$emit('update:bomDetail', node.rawData)
+      const bomDetail = Object.assign({}, node.rawData)
+      bomDetail.matName = this.names[bomDetail.matType][bomDetail.matCode]
+      bomDetail.unit = this.units[bomDetail.matCode]
+      this.$emit('update:bomDetail', bomDetail)
     },
 
     addNode (parent, newNode) {
@@ -114,6 +129,7 @@ export default {
       return {
         id: item.bomDetailId,
         title: this.names[item.matType] && this.names[item.matType][item.matCode],
+        expanded: false,
         async: !item.matType,
         rawData: item
       }
@@ -130,26 +146,11 @@ export default {
         })
       }).$on('update:matType', this._matTypeChanged).$on('update:matCode', this._matCodeChanged))
     },
+
     getBomDetails (bomCode) {
       Api.get('BomDetails', { bomCode }).then(data => {
-        this.treeData = data.map(item => {
-          return {
-            id: item.bomDetailId,
-            title: this.names[item.matType] && this.names[item.matType][item.matCode],
-            expanded: false,
-            async: !item.matType,
-            rawData: item
-          }
-        })
+        this.treeData = data.map(item => this.newNode(item))
       })
-    },
-
-    search () {
-      this.$refs.tree.searchNodes(this.searchword)
-    },
-
-    checkNode () {
-
     },
 
     editNode (node) {
@@ -190,7 +191,7 @@ export default {
 
     loadNodes (node) {
       this.$set(node, 'loading', true)
-      Api.get('BomDetails', { productCode: node.rawData.matCode, version: this.version }).then(data => {
+      Api.get('BomDetails', { productCode: node.rawData.matCode }).then(data => {
         const nodes = data.map(item => this.newNode(item))
         this.addNodes(node, nodes)
         this.$set(node, 'loading', false)
@@ -203,23 +204,12 @@ export default {
       titleClass += node.searched ? ' node-searched' : ''
       return <span>
         <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
-        <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
-        <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
+        <el-button-group>
+          <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
+          <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
+        </el-button-group>
       </span>
     }
-  },
-
-  created () {
-    Api.get('Products').then(products => {
-      this.names[0] = toMap(products, 'productCode', 'productName')
-      this.prodeuctOpts = toOptions(products, 'productCode', 'productName')
-      this.units = Object.assign({}, this.units, toMap(products, 'productCode', 'unit'))
-    })
-    Api.get('Materials').then(materials => {
-      this.names[1] = toMap(materials, 'matCode', 'matName')
-      this.materialOpts = toOptions(materials, 'matCode', 'matName')
-      this.units = Object.assign({}, this.units, toMap(materials, 'matCode', 'unit'))
-    })
   }
 }
 </script>
