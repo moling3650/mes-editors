@@ -1,5 +1,5 @@
 <template>
-  <el-card class="h500">
+  <el-card>
     <div slot="header" class="clearfix">
       <span class="card-header--text">
         <span v-show="!disabled">{{ mainOrder }}的明细</span>

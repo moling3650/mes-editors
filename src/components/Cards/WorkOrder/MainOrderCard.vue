@@ -51,12 +51,13 @@
               <el-progress :text-inside="true" :stroke-width="20" :percentage="(scope.row.cpltQty/scope.row.qty) * 100"></el-progress>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="80" align="center">
+          <el-table-column fixed="right" label="操作" width="100" align="center">
             <template slot-scope="scope">
               <el-button-group>
                 <el-button @click.stop="editWorkOrder(scope)" type="text" icon="el-icon-edit" size="mini"/>
                 <el-button @click.stop="deleteWorkOrder(scope)" type="text" icon="el-icon-delete" size="mini"/>
                 <el-button @click="$emit('skip', 'OrderDetail', scope.row.orderNo)" type="text" icon="el-icon-search" size="mini"/>
+                <el-button @click.stop="orderDivide(scope)" type="text" icon="el-icon-sort" size="mini"/>
               </el-button-group>
             </template>
           </el-table-column>
@@ -70,6 +71,7 @@
 import toOptions from '@/utils/toOptions'
 import Api from '@/utils/Api'
 import getMainOrderForm from '@/form/workOrder/mainOrder'
+import getCheckFlowForm from '@/form/workOrder/checkFlow'
 
 export default {
   name: 'MainOrderCard',
@@ -81,12 +83,20 @@ export default {
       }
     }
   },
+  computed: {
+    productOptions () {
+      if (this.formatterMap.productCode) {
+        return Object.entries(this.formatterMap.productCode).map(([value, label]) => ({value, label}))
+      }
+      return []
+    }
+  },
   data () {
     return {
       WorkOrderList: [],
-      productOptions: [],
       flowList: [],
-      mainOrder: 'YP20181127'
+      mainOrder: 'YP20181127',
+      checkFlowOptions: []
     }
   },
   watch: {
@@ -125,6 +135,14 @@ export default {
           Api.get('Formulas', {flowCode: newFlowCode}).then(data => {
             formItems[5].options = toOptions(data, 'formulaCode', 'formulaName')
           })
+        }))
+    },
+
+    //
+    orderDivide (scope) {
+      getCheckFlowForm({productCode: scope.row.productCode}, this.productOptions, this.checkFlowOptions)
+        .then(form => this.$showForm(form).$on('submit', (formData, close) => {
+
         }))
     },
 
