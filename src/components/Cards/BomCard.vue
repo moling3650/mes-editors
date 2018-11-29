@@ -12,8 +12,8 @@
         <template slot-scope="scope">
           <el-button-group>
             <el-button @click.stop="$emit('skip', 'Formula', scope.row)" type="text" icon="el-icon-tickets" size="mini"/>
-            <el-button @click.stop="editBom(scope.row)" type="text" icon="el-icon-edit" size="mini"/>
-            <el-button @click.stop="deleteBom(scope.row)" type="text" icon="el-icon-delete" size="mini"/>
+            <el-button @click.stop="editBom(scope)" type="text" icon="el-icon-edit" size="mini"/>
+            <el-button @click.stop="deleteBom(scope)" type="text" icon="el-icon-delete" size="mini"/>
           </el-button-group>
         </template>
       </el-table-column>
@@ -83,12 +83,11 @@ export default {
         }))
     },
 
-    editBom (row) {
-      getBomForm(row, 'edit', this.productOptions)
+    editBom (scope) {
+      getBomForm(scope.row, 'edit', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`Boms/${formData.bomId}`, formData).then(_ => {
-            const index = this.bomList.findIndex(b => b.bomId === formData.bomId)
-            ~index && this.bomList.splice(index, 1, formData)
+            this.bomList.splice(scope.$index, 1, formData)
             this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
@@ -96,15 +95,14 @@ export default {
         }))
     },
 
-    deleteBom (row) {
+    deleteBom (scope) {
       this.$confirm('此操作将永久删除该BOM, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`Boms/${row.bomId}`).then(_ => {
-          const index = this.bomList.findIndex(b => b.bomId === row.bomId)
-          ~index && this.bomList.splice(index, 1)
+        Api.delete(`Boms/${scope.row.bomId}`).then(_ => {
+          this.bomList.splice(scope.$index, 1)
           this.$emit('update:bomDetail', {})
           this.$message.success('删除成功!')
         })
