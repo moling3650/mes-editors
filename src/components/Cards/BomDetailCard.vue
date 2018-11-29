@@ -13,7 +13,7 @@
       <dt>物料类型：</dt>
       <dd>{{bomDetail.matType === 1 ? '原材料' : '半成品'}}</dd>
       <dt>消耗基数：</dt>
-      <dd>{{bomDetail.base_qty}} {{bomDetail.unit}}</dd>
+      <dd>{{bomDetail.baseQty}} {{bomDetail.unit}}</dd>
       <dt>消耗数量：</dt>
       <dd>{{bomDetail.qty}} {{bomDetail.unit}}</dd>
       <dt>损耗率：</dt>
