@@ -14,7 +14,7 @@ export default function getCheckFlowForm (form = null, productOptions, checkFlow
         value: 'flowCode',
         label: '工艺流程',
         component: 'ex-select',
-        options: checkFlowOptions,
+        options: checkFlowOptions
       }
     ],
     formData: Object.assign({
@@ -22,7 +22,7 @@ export default function getCheckFlowForm (form = null, productOptions, checkFlow
       flowCode: ''
     }, form),
     rules: {
-      flowCode: [{ required: true, message: '请选择工艺流程', trigger: 'blur' }],
+      flowCode: [{ required: true, message: '请选择工艺流程', trigger: 'blur' }]
     }
   })
 }
