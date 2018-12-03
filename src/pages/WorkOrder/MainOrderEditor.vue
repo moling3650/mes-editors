@@ -29,28 +29,18 @@ export default {
     }
   },
   methods: {
-    handleSkip (name, row) {
+    handleSkip (name, workOrder) {
       const labels = {
         OrderDetail: '工单明细',
         OrderDivide: '工单拆分'
       }
-      if (name === 'OrderDetail') {
-        const tab = {
-          name,
-          label: labels[name],
-          mainOrder: row,
-          id: 0
-        }
-        this.$emit('addTab', tab)
-      } else if (name === 'OrderDivide') {
-        const tab = {
-          name,
-          label: labels[name],
-          id: row,
-          mainOrder: ''
-        }
-        this.$emit('addTab', tab)
+      const tab = {
+        name,
+        label: labels[name],
+        workOrder
       }
+      this.$emit('addTab', tab)
+
     }
   }
 }
