@@ -100,6 +100,7 @@ export default {
         id: data.id,
         title: data.orderNo + '<span style="color:blue;font-weight: bold;">成品：' + this.formatter('productCode', data.productCode) + '</span>',
         rawData: data,
+        expanded: true,
         progress: data.cpltQty / data.qty * 100
       }
       const children = list.filter(item => item.parentOrder === data.orderNo)
