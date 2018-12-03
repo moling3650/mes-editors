@@ -4,7 +4,7 @@
       <span class="card-header--text">设备({{machineCode}})过程点位维护</span>
       <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addAnalogPoint">添加过程点位</el-button>
     </div>
-    <el-table :data="AnalogPointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+    <el-table :data="AnalogPointList" stripe header-cell-class-name="thcell" highlight-current-row size="mini" class="w100p">
       <el-table-column prop="machineCode" label="设备编号"/>
       <el-table-column prop="businessCode" label="业务编号"/>
       <el-table-column prop="businessName" label="业务名称"/>

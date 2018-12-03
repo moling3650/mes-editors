@@ -4,7 +4,7 @@
       <span class="card-header--text">设备({{machineCode}})数据点维护</span>
       <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addDataPoint">添加数据点</el-button>
     </div>
-    <el-table :data="DataPointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
+    <el-table :data="DataPointList" stripe header-cell-class-name="thcell" highlight-current-row size="mini" class="w100p">
       <el-table-column prop="dataPointName" label="数据点名称"/>
       <el-table-column prop="machineCode" label="设备编号"/>
       <el-table-column prop="dcType" label="运行方式" :formatter="formatter"/>

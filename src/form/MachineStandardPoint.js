@@ -54,7 +54,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       },
       {
         value: 'driveCode',
-        label: '驱动',
+        label: '任务驱动',
         component: 'ex-select',
         options: driveOptions,
         span: 12
@@ -76,8 +76,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       {
         value: 'parameter',
         label: '参数',
-        component: 'el-input',
-        span: 12
+        component: 'el-input'
       }
     ],
     formData: Object.assign({

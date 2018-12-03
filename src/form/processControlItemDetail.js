@@ -33,7 +33,7 @@ export default function getControlItemDetailForm (form = null, type = 'add', dri
       },
       {
         value: 'driveCode',
-        label: '驱动',
+        label: '任务驱动',
         component: 'ex-select',
         options: driveOptions,
         span: 12
