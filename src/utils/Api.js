@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 
 const instance = axios.create({
-  baseURL: 'http://192.168.0.44:8011/api/',
+  baseURL: 'http://192.168.1.21:8011/api/',
   timeout: 5000
 })
 

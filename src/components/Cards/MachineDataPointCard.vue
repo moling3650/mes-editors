@@ -7,6 +7,7 @@
     <el-table :data="DataPointList" stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="dataPointName" label="数据点名称"/>
       <el-table-column prop="machineCode" label="设备编号"/>
+      <el-table-column prop="dcType" label="运行方式" :formatter="formatter"/>
       <el-table-column prop="pointType" label="采集类型" :formatter="formatter"/>
       <el-table-column prop="driveCode" label="驱动编号"/>
       <el-table-column prop="parameter" label="参数设置"/>
@@ -121,6 +122,13 @@ export default {
       })
     }
   },
+
+  mounted () {
+    getMachineDataPointForm().then(form => {
+      this.formatterMap.dcType = toMap(form.formItems[6].options, 'value', 'label')
+    })
+  },
+
   created () {
     Api.get(`Drives/GroupByClass`).then(data => {
       const driveMap = {}

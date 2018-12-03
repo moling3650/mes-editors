@@ -43,6 +43,13 @@ export default function getMachineDataPointForm (form = null, type = 'add', poin
         span: 12
       },
       {
+        value: 'dcType',
+        label: '驱动类型',
+        component: 'ex-select',
+        options: [{value: 0, label: '总线'}, {value: 1, label: '独立'}],
+        span: 12
+      },
+      {
         value: 'description',
         label: '备注信息',
         component: 'el-input',
@@ -54,6 +61,7 @@ export default function getMachineDataPointForm (form = null, type = 'add', poin
       pointType: '',
       driveCode: '',
       parameter: '',
+      dcType: '',
       rate: 0,
       description: '',
       driveType: ''

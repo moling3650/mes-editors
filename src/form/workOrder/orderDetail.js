@@ -1,5 +1,4 @@
 export default function getOrderDetailForm (form = null, type = 'add', productOptions, flowOptions, stateOptions, formulaOptions, workshopOptions, employeeOptions) {
-  console.log(type)
   return Promise.resolve({
     title: `${type === 'add' ? '新建' : '编辑'}工单明细表单`,
     formItems: [

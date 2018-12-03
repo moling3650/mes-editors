@@ -31,14 +31,26 @@ export default {
   methods: {
     handleSkip (name, row) {
       const labels = {
-        OrderDetail: '工单明细'
+        OrderDetail: '工单明细',
+        OrderDivide: '工单拆分'
       }
-      const tab = {
-        name,
-        label: labels[name],
-        mainOrder: row
+      if (name === 'OrderDetail') {
+        const tab = {
+          name,
+          label: labels[name],
+          mainOrder: row,
+          id: 0
+        }
+        this.$emit('addTab', tab)
+      } else if (name === 'OrderDivide') {
+        const tab = {
+          name,
+          label: labels[name],
+          id: row,
+          mainOrder: ''
+        }
+        this.$emit('addTab', tab)
       }
-      this.$emit('addTab', tab)
     }
   }
 }
