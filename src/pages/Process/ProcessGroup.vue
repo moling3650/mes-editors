@@ -5,7 +5,7 @@
         <ProcessGroupDetail @addTab="addTab"/>
       </el-tab-pane>
       <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.name" :key="tab.name" :closable="true">
-        <component :is="tab.name" :pId="tab.pId" :processFrom="tab.processFrom"/>
+        <component :is="tab.name" :groupCode="tab.groupCode"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -13,13 +13,13 @@
 
 <script>
 import ProcessGroupDetail from '@/pages/Process/ProcessGroupDetailEditor'
-// import ProcessGroupClass from '@/pages/Process/ProcessGroupClassEditor'
+import ProcessGroupClass from '@/pages/Process/ProcessGroupClassEditor'
 
 export default {
   name: 'ProcessGroup',
   components: {
-    ProcessGroupDetail
-    // ProcessGroupClass
+    ProcessGroupDetail,
+    ProcessGroupClass
   },
   data () {
     return {

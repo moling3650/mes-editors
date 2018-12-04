@@ -3,7 +3,7 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="24">
-        <ProcessGroupDetailCard :flowCode="flowCode" @skip="handleSkip"/>
+        <ProcessGroupDetailCard @skip="handleSkip"/>
       </el-col>
     </el-row>
 
@@ -18,26 +18,15 @@ export default {
   components: {
     ProcessGroupDetailCard
   },
-  data () {
-    return {
-      flowCode: ''
-    }
-  },
-  computed: {
-  },
   methods: {
-    handleProcessFlowChange (data) {
-      this.flowCode = data.flowCode
-    },
     handleSkip (name, item) {
       const labels = {
-        GroupClass: '班次'
+        ProcessGroupClass: '班次'
       }
       const tab = {
         name,
         label: labels[name],
-        pId: item.pId,
-        GroupClass: item.processFrom
+        groupCode: item.groupCode
       }
       this.$emit('addTab', tab)
     }

@@ -5,7 +5,7 @@
       <el-button class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addProcessGroup">添加工序组</el-button>
     </div>
     <div class="fl-r" style="margin: 10px 5px;float: left;">
-      <el-button size="mini" round @click="$emit('skip', 'ProcessStep', item)">班次维护</el-button>
+      <el-button :disabled="classDisabled" size="mini" round @click="$emit('skip', 'ProcessGroupClass', item)">班次维护</el-button>
     </div>
     <el-table :data="processGroupList" @row-click="selelctRow" highlight-current-row stripe header-cell-class-name="thcell" size="mini" class="w100p">
       <el-table-column prop="idx" label="排序" width="150"/>
@@ -36,6 +36,9 @@ export default {
   props: {
   },
   computed: {
+    classDisabled () {
+      return this.groupCode === ''
+    },
     item () {
       return {
         groupCode: this.groupCode
@@ -55,15 +58,6 @@ export default {
     formatter (row, col, cell, index) {
       return this.formatterMap[col.property] && this.formatterMap[col.property][cell]
     },
-
-    // fetchOptions () {
-    //   return axios.all(Api.get('WorkShops'))
-    //     .then(([workShops]) => {
-    //       this.workshopOptions = toOptions(workShops, 'wsid', 'wsName')
-    //       console.log(this.workshopOptions)
-    //       this.formatterMap.wsid = toMap(workShops, 'wsid', 'wsName')
-    //     })
-    // },
 
     addProcessGroup () {
       getGroupForm(null, 'add', this.workshopOptions)
@@ -110,15 +104,13 @@ export default {
   },
 
   created () {
-    Api.get(`WorkGroups`).then(data => {
-      this.processGroupList = data
-    })
-
     Api.get('WorkShops')
       .then((workShops) => {
         this.workshopOptions = toOptions(workShops, 'wsid', 'wsName')
-        console.log(this.workshopOptions)
         this.formatterMap.wsid = toMap(workShops, 'wsid', 'wsName')
+        Api.get(`WorkGroups`).then(data => {
+          this.processGroupList = data
+        })
       })
   }
 }
