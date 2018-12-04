@@ -40,7 +40,6 @@ export default {
         workOrder
       }
       this.$emit('addTab', tab)
-
     }
   }
 }
