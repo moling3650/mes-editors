@@ -2,11 +2,6 @@
   <el-card>
     <div slot="header" class="clearfix">
       <span class="card-header--text">工艺流程管理</span>
-      <!-- <span class="fl-r">
-        <el-button :disabled="workDisabled" type="text" size="mini" icon="el-icon-edit" @click="editProcessStep">后工序步骤管理</el-button>
-        <el-button :disabled="workDisabled" type="text" size="mini" icon="el-icon-edit" @click="editControlItemDetail">管控细则</el-button>
-        <el-button :disabled="disabled" size="mini" icon="el-icon-plus" type="text" @click="addProcessFlowDetail">添加</el-button>
-      </span> -->
     </div>
     <div class="fl-r" style="margin: 10px 5px;float: left;">
       <el-button :disabled="workDisabled" size="mini" round @click="$emit('skip', 'ProcessStep', item)">后工序步骤管理</el-button>
