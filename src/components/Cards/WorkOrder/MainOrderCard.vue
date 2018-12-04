@@ -56,8 +56,8 @@
               <el-button-group>
                 <el-button @click.stop="editWorkOrder(scope)" type="text" icon="el-icon-edit" size="mini"/>
                 <el-button @click.stop="deleteWorkOrder(scope)" type="text" icon="el-icon-delete" size="mini"/>
-                <el-button @click="$emit('skip', 'OrderDetail', scope.row.orderNo)" type="text" icon="el-icon-search" size="mini"/>
-                <el-button @click="$emit('skip', 'OrderDivide', scope.row.id)" type="text" icon="el-icon-sort" size="mini"/>
+                <el-button @click="$emit('skip', 'OrderDetail', scope.row)" type="text" icon="el-icon-search" size="mini"/>
+                <el-button @click="$emit('skip', 'OrderDivide', scope.row)" type="text" icon="el-icon-sort" size="mini"/>
               </el-button-group>
             </template>
           </el-table-column>

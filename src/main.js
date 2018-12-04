@@ -9,6 +9,7 @@ import ExSelectButtonGroup from '@/components/ExSelectButtonGroup'
 import ExPropsCard from '@/components/ExPropsCard'
 import ExTreeCard from '@/components/ExTreeCard'
 import ExItemCard from '@/components/ExItemCard'
+import ExTableOperation from '@/components/ExTableOperation'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'vue-tree-halower/dist/halower-tree.min.css'
 import VTree from 'vue-tree-halower'
@@ -33,6 +34,7 @@ Vue.use(ExSelectButtonGroup)
 Vue.use(ExPropsCard)
 Vue.use(ExTreeCard)
 Vue.use(ExItemCard)
+Vue.use(ExTableOperation)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

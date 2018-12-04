@@ -2,7 +2,7 @@
   <div id="OrderDetailEditor">
     <el-row :gutter="10" class="row">
       <el-col :span="18">
-        <OrderDetailTreeCard :mainOrder="mainOrder" :formatterMap="formatterMap" :orderDetail.sync="orderDetail"/>
+        <OrderDetailTreeCard :mainOrder="workOrder.mainOrder" :formatterMap="formatterMap" :orderDetail.sync="orderDetail"/>
       </el-col>
 
       <el-col :span="6">
@@ -25,8 +25,8 @@ export default {
     OrderDetailCard
   },
   props: {
-    mainOrder: {
-      type: String,
+    workOrder: {
+      type: Object,
       required: true
     },
     formatterMap: {
