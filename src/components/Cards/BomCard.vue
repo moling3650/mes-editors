@@ -4,20 +4,15 @@
       <span class="card-header--text">BOM</span>
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addBom">添加BOM</el-button>
     </div>
-    <el-table :data="bomList" stripe header-cell-class-name="thcell" size="mini" class="w100p" highlight-current-row @row-click="handleClickBom">
-      <el-table-column prop="bomCode" label="BOM"/>
-      <el-table-column prop="versionCode" label="版本" width="50"/>
-      <el-table-column prop="enable" label="状态" width="50" :formatter="toState"/>
-      <el-table-column fixed="right" label="操作" width="80" align="center">
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button @click.stop="$emit('skip', 'Formula', scope.row)" type="text" icon="el-icon-tickets" size="mini"/>
-            <el-button @click.stop="editBom(scope)" type="text" icon="el-icon-edit" size="mini"/>
-            <el-button @click.stop="deleteBom(scope)" type="text" icon="el-icon-delete" size="mini"/>
-          </el-button-group>
-        </template>
-      </el-table-column>
-    </el-table>
+    <v-table style="width: 100%"
+      is-horizontal-resize
+      column-width-drag
+      row-hover-color="#eee"
+      row-click-color="#edf7ff"
+      :columns="columns"
+      :table-data="bomList"
+      :row-click="handleClickBom"
+      @on-custom-comp="handleTableOperation"/>
   </el-card>
 </template>
 
@@ -27,6 +22,13 @@ import getBomForm from '@/form/bom'
 
 export default {
   name: 'BomCard',
+  provide: {
+    btns: [
+      { type: 'formula', icon: 'tickets' },
+      { type: 'edit', icon: 'edit' },
+      { type: 'delete', icon: 'delete' }
+    ]
+  },
   props: {
     productCode: {
       type: String,
@@ -44,7 +46,13 @@ export default {
   },
   data () {
     return {
-      bomList: []
+      bomList: [],
+      columns: [
+        {field: 'bomCode', title: 'BOM', width: 150, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true, overflowTitle: true},
+        {field: 'versionCode', title: '版本', width: 50, titleAlign: 'center', columnAlign: 'center'},
+        {field: 'enable', title: '状态', width: 50, titleAlign: 'center', columnAlign: 'center', formatter: this.formatter},
+        {field: 'operation', title: '操作', width: 80, titleAlign: 'center', columnAlign: 'center', componentName: 'ExTableOperation'}
+      ]
     }
   },
   watch: {
@@ -56,9 +64,17 @@ export default {
     }
   },
   methods: {
+    formatter (rowData, rowIndex, pagingIndex, field) {
+      return ['禁用', '启用'][rowData[field]] || '未知'
+    },
 
-    toState (row, column, cellValue, index) {
-      return ['禁用', '启用'][cellValue] || '未知'
+    handleTableOperation ({type, row, index}) {
+      const funMap = {
+        formula: ({ row }) => this.$emit('skip', 'Formula', row),
+        edit: this.editBom,
+        delete: this.deleteBom
+      }
+      funMap[type] && funMap[type]({ row, index })
     },
 
     getBomList (productCode) {
@@ -87,7 +103,7 @@ export default {
       getBomForm(scope.row, 'edit', this.productOptions)
         .then(form => this.$showForm(form).$on('submit', (formData, close) => {
           Api.put(`Boms/${formData.bomId}`, formData).then(_ => {
-            this.bomList.splice(scope.$index, 1, formData)
+            this.bomList.splice(scope.index, 1, formData)
             this.$emit('change', formData)
             this.$message.success('修改成功')
             close()
@@ -102,7 +118,7 @@ export default {
         type: 'warning'
       }).then(_ => {
         Api.delete(`Boms/${scope.row.bomId}`).then(_ => {
-          this.bomList.splice(scope.$index, 1)
+          this.bomList.splice(scope.index, 1)
           this.$emit('update:bomDetail', {})
           this.$message.success('删除成功!')
         })
@@ -111,8 +127,8 @@ export default {
       })
     },
 
-    handleClickBom (bom) {
-      this.$emit('change', bom)
+    handleClickBom (rowIndex, rowData, column) {
+      this.$emit('change', rowData)
     }
   }
 }
