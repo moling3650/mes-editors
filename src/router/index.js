@@ -59,6 +59,10 @@ const editors = [
   {
     path: 'processGroup',
     component: () => import('@/pages/Process/ProcessGroup')
+  },
+  {
+    path: 'process',
+    component: () => import('@/pages/Process/Process')
   }
 ]
 
