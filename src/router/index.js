@@ -55,8 +55,11 @@ const editors = [
   {
     path: 'workOrder',
     component: () => import('@/pages/workOrder/workOrder')
+  },
+  {
+    path: 'processGroup',
+    component: () => import('@/pages/Process/ProcessGroup')
   }
-
 ]
 
 export default new Router({
