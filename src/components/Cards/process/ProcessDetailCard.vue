@@ -4,14 +4,18 @@
       <span class="card-header--text">工序管理</span>
       <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addProcess">添加工序</el-button>
     </div>
-    <el-table :data="ProcessList" stripe header-cell-class-name="thcell" highlight-current-row size="mini" class="w100p">
-      <el-table-column prop="idx" label="结束时间"/>
-      <el-table-column prop="processCode" label="班次编号"/>
-      <el-table-column prop="processName" label="班次名称"/>
+    <div class="fl-r" style="margin: 10px 5px;float: left;">
+      <el-button :disabled="disabled" size="mini" round @click="$emit('skip', 'ProcessStation', item)">工位管理</el-button>
+      <el-button :disabled="disabled" size="mini" round @click="$emit('skip', 'ProcessControlItem', item)">工位管控项</el-button>
+    </div>
+    <el-table :data="ProcessList" stripe header-cell-class-name="thcell" @row-click="selelctRow" highlight-current-row size="mini" class="w100p">
+      <el-table-column prop="idx" label="排序"/>
+      <el-table-column prop="processCode" label="工序编号"/>
+      <el-table-column prop="processName" label="工序名称"/>
       <el-table-column prop="groupCode" label="工序组编号"/>
       <el-table-column prop="typeId" label="类型名称" :formatter="formatter"/>
       <el-table-column prop="sectionName" label="工段名称"/>
-      <el-table-column prop="routeType" label="工段类型" :formatter="formatter"/>
+      <el-table-column prop="routeType" label="工段类型"/>
       <el-table-column prop="allowPack" label="允许打包" :formatter="formatter"/>
       <el-table-column prop="taskMode" label="任务方式" :formatter="formatter"/>
       <el-table-column prop="productionMode" label="生产方式" :formatter="formatter"/>
@@ -42,7 +46,13 @@ export default {
   },
   computed: {
     disabled () {
-      return !this.groupCode
+      return !this.processCode
+    },
+
+    item () {
+      return {
+        processCode: this.processCode
+      }
     }
   },
   data () {
@@ -50,7 +60,8 @@ export default {
       formatterMap: {},
       ProcessList: [],
       groupOptions: [],
-      processTypeOptions: []
+      processTypeOptions: [],
+      processCode: ''
     }
   },
   watch: {
@@ -104,7 +115,7 @@ export default {
             this.$message.success('修改成功')
             close()
           })
-        }).$on('update:typeId', this._typeIdChanged))
+        }))
     },
 
     deleteProcessStep (scope) {
@@ -120,6 +131,10 @@ export default {
       }).catch(_ => {
         this.$message.info('已取消删除')
       })
+    },
+
+    selelctRow (row) {
+      this.processCode = row.processCode
     }
   },
   mounted () {

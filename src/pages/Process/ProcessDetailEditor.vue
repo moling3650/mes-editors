@@ -3,7 +3,12 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="5">
-        <ProcessGroupCard @change="handleProcessFlowChange"/>
+        <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu-item v-for="item in ProcessGroupList" @click="groupCode = item.groupCode" :key="item.id" :index="item.groupCode">
+            <i class="el-icon-arrow-right"></i>
+            <span slot="title">{{ item.groupName }}</span>
+          </el-menu-item>
+        </el-menu>
       </el-col>
 
       <el-col :span="19">
@@ -15,17 +20,16 @@
 </template>
 
 <script>
-import ProcessGroupCard from '@/components/Cards/process/ProcessGroupCard'
 import ProcessDetailCard from '@/components/Cards/process/ProcessDetailCard'
-
+import Api from '@/utils/Api'
 export default {
   name: 'ProcessDetailEditor',
   components: {
-    ProcessGroupCard,
     ProcessDetailCard
   },
   data () {
     return {
+      ProcessGroupList: [],
       groupCode: ''
     }
   },
@@ -37,18 +41,21 @@ export default {
     },
     handleSkip (name, item) {
       const labels = {
-        ProcessStep: '后工序步骤',
-        ProcessControlItemDetail: '管控细则'
+        ProcessStation: '工位',
+        ProcessControlItem: '管控项'
       }
       const tab = {
         name,
         label: labels[name],
-        pId: item.pId,
-        processFrom: item.processFrom,
-        groupCode: item.groupCode
+        processCode: item.processCode
       }
       this.$emit('addTab', tab)
     }
+  },
+  created () {
+    Api.get(`WorkGroups`).then(data => {
+      this.ProcessGroupList = data
+    })
   }
 }
 </script>
