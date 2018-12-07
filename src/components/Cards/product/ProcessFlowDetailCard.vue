@@ -8,7 +8,7 @@
       <el-button :disabled="workDisabled" size="mini" round @click="$emit('skip', 'ProcessControlItemDetail', item)">管控细则</el-button>
     </div>
     <el-table :data="processFlowDetailList" @row-click="selelctRow" highlight-current-row stripe header-cell-class-name="thcell" size="mini" class="w100p">
-      <el-table-column prop="flowCode" label="工艺代码" width="150"/>
+      <el-table-column show-overflow-tooltip prop="flowCode" label="工艺代码" width="150"/>
       <el-table-column prop="processFromGroup" label="当前工序组" :formatter="formatter"/>
       <el-table-column prop="processFrom" label="当前工序" :formatter="formatter"/>
       <el-table-column prop="processResult" label="结果"/>

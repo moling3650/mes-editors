@@ -7,7 +7,7 @@
       </el-col>
 
       <el-col :span="6">
-        <StationMachineBindCard :machineDetail="machineDetail"/>
+        <StationMachineBindCard :stationCode="stationCode"/>
       </el-col>
     </el-row>
 
@@ -17,7 +17,7 @@
 <script>
 import ProcessStationCard from '@/components/Cards/process/ProcessStationCard'
 import StationMachineBindCard from '@/components/Cards/process/StationMachineBindCard'
-import Api from '@/utils/Api'
+
 export default {
   name: 'ProcessStationEditor',
   components: {
@@ -33,7 +33,6 @@ export default {
 
   data () {
     return {
-      machineDetail: {},
       stationCode: ''
     }
   },
@@ -41,9 +40,6 @@ export default {
   methods: {
     handleStationChange (processStation) {
       this.stationCode = processStation.stationCode
-      Api.get(`Machines`, { stationCode: this.stationCode }).then(data => {
-        this.machineDetail = data[0] || {}
-      })
     }
   }
 }

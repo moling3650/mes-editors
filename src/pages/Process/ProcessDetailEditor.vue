@@ -3,7 +3,7 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="5">
-        <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu background-color="darkcyan" text-color="#fff" active-text-color="#ffd04b">
           <el-menu-item v-for="item in ProcessGroupList" @click="groupCode = item.groupCode" :key="item.id" :index="item.groupCode">
             <i class="el-icon-arrow-right"></i>
             <span slot="title">{{ item.groupName }}</span>
