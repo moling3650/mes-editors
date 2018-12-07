@@ -2,7 +2,7 @@
   <div id="OrderDivideTreeCard">
     <el-row :gutter="10" class="row">
       <el-col :span="20">
-        <OrderDivideTreeCard :id="id" :formatterMap="formatterMap"/>
+        <OrderDivideTreeCard :workOrder="workOrder" :formatterMap="formatterMap"/>
       </el-col>
     </el-row>
 
@@ -18,8 +18,8 @@ export default {
     OrderDivideTreeCard
   },
   props: {
-    id: {
-      type: Number,
+    workOrder: {
+      type: Object,
       required: true
     },
     formatterMap: {
@@ -28,8 +28,6 @@ export default {
         return {}
       }
     }
-  },
-  computed: {
   },
   methods: {
   },
