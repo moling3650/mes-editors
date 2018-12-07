@@ -7,6 +7,17 @@
       <el-button :disabled="disabled" icon="el-icon-plus" class="fl-r p3-0" type="text" @click="addOrderDetail(null)">添加明细</el-button>
     </div>
     <v-tree class="tree" ref="tree" :data="treeData" :tpl="tpl"/>
+    <el-dialog title="派工单明细" :visible.sync="dispatchingForm">
+      <ex-select :options="processOptions" v-model="processCode" width="200px" placeholder="请选择工序" @change="handleProcessChange"></ex-select>
+      <el-table :data="WorkDispatchingList" stripe highlight-current-row style="margin-top: 10px;height: 400px;">
+        <el-table-column prop="machineCode"  label="派工单号" width="150"></el-table-column>
+        <el-table-column prop="qty" label="派工数量" width="200"></el-table-column>
+        <el-table-column prop="cpltQty" label="完成数量"></el-table-column>
+        <el-table-column prop="ngQty"  label="NG数量"></el-table-column>
+        <el-table-column prop="productCode" label="成品编号"></el-table-column>
+        <el-table-column prop="description" label="备注信息"></el-table-column>
+      </el-table>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -71,7 +82,12 @@ export default {
   },
   data () {
     return {
-      treeData: []
+      treeData: [],
+      dispatchingForm: false,
+      processCode: '',
+      processList: [],
+      WorkDispatchingList: [],
+      processOptions: [{ value: '正极匀浆' }, { value: '卷绕' }]
     }
   },
 
@@ -177,12 +193,25 @@ export default {
       })
     },
 
+    WorkDispatching (node) {
+      this.dispatchingForm = true
+    },
+
+    handleProcessChange (processCode) {
+      this.processCode = processCode
+      Api.get('WorkDispatchings', { processCode: this.processCode }).then(data => {
+        this.WorkDispatchingList = data
+      })
+    },
+
     tpl (node, ctx) {
       let titleClass = node.selected ? 'node-title node-selected' : 'node-title'
       titleClass += node.searched ? ' node-searched' : ''
       return <span>
         <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
         <el-progress class="progress" text-inside={true} stroke-width={20} percentage={node.progress}/>
+        <i class="el-icon-share"></i>
+        <el-button type="text" onClick={() => this.WorkDispatching(node)}>派工单</el-button>
         <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
         <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
       </span>
