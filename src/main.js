@@ -2,6 +2,7 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import App from '@/App'
 import router from '@/router'
+import store from '@/store'
 import DialogForm from '@/components/DialogForm'
 import ExSelect from '@/components/ExSelect'
 import ExInputNumber from '@/components/ExInputNumber'
@@ -45,5 +46,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
