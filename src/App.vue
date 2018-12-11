@@ -105,6 +105,9 @@ export default {
 .h600 {
   height: 600px;
 }
+.h450 {
+  height: 450px;
+}
 .h350 {
   height: 350px;
 }
