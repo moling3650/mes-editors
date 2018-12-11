@@ -24,6 +24,7 @@
 <script>
 import Api from '@/utils/Api'
 import getForm from '@/form/workOrder/orderDetail'
+import toOptions from '@/utils/toOptions'
 
 export default {
   name: 'OrderDetailTreeCard',
@@ -87,7 +88,8 @@ export default {
       processCode: '',
       processList: [],
       WorkDispatchingList: [],
-      processOptions: [{ value: '正极匀浆' }, { value: '卷绕' }]
+      processOptions: [],
+      splitMap: {}
     }
   },
 
@@ -96,9 +98,12 @@ export default {
       handler (value, oldValue) {
         this.treeData = []
         if (value) {
-          Api.get('WorkOrders', { mainOrder: value }).then(data => {
-            const rootNode = data.find(n => n.orderNo === value)
-            this.treeData = [this.getTree(rootNode, data)]
+          Api.get('/ProcessFlows/SplitMap').then(splitMap => {
+            this.splitMap = splitMap
+            Api.get('WorkOrders', { mainOrder: value }).then(data => {
+              const rootNode = data.find(n => n.orderNo === value)
+              this.treeData = [this.getTree(rootNode, data)]
+            })
           })
         }
       },
@@ -117,6 +122,7 @@ export default {
         title: data.orderNo + '<span style="color:blue;font-weight: bold;">成品：' + this.formatter('productCode', data.productCode) + '</span>',
         rawData: data,
         expanded: true,
+        enableSplit: this.splitMap[data.flowCode] || false,
         progress: data.cpltQty / data.qty * 100
       }
       const children = list.filter(item => item.parentOrder === data.orderNo)
@@ -194,7 +200,11 @@ export default {
     },
 
     WorkDispatching (node) {
-      this.dispatchingForm = true
+      Api.get('ProcessLists', { flowCode: node.rawData.flowCode }).then(data => {
+        this.processOptions = toOptions(data.filter(item => item.taskMode === 1), 'processCode', 'processName')
+        this.processCode = ''
+        this.dispatchingForm = true
+      })
     },
 
     handleProcessChange (processCode) {
@@ -210,8 +220,8 @@ export default {
       return <span>
         <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
         <el-progress class="progress" text-inside={true} stroke-width={20} percentage={node.progress}/>
-        <i class="el-icon-share"></i>
-        <el-button type="text" onClick={() => this.WorkDispatching(node)}>派工单</el-button>
+        <i class="el-icon-share" style={{display: node.enableSplit ? 'inline-block' : 'none'}}></i>
+        <el-button type="text" style={{display: node.enableSplit ? 'inline-block' : 'none'}} onClick={() => this.WorkDispatching(node)}>派工单</el-button>
         <el-button type="text" icon="el-icon-edit" onClick={() => this.editNode(node)}/>
         <el-button type="text" icon="el-icon-delete" onClick={() => this.deleteNode(node)}/>
       </span>

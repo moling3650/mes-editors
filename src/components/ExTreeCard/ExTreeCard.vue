@@ -18,6 +18,95 @@
           </span>
         </span>
       </el-tree>
+      <el-dialog title="新增设备" :visible.sync="addMachineForm">
+        <el-form>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="设备编号">
+                <el-input v-model="machineCode" style="width:250px" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="设备名称">
+                <el-input v-model="machineName" style="width:250px" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="设备简称">
+                <el-input v-model="simpleName" style="width:250px" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="状态">
+                <ex-select :options="stateOptions" v-model="state" style="width:250px" placeholder="请选择状态"></ex-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="设备生产商">
+                <el-input v-model="manufacturer" style="width:250px" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="审核状态">
+                <ex-select :options="useStateOptions" v-model="useState" style="width:250px" placeholder="请选择状态"></ex-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="设备生产商">
+                <el-date-picker v-model="arrivaldate" style="width:250px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="预计保养日期">
+                <el-date-picker v-model="expectNexttime" style="width:250px"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="使用车间">
+                <ex-select :options="wsCodeOptions" v-model="wsCode" style="width:250px" placeholder="请选择车间"></ex-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="使用部门">
+                <ex-select :options="departmentOptions" v-model="userdepartment" style="width:250px" placeholder="请选择部门"></ex-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="24">
+              <el-form-item label="备注说明">
+                <el-input v-model="description" style="width:650px" placeholder="请输入内容"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="设备图片">
+                <el-upload
+                  class="upload-demo"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :file-list="fileList2"
+                  list-type="picture">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      <div class="btnDiv">
+        <el-button type="info">重置</el-button>
+        <el-button type="success" @click="btnAdd">提交</el-button>
+      </div>
+      </el-dialog>
     </div>
   </el-card>
 </template>
@@ -54,7 +143,23 @@ export default {
         isLeaf (data, node) {
           return node.level > 3
         }
-      }
+      },
+      addMachineForm: true,
+      machineCode: '',
+      machineName: '',
+      state: 0,
+      useState: '',
+      simpleName: '',
+      manufacturer: '',
+      arrivaldate: new Date(),
+      expectNexttime: new Date(),
+      userdepartment: '',
+      wsCode: '',
+      description: '',
+      stateOptions: [],
+      useStateOptions: [],
+      departmentOptions: [],
+      wsCodeOptions: []
     }
   },
   computed: {
@@ -201,6 +306,10 @@ export default {
     toAppendText (level) {
       const types = ['类型', '类别', '型号', '']
       return `${this.modelName}${types[level]}`
+    },
+
+    btnAdd () {
+
     }
   }
 }
@@ -210,5 +319,16 @@ export default {
 .leaf {
   color: blue;
   font-size: 12px;
+}
+
+.btnDiv {
+  margin-top: 10px;
+}
+
+.titleSty {
+  margin-right: 10px;
+}
+.titleRightSty {
+  margin-right: 10px;
 }
 </style>

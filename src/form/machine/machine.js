@@ -50,8 +50,27 @@ export default function getMachineForm (form = null, type = 'add', departmentOpt
         span: 12
       },
       {
+        value: 'useState',
+        label: '审核状态',
+        component: 'ex-select',
+        options: [{value: 0, label: '未审核'}, {value: 1, label: '已审核'}],
+        span: 12
+      },
+      {
+        value: 'manufacturer',
+        label: '设备生产商',
+        component: 'el-input',
+        span: 12
+      },
+      {
         value: 'arrivaldate',
         label: '到货日期',
+        component: 'el-date-picker',
+        span: 12
+      },
+      {
+        value: 'expectNexttime',
+        label: '预计保养日期',
         component: 'el-date-picker',
         span: 12
       },
@@ -80,9 +99,11 @@ export default function getMachineForm (form = null, type = 'add', departmentOpt
       machineCode: '',
       machineName: '',
       state: 0,
+      useState: '',
       simpleName: '',
       manufacturer: '',
       arrivaldate: new Date(),
+      expectNexttime: new Date(),
       userdepartment: '',
       wsCode: '',
       description: ''
