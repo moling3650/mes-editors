@@ -12,7 +12,7 @@ instance.interceptors.response.use(response => {
   return response.data
 }, error => {
   // 对响应错误做点什么
-  Message.error(error.message)
+  Message.error(error.response.data || error.message)
   return Promise.reject(error)
 })
 
