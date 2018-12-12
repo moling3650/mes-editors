@@ -19,71 +19,71 @@
         </span>
       </el-tree>
       <el-dialog title="新增设备" :visible.sync="addMachineForm">
-        <el-form>
+        <el-form :model="formData" :rules="rules" label-width="100px">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="设备编号">
-                <el-input v-model="machineCode" style="width:250px" placeholder="请输入内容"></el-input>
+              <el-form-item label="设备编号" prop="machineCode">
+                <el-input v-model="formData.machineCode" placeholder="请输入设备编号"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="设备名称">
-                <el-input v-model="machineName" style="width:250px" placeholder="请输入内容"></el-input>
+              <el-form-item label="设备名称" prop="machineName">
+                <el-input v-model="formData.machineName" placeholder="请输入设备名称"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="设备简称">
-                <el-input v-model="simpleName" style="width:250px" placeholder="请输入内容"></el-input>
+              <el-form-item label="设备简称" prop="simpleName">
+                <el-input v-model="formData.simpleName" placeholder="请输入设备简称"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="状态">
-                <ex-select :options="stateOptions" v-model="state" style="width:250px" placeholder="请选择状态"></ex-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item label="设备生产商">
-                <el-input v-model="manufacturer" style="width:250px" placeholder="请输入内容"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="审核状态">
-                <ex-select :options="useStateOptions" v-model="useState" style="width:250px" placeholder="请选择状态"></ex-select>
+              <el-form-item label="设备状态" prop="state">
+                <ex-select :options="stateOptions" v-model="formData.state" placeholder="请选择设备状态"></ex-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="设备生产商">
-                <el-date-picker v-model="arrivaldate" style="width:250px"></el-date-picker>
+              <el-form-item label="设备生产商" prop="manufacturer">
+                <el-input v-model="formData.manufacturer" placeholder="请输入设备生产商"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="预计保养日期">
-                <el-date-picker v-model="expectNexttime" style="width:250px"></el-date-picker>
+              <el-form-item label="审核状态" prop="useState">
+                <ex-select :options="useStateOptions" v-model="formData.useState" placeholder="请选择审核状态"></ex-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="使用车间">
-                <ex-select :options="wsCodeOptions" v-model="wsCode" style="width:250px" placeholder="请选择车间"></ex-select>
+              <el-form-item label="到货日期" prop="arrivaldate">
+                <el-date-picker v-model="formData.arrivaldate"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="使用部门">
-                <ex-select :options="departmentOptions" v-model="userdepartment" style="width:250px" placeholder="请选择部门"></ex-select>
+              <el-form-item label="预计保养日期" prop="expectNexttime">
+                <el-date-picker v-model="formData.expectNexttime"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="使用车间" prop="wsCode">
+                <ex-select :options="wsCodeOptions" v-model="formData.wsCode" placeholder="请选择车间"></ex-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="使用部门" prop="userdepartment">
+                <ex-select :options="departmentOptions" v-model="formData.userdepartment" placeholder="请选择部门"></ex-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item label="备注说明">
-                <el-input v-model="description" style="width:650px" placeholder="请输入内容"></el-input>
+              <el-form-item label="备注说明" prop="description">
+                <el-input v-model="formData.description" placeholder="请输入内容"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -92,8 +92,7 @@
               <el-form-item label="设备图片">
                 <el-upload
                   class="upload-demo"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :file-list="fileList2"
+                  action="../static/img/"
                   list-type="picture">
                   <el-button size="small" type="primary">点击上传</el-button>
                   <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
@@ -114,7 +113,10 @@
 <script>
 import Api from '@/utils/Api'
 import forms from '@/form'
-
+import axios from 'axios'
+import toOptions from '@/utils/toOptions'
+const useState = ['未审核', '已审核']
+const machineState = ['待机', '运行', '故障', '维护']
 export default {
   name: 'ExTreeCard',
   props: {
@@ -136,6 +138,21 @@ export default {
     }
   },
   data () {
+    const checkMachineCode = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('设备编号不能为空'))
+      }
+      if (rule.type === 'edit') {
+        return callback()
+      }
+      Api.get('Machines/Validate', { machineCode: value }).then(valid => {
+        if (valid) {
+          callback()
+        } else {
+          callback(new Error('设备编号已存在'))
+        }
+      })
+    }
     return {
       currentNode: null,
       treeData: [],
@@ -144,22 +161,28 @@ export default {
           return node.level > 3
         }
       },
-      addMachineForm: true,
-      machineCode: '',
-      machineName: '',
-      state: 0,
-      useState: '',
-      simpleName: '',
-      manufacturer: '',
-      arrivaldate: new Date(),
-      expectNexttime: new Date(),
-      userdepartment: '',
-      wsCode: '',
-      description: '',
-      stateOptions: [],
-      useStateOptions: [],
+      addMachineForm: false,
+      formData: {
+        machineCode: '',
+        machineName: '',
+        state: 0,
+        useState: '',
+        simpleName: '',
+        manufacturer: '',
+        arrivaldate: new Date(),
+        expectNexttime: new Date(),
+        userdepartment: '',
+        wsCode: '',
+        description: ''
+      },
+      stateOptions: machineState.map((label, index) => ({value: index, label})),
+      useStateOptions: useState.map((label, index) => ({value: index, label})),
       departmentOptions: [],
-      wsCodeOptions: []
+      wsCodeOptions: [],
+      rules: {
+        machineCode: [{ required: true, validator: checkMachineCode, trigger: 'blur' }],
+        machineName: [{ required: true, message: '请输入设备名称', trigger: 'blur' }]
+      }
     }
   },
   computed: {
@@ -311,6 +334,15 @@ export default {
     btnAdd () {
 
     }
+  },
+
+  created () {
+    axios.all([Api.get('Departments'), Api.get('WorkShops')])
+      .then(([departments, workShops]) => {
+        this.departmentOptions = toOptions(departments, 'departCode', 'departName')
+        this.wsCodeOptions = toOptions(workShops, 'wsCode', 'wsName')
+        this.addMachineForm = true
+      })
   }
 }
 </script>
@@ -323,12 +355,5 @@ export default {
 
 .btnDiv {
   margin-top: 10px;
-}
-
-.titleSty {
-  margin-right: 10px;
-}
-.titleRightSty {
-  margin-right: 10px;
 }
 </style>
