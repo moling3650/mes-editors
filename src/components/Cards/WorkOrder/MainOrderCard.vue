@@ -3,10 +3,13 @@
     <el-row>
       <el-form :inline="true">
         <el-form-item label="查询条件">
-          <el-input v-model="mainOrder" placeholder="主工单号"></el-input>
+          <el-input v-model="mainOrder" placeholder="请输入主工单号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="selectWorkOrder(mainOrder)">查询</el-button>
+          <el-date-picker v-model="datePicker" type="daterange" align="right" unlink-panels range-separator="至"           start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="selectWorkOrder(mainOrder, datePicker)">查询</el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -96,13 +99,15 @@ export default {
       WorkOrderList: [],
       flowList: [],
       mainOrder: 'YP20181127',
-      checkFlowOptions: []
+      checkFlowOptions: [],
+      datePicker: ''
     }
   },
   watch: {
   },
   methods: {
-    selectWorkOrder (orderNo) {
+    selectWorkOrder (orderNo, datePicker) {
+      // 接口待完善，匹配时间参数
       Api.get(`WorkOrders/MainOrders`, { orderNo }).then(data => {
         this.WorkOrderList = data
       })
