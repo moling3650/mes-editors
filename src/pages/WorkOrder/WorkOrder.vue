@@ -5,7 +5,7 @@
         <MainOrderEditor :formatterMap="formatterMap" @addTab="addTab"/>
       </el-tab-pane>
       <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.name" :key="tab.name" :closable="true">
-        <component :is="tab.name" :formatterMap="formatterMap" :workOrder="tab.workOrder"/>
+        <component :is="tab.name" :formatterMap="formatterMap" :workOrder="tab.workOrder" @addTab="addTab"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     addTab (tab) {
+      this.tabs = []
       const index = this.tabs.findIndex(t => t.name === tab.name)
       if (~index) {
         this.tabs.splice(index, 1, tab)

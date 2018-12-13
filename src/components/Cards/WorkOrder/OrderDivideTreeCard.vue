@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Api from '@/utils/Api'
 // import getForm from '@/form/workOrder/orderDetail'
 
@@ -52,6 +53,7 @@ export default {
     return {
       treeData: [],
       flows: {},
+      formulas: {},
       nodes: []
     }
   },
@@ -61,7 +63,7 @@ export default {
       handler (value, oldValue) {
         this.treeData = []
         if (value) {
-          this.getTree(this.workOrder, this.flows).then(node => {
+          this.getTree(this.workOrder, this.flows, this.formulas).then(node => {
             this.treeData = [node]
           })
         }
@@ -85,6 +87,7 @@ export default {
       this.getNodes(this.treeData)
       Api.post('WorkOrders/SubOrders', this.nodes.filter(o => o.orderNo !== o.mainOrder)).then(_ => {
         this.$message.success('拆分成功')
+        this.$emit('skip', 'OrderDetail', this.workOrder)
       })
     },
 
@@ -99,25 +102,29 @@ export default {
         orderNo: `${parent.orderNo}-${index + 1}`,
         productCode: product.productCode,
         flowCode: product.flows[0].value,
+        formulaCode: product.formulas[0] ? product.formulas[0].value : null,
         lvl: parent.lvl + 1,
         plannedTime: parent.plannedTime,
         qty: parent.qty,
         state: parent.state,
-        flows: product.flows
+        flows: product.flows,
+        formulas: product.formulas
       }
       return Promise.resolve(childNodeData)
     },
 
-    getTree (data, flows) {
+    getTree (data, flows, formulas) {
       const node = {
         title: data.orderNo + ' 工艺：' + data.flowCode + ' 成品：' + this.formatter('productCode', data.productCode),
         expanded: true,
-        isEdit: data.flows && data.flows.length > 1,
+        flowEditable: data.flows && data.flows.length > 1,
+        formulaEditable: data.formulas && data.formulas.length > 1,
         rawData: data
       }
       const products = flows[data.flowCode] || []
       return Promise.all(products.map((p, index) => {
-        return this.getChildData(data, p, index).then(childNodeData => this.getTree(childNodeData, flows))
+        p.formulas = this.formulas[data.productCode] || []
+        return this.getChildData(data, p, index).then(childNodeData => this.getTree(childNodeData, flows, formulas))
       })).then(children => {
         node.children = children
         return Promise.resolve(node)
@@ -134,7 +141,6 @@ export default {
     },
 
     nodeSelected (node) {
-      console.log(node.rawData)
       const root = this.$refs.tree.data
       this.cancelSelected(root)
       this.$set(node, 'selected', !node.selected)
@@ -165,10 +171,35 @@ export default {
         const data = JSON.parse(JSON.stringify(node.rawData))
         if (data.flowCode !== formData.flowCode) {
           data.flowCode = formData.flowCode
-          this.getTree(data, this.flows).then(newNode => {
+          this.getTree(data, this.flows, this.formulas).then(newNode => {
             this.$set(node.parent.children, index, newNode)
           })
         }
+        close()
+      })
+    },
+
+    selectFormula (node) {
+      this.$showForm({
+        title: '选择配方',
+        width: '500px',
+        formItems: [
+          {
+            value: 'formulaCode',
+            label: '工艺流程',
+            component: 'ex-select',
+            options: node.rawData.formulas,
+            span: 22
+          }
+        ],
+        formData: {
+          formulaCode: node.rawData.formulaCode
+        },
+        rules: {
+          formulaCode: [{required: true}]
+        }
+      }).$on('submit', (formData, close) => {
+        this.$set(node.rawData, 'formulaCode', formData.formulaCode)
         close()
       })
     },
@@ -178,15 +209,21 @@ export default {
       titleClass += node.searched ? ' node-searched' : ''
       return <span>
         <span class={titleClass} domPropsInnerHTML={node.title} onClick={() => this.nodeSelected(node)}></span>
-        <el-button type="text" icon="el-icon-edit" style={{display: node.isEdit ? 'inline-block' : 'none'}} onClick={() => this.selectFlow(node)}/>
+        <el-button type="text" icon="el-icon-edit" style={{display: node.flowEditable ? 'inline-block' : 'none'}} onClick={() => this.selectFlow(node)}>
+          更换工艺
+        </el-button>
+        <el-button type="text" icon="el-icon-edit" style={{display: node.formulaEditable ? 'inline-block' : 'none'}} onClick={() => this.selectFormula(node)}>
+          更换配方
+        </el-button>
       </span>
     }
   },
 
   created () {
-    Api.get('ProcessFlows/SubProcessFlows').then(flows => {
+    axios.all([Api.get('ProcessFlows/SubProcessFlows'), Api.get('Products/Formulas')]).then(([flows, formulas]) => {
+      this.formulas = formulas
       this.flows = flows
-      return this.getTree(this.workOrder, this.flows)
+      return this.getTree(this.workOrder, this.flows, this.formulas)
     }).then(node => {
       this.treeData = [node]
     })

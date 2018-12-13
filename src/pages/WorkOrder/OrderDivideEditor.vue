@@ -1,8 +1,8 @@
 <template>
   <div id="OrderDivideTreeCard">
     <el-row :gutter="10" class="row">
-      <el-col :span="20">
-        <OrderDivideTreeCard :workOrder="workOrder" :formatterMap="formatterMap"/>
+      <el-col :span="24">
+        <OrderDivideTreeCard :workOrder="workOrder" :formatterMap="formatterMap" @skip="handleSkip"/>
       </el-col>
     </el-row>
 
@@ -30,6 +30,18 @@ export default {
     }
   },
   methods: {
+    handleSkip (name, workOrder) {
+      const labels = {
+        OrderDetail: '工单明细',
+        OrderDivide: '工单拆分'
+      }
+      const tab = {
+        name,
+        label: labels[name],
+        workOrder
+      }
+      this.$emit('addTab', tab)
+    }
   },
   mounted () {
   }

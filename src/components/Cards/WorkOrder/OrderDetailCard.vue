@@ -8,6 +8,8 @@
       <dd><span class="orderFont">{{formatter('productCode', orderDetail.productCode)}}</span></dd>
       <dt><span class="title">工艺流程：</span></dt>
       <dd><span class="orderFont">{{formatter('flowCode', orderDetail.flowCode)}}</span></dd>
+      <dt><span class="title">工艺配方：</span></dt>
+      <dd><span class="orderFont">{{formatter('formulaCode', orderDetail.formulaCode)}}</span></dd>
       <dt><span class="title">工单数量：</span></dt>
       <dd><span class="orderFont">{{orderDetail.qty}}</span></dd>
       <dt><span class="title">完成数量：</span></dt>
