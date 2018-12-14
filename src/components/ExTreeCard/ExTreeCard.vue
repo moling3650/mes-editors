@@ -18,6 +18,7 @@
           </span>
         </span>
       </el-tree>
+
       <el-dialog title="新增设备" :visible.sync="addMachineForm">
         <el-form :model="formData" :rules="rules" label-width="100px">
           <el-row :gutter="20">
@@ -348,11 +349,13 @@ export default {
 </script>
 
 <style scoped>
+.tree-node {
+  font-size: 12px;
+}
 .leaf {
   color: blue;
   font-size: 12px;
 }
-
 .btnDiv {
   margin-top: 10px;
 }
