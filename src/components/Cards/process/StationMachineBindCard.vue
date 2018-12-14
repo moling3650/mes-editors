@@ -24,8 +24,8 @@
       <el-table :data="machineList" stripe highlight-current-row class="w100p" @row-click="checkMachine" style="margin-top: 10px;">
         <el-table-column prop="machineCode"  label="设备编号" width="150"></el-table-column>
         <el-table-column prop="machineName" label="设备名称" width="200"></el-table-column>
-        <el-table-column prop="state" label="状态"></el-table-column>
-        <el-table-column prop="useState"  label="是否审核"></el-table-column>
+        <el-table-column prop="state" label="状态" :formatter="toState"></el-table-column>
+        <el-table-column prop="useState"  label="是否审核" :formatter="toUseState"></el-table-column>
         <el-table-column prop="manufacturer" label="生产商"></el-table-column>
         <el-table-column prop="description" label="备注信息"></el-table-column>
       </el-table>
@@ -39,7 +39,6 @@
 
 <script>
 import Api from '@/utils/Api'
-
 export default {
   name: 'StationMachineBindCard',
   props: {
@@ -81,6 +80,14 @@ export default {
   },
 
   methods: {
+
+    toUseState (row, column, cellValue, index) {
+      return ['未审核', '已审核'][cellValue] || '未知'
+    },
+
+    toState (row, column, cellValue, index) {
+      return ['待机', '运行', '故障', '维护'][cellValue] || '未知'
+    },
 
     handleMachineChange (machine) {
       this.modelCode = machine[2]
