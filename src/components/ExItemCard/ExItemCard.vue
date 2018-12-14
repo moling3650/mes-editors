@@ -125,6 +125,8 @@ export default {
 <style scoped>
 ul {
   list-style: none;
+  padding-left: 20px;
+  font-size: 12px;
 }
 li {
   line-height: 30px;
@@ -134,9 +136,17 @@ li {
 }
 .label {
   width: 80px;
+  font-weight: bold;
   text-align: right;
 }
 .value {
   margin-left: 10px;
+  color: darkcyan;
+}
+@media only screen and (min-width: 1200px) {
+  ul {
+    padding-left: 40px;
+    font-size: 14px;
+  }
 }
 </style>
