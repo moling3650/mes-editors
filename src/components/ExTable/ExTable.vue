@@ -92,6 +92,7 @@ export default {
 
     rowClick (rowIndex, rowData) {
       this.currentRow = rowData
+      this.$emit('row-click', rowData)
     },
 
     rowOperation ({ type, row, index }) {
@@ -124,8 +125,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`${this.model.name}/${row[this.model.pk]}`).then(_ => {
+        Api.delete(`${this.model.name}/${row[this.model.pk]}`).then(item => {
           this.rawData.splice(this.getRowIndex(index), 1)
+          if (this.currentRow[this.model.pk] === item[this.model.pk]) {
+            this.$emit('row-click', null)
+          }
           this.$message.success('删除成功!')
         })
       }).catch(_ => {

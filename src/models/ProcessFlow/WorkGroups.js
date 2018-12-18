@@ -52,7 +52,7 @@ export default {
       rules: {
         groupCode: [{ required: true, type, validator: groupCodeValidate, trigger: 'blur' }],
         groupName: [{ required: true, message: '请输入工序组名称', trigger: 'blur' }],
-        wsid: [{ required: true, type: 'number', message: '请选择车间', trigger: 'change' }],
+        wsid: [{ required: true, type: 'number', message: '请选择车间', trigger: 'change' }]
       }
     })
   }
