@@ -15,6 +15,8 @@
             <el-menu-item index="/editors/processFlow">工艺步骤管理</el-menu-item>
             <el-menu-item index="/editors/process">工序管理</el-menu-item>
             <el-menu-item index="/editors/workOrder">工单管理</el-menu-item>
+            <el-menu-item index="/editors/product">成品管理</el-menu-item>
+            <el-menu-item index="/editors/material">物料管理</el-menu-item>
           </el-submenu>
           <el-submenu index="workTool">
             <template slot="title">
