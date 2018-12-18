@@ -10,6 +10,7 @@ import ExSelectButtonGroup from '@/components/ExSelectButtonGroup'
 import ExPropsCard from '@/components/ExPropsCard'
 import ExTreeCard from '@/components/ExTreeCard'
 import ExItemCard from '@/components/ExItemCard'
+import ExTable from '@/components/ExTable'
 import ExTableOperation from '@/components/ExTableOperation'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'vue-tree-halower/dist/halower-tree.min.css'
@@ -38,6 +39,7 @@ Vue.use(ExPropsCard)
 Vue.use(ExTreeCard)
 Vue.use(ExItemCard)
 Vue.use(ExTableOperation)
+Vue.use(ExTable)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.config.productionTip = false
