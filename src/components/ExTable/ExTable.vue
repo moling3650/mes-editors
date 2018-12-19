@@ -8,6 +8,7 @@
       style="width: 100%;"
       is-horizontal-resize
       is-vertical-resize
+      :is-loading="isLoading"
       :vertical-resize-offset="60"
       :multiple-sort="false"
       :min-height="350"
@@ -40,6 +41,10 @@ export default {
     model: {
       type: Object,
       required: true
+    },
+    immediate: {
+      type: Boolean,
+      default: true
     }
   },
   provide: {
@@ -50,6 +55,7 @@ export default {
   },
   data () {
     return {
+      isLoading: false,
       pageIndex: 1,
       pageSize: 10,
       rawData: [],
@@ -74,6 +80,14 @@ export default {
     }
   },
   methods: {
+    search (query) {
+      this.isLoading = true
+      Api.get(this.model.name, query).then(data => {
+        this.rawData = data
+        this.isLoading = false
+      })
+    },
+
     formatter (rowData, index, pagingIndex, field) {
       return this.dictMap[field][rowData[field]]
     },
@@ -87,6 +101,7 @@ export default {
     },
 
     pageSizeChange (pageSize) {
+      this.pageIndex = 1
       this.pageSize = pageSize
     },
 
@@ -138,9 +153,9 @@ export default {
     }
   },
   created () {
-    Api.get(this.model.name).then(data => {
-      this.rawData = data
-    })
+    if (this.immediate) {
+      this.search()
+    }
   }
 }
 </script>
