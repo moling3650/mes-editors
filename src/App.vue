@@ -9,6 +9,8 @@ export default {
   name: 'App',
   created () {
     this.$store.dispatch('products/getAllProducts')
+    this.$store.dispatch('WorkShops/getAllWorkShops')
+    this.$store.dispatch('WorkGroups/getAllWorkGroups')
   }
 }
 </script>
