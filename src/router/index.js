@@ -105,6 +105,10 @@ const editors = [
     component: () => import('@/pages/System/WorkGroupEditor')
   },
   {
+    path: 'workGroupClass',
+    component: () => import('@/pages/System/WorkGroupClassEditor')
+  },
+  {
     path: 'materialType',
     component: () => import('@/pages/System/MaterialTypeEditor')
   },

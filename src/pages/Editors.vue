@@ -22,6 +22,7 @@
             </template>
             <el-menu-item index="/editors/processType">工序类型管理</el-menu-item>
             <el-menu-item index="/editors/workGroup">工序组管理</el-menu-item>
+            <el-menu-item index="/editors/workGroupClass">工序组班别管理</el-menu-item>
             <el-menu-item index="/editors/processFlow">工艺流程管理</el-menu-item>
           </el-submenu>
           <el-submenu index="dataModel">
