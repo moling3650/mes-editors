@@ -3,6 +3,35 @@
     <el-container>
       <el-aside width="200px" style="margin-top: 35px">
         <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :router="true" :unique-opened="true">
+          <el-submenu index="system">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>系统管理</span>
+            </template>
+            <el-menu-item index="/editors/depart">部门管理</el-menu-item>
+            <el-menu-item index="/editors/employee">员工管理</el-menu-item>
+            <el-menu-item index="/editors/module">模块管理</el-menu-item>
+            <el-menu-item index="/editors/role">角色管理</el-menu-item>
+            <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
+            <el-menu-item index="/editors/line">线别管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="product">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>生产管理</span>
+            </template>
+            <el-menu-item index="/editors/processType">工序类型管理</el-menu-item>
+            <el-menu-item index="/editors/workGroup">工序组管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="dataModel">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>数据建模</span>
+            </template>
+            <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
+            <el-menu-item index="/editors/line">线别管理</el-menu-item>
+            <el-menu-item index="/editors/materialType">物料类型管理</el-menu-item>
+          </el-submenu>
           <el-submenu index="machine">
             <template slot="title">
               <i class="el-icon-setting"></i>

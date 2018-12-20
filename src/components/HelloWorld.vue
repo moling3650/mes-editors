@@ -2,15 +2,18 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <el-button>Button</el-button>
+    <ExTable :model="a"></ExTable>
   </div>
 </template>
 
 <script>
+import a from '../models/System/Departments'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      a: a
     }
   }
 }

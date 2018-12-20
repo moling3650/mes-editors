@@ -71,7 +71,44 @@ const editors = [
   {
     path: 'material',
     component: () => import('@/pages/Material')
+  },
+  {
+    path: 'depart',
+    component: () => import('@/pages/System/DepartmentEditor')
+  },
+  {
+    path: 'employee',
+    component: () => import('@/pages/System/EmployeesEditor')
+  },
+  {
+    path: 'module',
+    component: () => import('@/pages/System/ModuleEditor')
+  },
+  {
+    path: 'role',
+    component: () => import('@/pages/System/RoleEditor')
+  },
+  {
+    path: 'workshop',
+    component: () => import('@/pages/System/WorkshopEditor')
+  },
+  {
+    path: 'line',
+    component: () => import('@/pages/System/LineEditor')
+  },
+  {
+    path: 'processType',
+    component: () => import('@/pages/System/ProcessTypeEditor')
+  },
+  {
+    path: 'workGroup',
+    component: () => import('@/pages/System/WorkGroupEditor')
+  },
+  {
+    path: 'materialType',
+    component: () => import('@/pages/System/MaterialTypeEditor')
   }
+
 ]
 
 export default new Router({
