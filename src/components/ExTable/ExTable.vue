@@ -1,7 +1,7 @@
 <template>
   <div id="ExTable">
     <div class="button-group">
-      <el-button type="primary" size="mini" plain icon="el-icon-plus" @click="add">添加</el-button>
+      <el-button type="primary" size="mini" plain icon="el-icon-plus" @click="add" :disabled="needDefault && !defaultForm">添加</el-button>
     </div>
     <v-table
       class="v-table"
@@ -45,6 +45,14 @@ export default {
     immediate: {
       type: Boolean,
       default: true
+    },
+    defaultForm: {
+      type: Object,
+      default: null
+    },
+    needDefault: {
+      type: Boolean,
+      default: false
     }
   },
   provide: {
@@ -115,7 +123,10 @@ export default {
     },
 
     add () {
-      this.model.getForm(null, 'add', this.opts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+      this.model.getForm(this.defaultForm, 'add', this.opts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        if (this.model.beforeSubmit) {
+          formData = this.model.beforeSubmit(formData)
+        }
         Api.post(this.model.name, formData).then(newItem => {
           this.rawData.push(newItem)
           this.$message.success('添加成功!')
@@ -126,6 +137,9 @@ export default {
 
     edit (row, index) {
       this.model.getForm(row, 'edit', this.opts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+        if (this.model.beforeSubmit) {
+          formData = this.model.beforeSubmit(formData)
+        }
         Api.put(`${this.model.name}/${row[this.model.pk]}`, formData).then(_ => {
           this.rawData.splice(this.getRowIndex(index), 1, formData)
           this.$message.success('更新成功!')
