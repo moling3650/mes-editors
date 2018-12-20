@@ -49,7 +49,7 @@ const editors = [
     component: () => import('@/pages/Process/ProcessStepEditor')
   },
   {
-    path: 'processFlow',
+    path: 'processStepDetail',
     component: () => import('@/pages/Process/processFlow')
   },
   {
@@ -107,6 +107,14 @@ const editors = [
   {
     path: 'materialType',
     component: () => import('@/pages/System/MaterialTypeEditor')
+  },
+  {
+    path: 'processFlow',
+    component: () => import('@/pages/Product/ProcessFlowEditor')
+  },
+  {
+    path: 'productModel',
+    component: () => import('@/pages/System/ProductModelEditor')
   }
 
 ]
