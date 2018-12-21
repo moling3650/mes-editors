@@ -12,6 +12,7 @@
                 :inactive-value="item.inactiveValue"
                 :disabled="item.disabled"
                 :unit="item.unit"
+                :picker-options="item.pickerOptions"
                 @change="$emit(`update:${item.value}`, form[item.value], item, formItems, rules, form)"/>
             </el-form-item>
           </el-col>

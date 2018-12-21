@@ -17,16 +17,16 @@ export default {
   getForm (form = null, type = 'add', opts) {
     return Promise.resolve({
       // 表单标题
-      title: `请选择工艺流程`,
+      title: `${type === 'add' ? '添加' : '编辑'}工序组班别`,
       // 表单元素
       formItems: [
         {value: 'classCode', label: '班别编号', component: 'el-input', disabled: type === 'edit'},
         {value: 'className', label: '班别名称', component: 'el-input'},
         {value: 'groupCode', label: '工序组', component: 'ex-select', options: opts.groupCode, disabled: true},
-        {value: 'dayStart', label: '开始日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},
-        {value: 'timeStart', label: '开始时间', span: 12, component: 'el-time-select', start: '00:00', step: '01:00', end: '24:00'},
-        {value: 'dayEnd', label: '结束日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},
-        {value: 'timeEnd', label: '结束时间', span: 12, component: 'el-time-select', start: '00:00', step: '01:00', end: '24:00'}
+        // {value: 'dayStart', label: '开始日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},
+        {value: 'timeStart', label: '开始时间', span: 12, component: 'el-time-select', pickerOptions: {start: '00:00', step: '01:00', end: '23:00'}},
+        // {value: 'dayEnd', label: '结束日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},
+        {value: 'timeEnd', label: '结束时间', span: 12, component: 'el-time-select', pickerOptions: {start: '00:00', step: '01:00', end: '23:00'}}
       ],
       // 表单内容
       formData: Object.assign({
