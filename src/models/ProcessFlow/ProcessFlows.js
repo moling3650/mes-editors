@@ -43,8 +43,8 @@ export default {
         {value: 'flowName', label: '流程名称', span: 12, component: 'el-input'},
         {value: 'versionCode', label: '版本号', span: 12, component: 'el-input'},
         {value: 'productCode', label: '成品名称', span: 12, component: 'ex-select', options: opts.wsid},
-        {value: 'state', label: '状态', span: 12, component: 'ex-select', options: opts.wsid},
-        {value: 'bomCode', label: '说明', component: 'ex-select', options: opts.wsid}
+        {value: 'bomCode', label: '成品BOM', component: 'ex-select', options: opts.wsid},
+        {value: 'state', label: '状态', span: 12, component: 'ex-select', options: opts.wsid}
       ],
       // 表单内容
       formData: Object.assign({
