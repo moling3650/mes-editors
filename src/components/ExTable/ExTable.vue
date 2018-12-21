@@ -2,6 +2,7 @@
   <div id="ExTable">
     <div class="button-group">
       <el-button type="primary" size="mini" plain icon="el-icon-plus" @click="add" :disabled="needDefault && !defaultForm">添加</el-button>
+      <slot :rowData="currentRow"></slot>
     </div>
     <v-table
       class="v-table"
@@ -157,6 +158,7 @@ export default {
         Api.delete(`${this.model.name}/${row[this.model.pk]}`).then(item => {
           this.rawData.splice(this.getRowIndex(index), 1)
           if (this.currentRow[this.model.pk] === item[this.model.pk]) {
+            this.currentRow = null
             this.$emit('row-click', null)
           }
           this.$message.success('删除成功!')

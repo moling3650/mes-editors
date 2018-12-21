@@ -26,7 +26,7 @@ export default {
   cols: [
     {field: 'lineCode', title: '线别编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
     {field: 'lineName', title: '线别名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'wsid', title: '车间名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
+    {field: 'wsid', title: '车间名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, formatter: true},
     {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
   ],
   // 表单配置

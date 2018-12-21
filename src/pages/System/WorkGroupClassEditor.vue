@@ -5,12 +5,17 @@
       <div slot="header" class="clearfix">
         <span class="card-header--text">工序组班别管理</span>
       </div>
+      <!-- Card-body -->
       <el-row :gutter="20" class="row">
         <el-col :span="6">
           <el-tree :data="treeData" accordion @node-click="handleNodeClick"/>
         </el-col>
         <el-col :span="18">
-          <ExTable :model="WorkGroupClasses" :immediate="false" needDefault :defaultForm="defaultForm" ref="wgc"/>
+          <ExTable :model="WorkGroupClasses" :immediate="false" needDefault :defaultForm="group" ref="wgc">
+            <template slot-scope="{ rowData }">
+              <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="restTime(rowData)" :disabled="!rowData">休息时间</el-button>
+            </template>
+          </ExTable>
         </el-col>
       </el-row>
     </el-card>
@@ -28,15 +33,19 @@ export default {
     return {
       WorkGroupClasses,
       treeData: [],
-      defaultForm: null
+      group: null
     }
   },
   methods: {
     handleNodeClick (data, node) {
       if (node.level === 2) {
-        this.defaultForm = { groupCode: data.value }
-        this.$refs.wgc.search(this.defaultForm)
+        this.group = { groupCode: data.value }
+        this.$refs.wgc.search(this.group)
       }
+    },
+
+    restTime (workGroupClass) {
+      console.log(workGroupClass)
     }
   },
   created () {

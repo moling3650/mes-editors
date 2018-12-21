@@ -44,5 +44,12 @@ export default {
         className: [{ required: true, message: '请输入班别名称', trigger: 'blur' }]
       }
     })
+  },
+
+  beforeSubmit (formData) {
+    if (parseInt(formData.timeStart) > parseInt(formData.timeEnd)) {
+      formData.dayEnd = 1
+    }
+    return formData
   }
 }
