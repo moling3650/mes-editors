@@ -90,6 +90,8 @@ export default {
   },
   methods: {
     search (query) {
+      this.rawData = []
+      this.currentRow = null
       this.isLoading = true
       Api.get(this.model.name, query).then(data => {
         this.rawData = data

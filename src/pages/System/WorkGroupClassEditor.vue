@@ -20,20 +20,27 @@
       </el-row>
     </el-card>
 
+    <el-dialog title="休息时间" :visible.sync="showRest">
+      <ExTable :model="WorkGroupClassRest" :immediate="false" needDefault :defaultForm="groupClass" ref="wgcr"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Api from '@/utils/Api'
 import WorkGroupClasses from '@/models/ProcessFlow/WorkGroupClasses'
+import WorkGroupClassRest from '@/models/ProcessFlow/WorkGroupClassRest'
 
 export default {
   name: 'WorkGroupEditor',
   data () {
     return {
       WorkGroupClasses,
+      WorkGroupClassRest,
       treeData: [],
-      group: null
+      group: null,
+      groupClass: null,
+      showRest: false
     }
   },
   methods: {
@@ -45,7 +52,11 @@ export default {
     },
 
     restTime (workGroupClass) {
-      console.log(workGroupClass)
+      this.showRest = true
+      this.$nextTick(_ => {
+        this.groupClass = { classId: workGroupClass.cid }
+        this.$refs.wgcr.search(this.groupClass)
+      })
     }
   },
   created () {
