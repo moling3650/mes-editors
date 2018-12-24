@@ -9,10 +9,6 @@ const editors = [
     component: () => import('@/pages/Bom/BomEditor')
   },
   {
-    path: 'control_point',
-    component: () => import('@/pages/ControlPointEditor')
-  },
-  {
     path: 'machine',
     component: () => import('@/pages/Machine/Machine')
   },
