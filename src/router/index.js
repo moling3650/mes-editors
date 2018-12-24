@@ -105,6 +105,10 @@ const editors = [
     component: () => import('@/pages/System/WorkGroupClassEditor')
   },
   {
+    path: 'WorkCalendar',
+    component: () => import('@/pages/System/WorkCalendarEditor')
+  },
+  {
     path: 'materialType',
     component: () => import('@/pages/System/MaterialTypeEditor')
   },
