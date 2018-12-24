@@ -19,6 +19,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.5",
     "guid": "0.0.12",
+    "moment": "^2.23.0",
     "vue": "^2.5.2",
     "vue-easytable": "^1.7.1",
     "vue-router": "^3.0.1",
