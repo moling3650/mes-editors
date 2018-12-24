@@ -164,4 +164,9 @@ export default {
 #app .thcell {
   background-color: #efefef;
 }
+#ExTable .v-table-title-cell {
+  background: #ebf3fe;
+  font-weight: bold;
+  font-size: 14px;
+}
 </style>
