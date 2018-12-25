@@ -35,6 +35,7 @@
             <el-menu-item index="/editors/line">线别管理</el-menu-item>
             <el-menu-item index="/editors/materialType">物料类型管理</el-menu-item>
             <el-menu-item index="/editors/productModel">成品型号管理</el-menu-item>
+            <el-menu-item index="/editors/dataTranslation">转译字典管理</el-menu-item>
           </el-submenu>
           <el-submenu index="machine">
             <template slot="title">

@@ -119,6 +119,10 @@ const editors = [
   {
     path: 'productModel',
     component: () => import('@/pages/System/ProductModelEditor')
+  },
+  {
+    path: 'dataTranslation',
+    component: () => import('@/pages/System/DataTranslationEditor')
   }
 
 ]
