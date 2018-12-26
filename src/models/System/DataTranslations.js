@@ -37,7 +37,7 @@ export default {
       rules: {
         tableName: [{ required: true, message: '请输入表格名称', trigger: 'blur' }],
         fieldName: [{ required: true, message: '请输入字段名称', trigger: 'blur' }],
-        label: [{ required: true, message: '请输入label值', trigger: 'blur' }]
+        label: [{ required: true, message: '请输入显示值', trigger: 'blur' }]
       }
     })
   }
