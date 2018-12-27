@@ -9,7 +9,7 @@
       <el-table-column prop="businessCode" label="业务编号"/>
       <el-table-column prop="businessName" label="业务名称"/>
       <el-table-column prop="pointId" label="数据点" :formatter="formatter"/>
-      <el-table-column prop="driveCode" label="驱动" :formatter="formatter"/>
+      <el-table-column prop="taskDriveCode" label="驱动" :formatter="formatter"/>
       <el-table-column prop="runAt" label="运行在" :formatter="formatter"/>
       <el-table-column prop="triggerType" label="触发类型" :formatter="formatter"/>
       <el-table-column prop="triggerCondition" label="触发条件">
@@ -75,7 +75,7 @@ export default {
           this.dataPointOptions = toOptions(points, 'pointId', 'dataPointName')
           this.formatterMap.pointId = toMap(points, 'pointId', 'dataPointName')
           this.driveOptions = toOptions(drives, 'driveCode', 'driveName')
-          this.formatterMap.driveCode = toMap(drives, 'driveCode', 'driveName')
+          this.formatterMap.taskDriveCode = toMap(drives, 'driveCode', 'driveName')
         })
     },
 
