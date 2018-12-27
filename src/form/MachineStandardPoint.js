@@ -53,7 +53,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
         span: 12
       },
       {
-        value: 'driveCode',
+        value: 'taskDriveCode',
         label: '任务驱动',
         component: 'ex-select',
         options: driveOptions,
@@ -85,7 +85,7 @@ export default function getMachineStandardPointForm (form = null, type = 'add', 
       businessName: '',
       runAt: 0,
       pointId: '',
-      driveCode: '',
+      taskDriveCode: '',
       triggerType: 0,
       triggerCondition: 0,
       parameter: ''
