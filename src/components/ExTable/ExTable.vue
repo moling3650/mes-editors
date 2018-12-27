@@ -12,8 +12,9 @@
       :is-loading="isLoading"
       :vertical-resize-offset="60"
       :multiple-sort="false"
-      :min-height="350"
-      even-bg-color="#f2f2f2"
+      :min-height="450"
+      :row-height="32"
+      even-bg-color="#fcfcfc"
       :columns="columns"
       :table-data="tableData"
       row-hover-color="#eee"
@@ -181,5 +182,7 @@ export default {
 <style scoped>
 .v-table {
   margin: 10px auto;
+  font-size: 13px;
+  text-align: left;
 }
 </style>

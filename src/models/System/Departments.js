@@ -24,9 +24,9 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'departCode', title: '部门编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'departName', title: '部门名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'departCode', title: '部门编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'departName', title: '部门名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add') {

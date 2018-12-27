@@ -24,9 +24,9 @@ export default {
   pk: 'wsid',
   // 表格列配置
   cols: [
-    {field: 'wsCode', title: '车间编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'wsName', title: '车间名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'wsCode', title: '车间编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'wsName', title: '车间名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add') {

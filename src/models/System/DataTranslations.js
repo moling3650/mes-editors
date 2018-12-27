@@ -5,11 +5,11 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'tableName', title: '表格名称', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'fieldName', title: '字段名称', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'value', title: 'value值', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'label', title: '显示值', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'description', title: '说明', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'tableName', title: '表格名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'fieldName', title: '字段名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'value', title: 'value值', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'label', title: '显示值', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'description', title: '说明', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

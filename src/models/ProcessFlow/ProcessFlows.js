@@ -24,13 +24,13 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'flowCode', title: '流程编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'flowName', title: '流程名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'versionCode', title: '版本号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'productCode', title: '成品名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'bomCode', title: 'BOM编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'state', title: '状态', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'createDate', title: '创建时间', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'flowCode', title: '流程编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'flowName', title: '流程名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'versionCode', title: '版本号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'productCode', title: '成品名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'bomCode', title: 'BOM编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'state', title: '状态', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'createDate', title: '创建时间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

@@ -24,17 +24,17 @@ export default {
   pk: 'empCode',
   // 表格列配置
   cols: [
-    {field: 'empCode', title: '员工编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'empName', title: '员工名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'password', title: '登录密码', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'phoneNum', title: '联系电话', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'address', title: '联系地址', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'sex', title: '性别', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'departCode', title: '部门名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'isStaff', title: '用户类型', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'entryDate', title: '入职时间', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'enable', title: '状态', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'empCode', title: '员工编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'empName', title: '员工名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'password', title: '登录密码', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'phoneNum', title: '联系电话', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'address', title: '联系地址', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'sex', title: '性别', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'departCode', title: '部门名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'isStaff', title: '用户类型', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'entryDate', title: '入职时间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'enable', title: '状态', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

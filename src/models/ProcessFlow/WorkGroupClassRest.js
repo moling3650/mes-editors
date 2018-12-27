@@ -5,10 +5,10 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'classId', title: '班别ID', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'timeStart', title: '开始时间', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'timeEnd', title: '结束时间', width: 100, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'description', title: '说明', width: 200, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'classId', title: '班别ID', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'timeStart', title: '开始时间', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'timeEnd', title: '结束时间', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'description', title: '说明', width: 200, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

@@ -24,11 +24,11 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'groupCode', title: '工序组编号', width: 150, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'groupName', title: '工序组名称', width: 150, titleAlign: 'center', columnAlign: 'center'},
-    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'center', columnAlign: 'center', formatter: true},
-    {field: 'timeIncrement', title: '位移时间（小时）', width: 150, titleAlign: 'center', columnAlign: 'center'},
-    {field: 'description', title: '说明', width: 450, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'groupCode', title: '工序组编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'groupName', title: '工序组名称', width: 150, titleAlign: 'left', columnAlign: 'left'},
+    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'left', columnAlign: 'left', formatter: true},
+    {field: 'timeIncrement', title: '位移时间（小时）', width: 150, titleAlign: 'left', columnAlign: 'left'},
+    {field: 'description', title: '说明', width: 450, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

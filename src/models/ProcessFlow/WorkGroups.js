@@ -24,10 +24,10 @@ export default {
   pk: 'id',
   // 表格列配置
   cols: [
-    {field: 'groupCode', title: '工序组编号', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'groupName', title: '工序组名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'wsid', title: '车间', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, formatter: true},
-    {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'groupCode', title: '工序组编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'groupName', title: '工序组名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'wsid', title: '车间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

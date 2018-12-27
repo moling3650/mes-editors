@@ -5,10 +5,10 @@ export default {
   pk: 'moduleCode',
   // 表格列配置
   cols: [
-    {field: 'moduleName', title: '模块名称', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true, isEdit: true},
-    {field: 'url', title: '模块URL', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'moduleType', title: '权限', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true},
-    {field: 'description', title: '说明', width: 250, titleAlign: 'center', columnAlign: 'center', isResize: true}
+    {field: 'moduleName', title: '模块名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'url', title: '模块URL', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'moduleType', title: '权限', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

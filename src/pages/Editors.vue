@@ -12,7 +12,6 @@
             <el-menu-item index="/editors/employee">员工管理</el-menu-item>
             <el-menu-item index="/editors/module">模块管理</el-menu-item>
             <el-menu-item index="/editors/role">角色管理</el-menu-item>
-            <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
             <el-menu-item index="/editors/line">线别管理</el-menu-item>
           </el-submenu>
           <el-submenu index="product">
