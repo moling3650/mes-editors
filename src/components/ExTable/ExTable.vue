@@ -9,6 +9,7 @@
       style="width: 100%;"
       is-horizontal-resize
       is-vertical-resize
+      sort-always
       :is-loading="isLoading"
       :vertical-resize-offset="60"
       :multiple-sort="false"
@@ -22,6 +23,7 @@
       :paging-index="(pageIndex - 1) * pageSize"
       :row-click="rowClick"
       @on-custom-comp="rowOperation"
+      @sort-change="sortChange"
     />
     <v-pagination
       class="pagination"
@@ -126,6 +128,18 @@ export default {
       this[type](row, index)
     },
 
+    sortChange (params) {
+      const list = Object.entries(params).filter(([key, orderBy]) => orderBy)
+      if (list.length) {
+        const [field, orderBy] = list[0]
+        if (orderBy === 'asc') {
+          this.rawData = this.rawData.sort((a, b) => a[field] > b[field] ? 1 : -1)
+        } else {
+          this.rawData = this.rawData.sort((a, b) => a[field] > b[field] ? -1 : 1)
+        }
+      }
+    },
+
     add () {
       this.model.getForm(this.defaultForm, 'add', this.opts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
         if (this.model.beforeSubmit) {
@@ -183,6 +197,5 @@ export default {
 .v-table {
   margin: 10px auto;
   font-size: 13px;
-  text-align: left;
 }
 </style>
