@@ -12,6 +12,7 @@ import ExTreeCard from '@/components/ExTreeCard'
 import ExItemCard from '@/components/ExItemCard'
 import ExTable from '@/components/ExTable'
 import ExTableOperation from '@/components/ExTableOperation'
+import ExCalendar from '@/components/ExCalendar'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'vue-tree-halower/dist/halower-tree.min.css'
 import 'vue-easytable/libs/themes-base/index.css'
@@ -40,6 +41,7 @@ Vue.use(ExTreeCard)
 Vue.use(ExItemCard)
 Vue.use(ExTableOperation)
 Vue.use(ExTable)
+Vue.use(ExCalendar)
 Vue.component(VTable.name, VTable)
 Vue.component(VPagination.name, VPagination)
 Vue.config.productionTip = false
