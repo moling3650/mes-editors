@@ -1,5 +1,5 @@
 <template>
-  <div id="Process">
+  <div id="Material">
     <el-tabs type="border-card" v-model="activeName">
       <el-tab-pane label="物料管理" name="MaterialDetail">
         <MaterialDetail/>
@@ -27,4 +27,7 @@ export default {
 </script>
 
 <style scoped>
+#Material {
+  margin-top: 15px;
+}
 </style>

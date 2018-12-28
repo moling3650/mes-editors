@@ -80,4 +80,7 @@ export default {
   .tabPanel {
     height: 600px
   }
+  #WorkOrder {
+    margin-top: 15px;
+  }
 </style>

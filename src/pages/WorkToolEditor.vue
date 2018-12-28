@@ -44,4 +44,7 @@ export default {
 </script>
 
 <style scoped>
+#WorkToolEditor {
+  margin-top: 15px;
+}
 </style>

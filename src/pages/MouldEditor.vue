@@ -44,4 +44,7 @@ export default {
 </script>
 
 <style scoped>
+#MouldEditor {
+  margin-top: 15px;
+}
 </style>

@@ -54,4 +54,7 @@ export default {
 </script>
 
 <style scoped>
+#Machine {
+  margin-top: 15px;
+}
 </style>

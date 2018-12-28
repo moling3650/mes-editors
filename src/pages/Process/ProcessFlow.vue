@@ -52,4 +52,7 @@ export default {
 </script>
 
 <style scoped>
+#ProcessFlow {
+  margin-top: 15px;
+}
 </style>

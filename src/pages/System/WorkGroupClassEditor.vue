@@ -1,5 +1,5 @@
 <template>
-  <div id="WorkGroupEditor">
+  <div id="WorkGroupClassEditor">
 
     <el-card class="box-card" :body-style="{ padding: '10px' }">
       <div slot="header" class="clearfix">
@@ -32,7 +32,7 @@ import WorkGroupClasses from '@/models/ProcessFlow/WorkGroupClasses'
 import WorkGroupClassRest from '@/models/ProcessFlow/WorkGroupClassRest'
 
 export default {
-  name: 'WorkGroupEditor',
+  name: 'WorkGroupClassEditor',
   data () {
     return {
       WorkGroupClasses,
@@ -70,5 +70,8 @@ export default {
 <style scoped>
 .box-card {
   height: 500px;
+}
+#WorkGroupClassEditor {
+  margin: 15px;
 }
 </style>
