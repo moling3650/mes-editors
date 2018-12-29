@@ -12,6 +12,7 @@
         :key="index"
         :isSelected="isSelected(day)"
         :day="day"
+        :class="getClass(day)"
         @dayClick="handleDayClick"
       ></day-cell>
     </div>
@@ -35,6 +36,12 @@ export default {
     },
     defaultDate: {
       type: String
+    },
+    daysClass: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   components: {
@@ -57,6 +64,13 @@ export default {
     }
   },
   methods: {
+    getClass (day) {
+      if (this.dayOfMonth.format('YYYY-MM') === day.dayMoment.format('YYYY-MM')) {
+        const key = day.dayMoment.get('date')
+        return this.daysClass[key] || ''
+      }
+    },
+
     resetDayOfMonth () {
       if (this.date.format('YYYY-MM') !== this.dayOfMonth.format('YYYY-MM')) {
         let _diff = Number(this.date.diff(this.dayOfMonth, 'months'))
@@ -141,6 +155,9 @@ export default {
 .month-arrow-next { border-right: 2px solid #bebebe; transform: rotate(45deg); margin-right: 2px; }
 .week-days span { padding: 10px 0; display: inline-block; width: 14.28%; text-align: center; font-size: 18px; color: #797979; }
 .calendar-month { font-size: 36px; margin-left: 40px; text-align: center; color: #818181; }
+.days .full-day { background-color: #ccf; }
+.days .working-day { background-color: #cfc; }
+.days .off-day { background-color: #fcc; }
 
 @media (max-width: 320px) {
   .calendar-month { margin-left: 0; line-height: 2; }
