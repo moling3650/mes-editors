@@ -23,5 +23,5 @@ export default {
 
   put: (url, data) => instance.put(url, data),
 
-  delete: (url, data) => instance.delete(url, data)
+  delete: (url, data) => instance.delete(url, { data })
 }
