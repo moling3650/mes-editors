@@ -123,6 +123,10 @@ const editors = [
   {
     path: 'dataTranslation',
     component: () => import('@/pages/System/DataTranslationEditor')
+  },
+  {
+    path: 'userRole',
+    component: () => import('@/pages/System/UserRoleEditor')
   }
 
 ]
