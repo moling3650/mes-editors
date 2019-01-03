@@ -6,7 +6,8 @@ const state = {
 
 // getters
 const getters = {
-  options: state => state.all.map(p => ({ value: p.productCode, label: p.productName, unit: p.unit }))
+  options: state => state.all.map(p => ({ value: p.productCode, label: p.productName, unit: p.unit })),
+  getProductByCode: state => code => state.all.find(p => p.productCode === code)
 }
 
 // actions
