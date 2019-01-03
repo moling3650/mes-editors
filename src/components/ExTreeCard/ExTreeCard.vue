@@ -114,7 +114,8 @@
 
 <script>
 import Api from '@/utils/Api'
-import forms from '@/form'
+// 注释代码1行
+// import forms from '@/form'
 import axios from 'axios'
 import toOptions from '@/utils/toOptions'
 const useState = ['未审核', '已审核']
@@ -260,22 +261,25 @@ export default {
     },
 
     append (node) {
-      const modelType = this._getModel(node.level)
+      // 注释代码1行
+      // const modelType = this._getModel(node.level)
       const data = {}
       // const options = []
       const key = this._getKey(node.level - 1)
       // const labelKey = this._getLabelKey(node.level - 1)
       data[key] = node.data[key]
       // options.push({ value: node.data[key], label: node.data[labelKey] })
-      const departments = this.optionMap && this.optionMap.departments
-      const workShops = this.optionMap && this.optionMap.workShops
-      forms[modelType](data, 'add', departments, workShops).then(form => this.$showForm(form).$on('submit', (formData, close) => {
-        Api.post(modelType, formData).then(newItem => {
-          this._updateChildNodes(node, newItem)
-          this.$message.success('添加成功!')
-          close()
-        })
-      }))
+      // 注释代码2行
+      // const departments = this.optionMap && this.optionMap.departments
+      // const workShops = this.optionMap && this.optionMap.workShops
+      this.addMachineForm = true
+      // forms[modelType](data, 'add', departments, workShops).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+      //   Api.post(modelType, formData).then(newItem => {
+      //     this._updateChildNodes(node, newItem)
+      //     this.$message.success('添加成功!')
+      //     close()
+      //   })
+      // }))
     },
 
     updateCurrentNode (data) {
@@ -333,6 +337,7 @@ export default {
       return `${this.modelName}${types[level]}`
     },
 
+    // 设备提交按钮待完善
     btnAdd () {
 
     }
@@ -343,7 +348,6 @@ export default {
       .then(([departments, workShops]) => {
         this.departmentOptions = toOptions(departments, 'departCode', 'departName')
         this.wsCodeOptions = toOptions(workShops, 'wsCode', 'wsName')
-        this.addMachineForm = true
       })
   }
 }

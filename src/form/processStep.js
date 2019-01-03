@@ -50,6 +50,19 @@ export default function getProcessStepForm (form = null, type = 'add', driveType
         span: 12
       },
       {
+        value: 'consumePercent',
+        label: '耗料比例',
+        component: 'ex-input-number',
+        span: 12
+      },
+      {
+        value: 'consumeType',
+        label: '消耗类型',
+        component: 'ex-select',
+        options: [{value: 1, label: '平均消耗'}, {value: 2, label: '顺序消耗'}],
+        span: 12
+      },
+      {
         value: 'parameter',
         label: '参数',
         component: 'el-input',
@@ -69,23 +82,10 @@ export default function getProcessStepForm (form = null, type = 'add', driveType
         span: 12
       },
       {
-        value: 'consumePercent',
-        label: '耗料比例',
-        component: 'ex-input-number',
-        span: 12
-      },
-      {
         value: 'matCode',
         label: '物料编号',
         component: 'ex-select',
         options: matOptions,
-        span: 12
-      },
-      {
-        value: 'consumeType',
-        label: '消耗类型',
-        component: 'ex-select',
-        options: [{value: 1, label: '平均消耗'}, {value: 2, label: '顺序消耗'}],
         span: 12
       },
       {
@@ -129,13 +129,13 @@ export default function getProcessStepForm (form = null, type = 'add', driveType
       },
       {
         value: 'triger',
-        label: '参数',
+        label: '触发事件',
         component: 'el-input',
         span: 12
       },
       {
         value: 'parameter2',
-        label: '触发条件',
+        label: '触发参数',
         component: 'el-input',
         span: 12
       }
@@ -151,7 +151,7 @@ export default function getProcessStepForm (form = null, type = 'add', driveType
       idx: 0,
       isRecord: 0,
       consumePercent: 0,
-      matCode: 0,
+      matCode: '',
       consumeType: '',
       unit: '',
       format: '',

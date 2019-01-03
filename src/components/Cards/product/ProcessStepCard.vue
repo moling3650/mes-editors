@@ -106,8 +106,8 @@ export default {
     _typeIdChanged (value, item, formItems) {
       const driveList = this.driveList.filter(p => p.typeId === value)
       formItems[6].options = toOptions(driveList, 'driveCode', 'driveName')
-      formItems[10].disabled = (value !== 2)
-      formItems[12].disabled = (value !== 2)
+      formItems[7].disabled = (value !== 2)
+      formItems[8].disabled = (value !== 2)
     },
 
     formatter (row, col, cell, index) {
@@ -179,11 +179,11 @@ export default {
   mounted () {
     getProcessStepForm().then(form => {
       this.formatterMap.ctrlType = toMap(form.formItems[4].options, 'value', 'label')
-      this.formatterMap.isRecord = toMap(form.formItems[9].options, 'value', 'label')
-      this.formatterMap.allowReuse = toMap(form.formItems[9].options, 'value', 'label')
-      this.formatterMap.autorun = toMap(form.formItems[9].options, 'value', 'label')
-      this.formatterMap.autoRestart = toMap(form.formItems[9].options, 'value', 'label')
-      this.formatterMap.consumeType = toMap(form.formItems[12].options, 'value', 'label')
+      this.formatterMap.isRecord = toMap(form.formItems[11].options, 'value', 'label')
+      this.formatterMap.allowReuse = toMap(form.formItems[11].options, 'value', 'label')
+      this.formatterMap.autorun = toMap(form.formItems[11].options, 'value', 'label')
+      this.formatterMap.autoRestart = toMap(form.formItems[11].options, 'value', 'label')
+      this.formatterMap.consumeType = toMap(form.formItems[8].options, 'value', 'label')
     })
   },
 
