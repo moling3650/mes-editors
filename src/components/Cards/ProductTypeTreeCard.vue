@@ -8,6 +8,7 @@
     <el-tree :data="productTypes" :props="props" :expand-on-click-node="false"
       node-key="id" @node-click="handleNodeClick">
       <span slot-scope="{ node, data }">
+        <i :class="['fa', ['', 'fa-folder-o', 'fa-file-text-o'][node.level]]"></i>
         <span>{{ node.label }}</span>
         <el-button-group>
           <el-button type="text" icon="el-icon-edit" @click.stop="() => editPedigree(node, data)"/>

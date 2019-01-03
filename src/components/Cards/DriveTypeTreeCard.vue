@@ -7,6 +7,7 @@
     <el-tree :data="driveTypes" :props="props" :expand-on-click-node="false"
       node-key="id" @node-click="handleNodeClick">
       <span slot-scope="{ node, data }">
+        <i :class="['fa', ['', 'fa-folder-o', 'fa-file-text-o'][node.level]]"></i>
         <span>{{ node.label }}</span>
         <el-button-group v-if="node.level === 2">
           <el-button type="text" icon="el-icon-edit" @click.stop="() => editDriveType(node, data)"/>

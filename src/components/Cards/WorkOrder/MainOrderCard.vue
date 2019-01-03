@@ -32,6 +32,9 @@
                 <el-form-item class="titleTabel" label="订单编号：">
                   <span style="font-weight: normal;color: darkcyan;">{{ scope.row.co }}</span>
                 </el-form-item>
+                <el-form-item class="titleTabel" label="生产配方：">
+                  <span style="font-weight: normal;color: darkcyan;">{{ scope.row.formulaCode }}</span>
+                </el-form-item>
                 <el-form-item class="titleTabel" label="工单状态：">
                   <span style="font-weight: normal;color: darkcyan;">{{formatter('state', scope.row.state)}}</span>
                 </el-form-item>
@@ -132,8 +135,18 @@ export default {
             this.$message.success('添加成功')
             close()
           })
-        }).$on('update:productCode', (newPorductCode, item, formItems) => {
+        }).$on('update:productCode', (newPorductCode, item, formItems, rules, form) => {
+          formItems[4].options = []
+          formItems[5].options = []
+          form.flowCode = ''
+          form.formulaCode = ''
           const flowList = this.flowList.filter(p => p.productCode === newPorductCode)
+          const product = this.$store.getters['products/getProductByCode'](newPorductCode)
+          if (product.manageType === 1) {
+            formItems[5].disabled = false
+          } else {
+            formItems[5].disabled = true
+          }
           formItems[4].options = toOptions(flowList, 'flowCode', 'flowName')
         }).$on('update:flowCode', (newFlowCode, item, formItems) => {
           Api.get('Formulas', {flowCode: newFlowCode}).then(data => {
@@ -204,7 +217,7 @@ export default {
 .demo-table-expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
-  width: 33%;
+  width: 25%;
 }
 .titleTabel {
   font-weight: bold;

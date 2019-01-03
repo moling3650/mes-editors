@@ -1,6 +1,5 @@
 <template>
   <div id="WorkGroupClassEditor">
-
     <el-card class="box-card" :body-style="{ padding: '10px' }">
       <div slot="header" class="clearfix">
         <span class="card-header--text">工序组班别管理</span>
@@ -8,7 +7,12 @@
       <!-- Card-body -->
       <el-row :gutter="20" class="row">
         <el-col :span="6">
-          <el-tree :data="treeData" accordion @node-click="handleNodeClick"/>
+          <el-tree :data="treeData" accordion @node-click="handleNodeClick">
+            <span class="tree-node" slot-scope="{ node, data }">
+              <i :class="['fa', ['', 'fa-folder-o', 'fa-file-text-o'][node.level]]"></i>
+              <span>{{data.label}}</span>
+            </span>
+          </el-tree>
         </el-col>
         <el-col :span="18">
           <ExTable :model="WorkGroupClasses" :immediate="false" needDefault :defaultForm="group" ref="wgc">
