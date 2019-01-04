@@ -9,7 +9,7 @@
       <el-table-column prop="machineCode" label="设备编号"/>
       <el-table-column prop="dcType" label="运行方式" :formatter="formatter"/>
       <el-table-column prop="pointType" label="采集类型" :formatter="formatter"/>
-      <el-table-column prop="driveCode" label="驱动编号"/>
+      <el-table-column prop="dcDriveCode" label="驱动编号"/>
       <el-table-column prop="parameter" label="参数设置"/>
       <el-table-column prop="rate" label="频率设置"/>
       <el-table-column prop="description" label="备注"/>
@@ -59,7 +59,7 @@ export default {
   methods: {
     _driveTypeChanged (newType, item, formItems, rules, form) {
       formItems[3].options = this.driveMap[newType]
-      form.driveCode = ''
+      form.dcDriveCode = ''
     },
 
     formatter (row, col, cell, index) {

@@ -13,6 +13,7 @@
 
       <el-col :span="18">
         <el-transfer
+          filterable
           filter-placeholder="请输入员工姓名"
           v-model="alreadyUser"
           :titles="titles"
@@ -34,7 +35,7 @@ export default {
   },
   data () {
     return {
-      titles: ['待分配员工', '已分配员工'],
+      titles: ['可分配员工', '已分配员工'],
       RoleList: [],
       roleId: 0,
       waitData: [],
@@ -52,7 +53,7 @@ export default {
     handleRoleChange (data) {
       this.roleId = data.roleId
       Api.get('Employees', {roleId: this.roleId}).then(alreadyData => {
-        this.allUser = [...this.waitData, ...alreadyData]
+        this.allUser = this.waitData
         this.alreadyUser = alreadyData.map(d => d.empCode)
       })
     },
@@ -70,8 +71,8 @@ export default {
     Api.get(`Roles`).then(data => {
       this.RoleList = data
     })
-    Api.get('Employees', {roleId: 'null'}).then(waitData => {
-      this.waitData = waitData
+    Api.get('Employees').then(allData => {
+      this.waitData = allData
     })
   }
 }

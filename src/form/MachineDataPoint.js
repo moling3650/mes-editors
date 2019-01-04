@@ -24,7 +24,7 @@ export default function getMachineDataPointForm (form = null, type = 'add', poin
         span: 12
       },
       {
-        value: 'driveCode',
+        value: 'dcDriveCode',
         label: '驱动',
         component: 'ex-select',
         options: type === 'edit' ? drivesOptions : [],
@@ -59,7 +59,7 @@ export default function getMachineDataPointForm (form = null, type = 'add', poin
     formData: Object.assign({
       dataPointName: '',
       pointType: '',
-      driveCode: '',
+      dcDriveCode: '',
       parameter: '',
       dcType: '',
       rate: 0,
