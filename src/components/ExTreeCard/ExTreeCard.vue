@@ -114,12 +114,11 @@
 
 <script>
 import Api from '@/utils/Api'
-// 注释代码1行
-// import forms from '@/form'
+import forms from '@/form'
 import axios from 'axios'
 import toOptions from '@/utils/toOptions'
 const useState = ['未审核', '已审核']
-const machineState = ['待机', '运行', '故障', '维护']
+const machineState = ['关机', '待机', '运行', '故障', '维护']
 export default {
   name: 'ExTreeCard',
   props: {
@@ -168,7 +167,7 @@ export default {
       formData: {
         machineCode: '',
         machineName: '',
-        state: 0,
+        state: -1,
         useState: '',
         simpleName: '',
         manufacturer: '',
@@ -178,7 +177,7 @@ export default {
         wsCode: '',
         description: ''
       },
-      stateOptions: machineState.map((label, index) => ({value: index, label})),
+      stateOptions: machineState.map((label, index) => ({value: index - 1, label})),
       useStateOptions: useState.map((label, index) => ({value: index, label})),
       departmentOptions: [],
       wsCodeOptions: [],
@@ -261,25 +260,28 @@ export default {
     },
 
     append (node) {
-      // 注释代码1行
-      // const modelType = this._getModel(node.level)
-      const data = {}
-      // const options = []
-      const key = this._getKey(node.level - 1)
-      // const labelKey = this._getLabelKey(node.level - 1)
-      data[key] = node.data[key]
-      // options.push({ value: node.data[key], label: node.data[labelKey] })
-      // 注释代码2行
-      // const departments = this.optionMap && this.optionMap.departments
-      // const workShops = this.optionMap && this.optionMap.workShops
-      this.addMachineForm = true
-      // forms[modelType](data, 'add', departments, workShops).then(form => this.$showForm(form).$on('submit', (formData, close) => {
-      //   Api.post(modelType, formData).then(newItem => {
-      //     this._updateChildNodes(node, newItem)
-      //     this.$message.success('添加成功!')
-      //     close()
-      //   })
-      // }))
+      const modelType = this._getModel(node.level)
+      // 新增设备窗口，提交功能待完善
+      if (modelType === 'Machines') {
+        this.addMachineForm = true
+      } else {
+        const data = {}
+        // const options = []
+        const key = this._getKey(node.level - 1)
+        // const labelKey = this._getLabelKey(node.level - 1)
+        data[key] = node.data[key]
+        // options.push({ value: node.data[key], label: node.data[labelKey] })
+        const departments = this.optionMap && this.optionMap.departments
+        const workShops = this.optionMap && this.optionMap.workShops
+        // this.addMachineForm = true
+        forms[modelType](data, 'add', departments, workShops).then(form => this.$showForm(form).$on('submit', (formData, close) => {
+          Api.post(modelType, formData).then(newItem => {
+            this._updateChildNodes(node, newItem)
+            this.$message.success('添加成功!')
+            close()
+          })
+        }))
+      }
     },
 
     updateCurrentNode (data) {
