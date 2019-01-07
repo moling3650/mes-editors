@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
     "@fortawesome/vue-fontawesome": "^0.1.2",
     "axios": "^0.18.0",
+    "dhtmlx-gantt": "^6.0.4",
     "element-ui": "^2.4.5",
     "guid": "0.0.12",
     "moment": "^2.23.0",
