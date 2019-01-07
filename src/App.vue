@@ -19,6 +19,11 @@ export default {
 #app {
   font-family: "Microsoft YaHei","微软雅黑","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB",Arial,sans-serif;
 }
+html, body, #app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
 .w100p {
   width: 100%;
 }
