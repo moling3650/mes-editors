@@ -131,6 +131,10 @@ const editors = [
   {
     path: 'menu',
     component: () => import('@/pages/MenuEditor')
+  },
+  {
+    path: 'rolePower',
+    component: () => import('@/pages/System/RolePowerEdiror')
   }
 
 ]
