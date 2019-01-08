@@ -357,7 +357,7 @@ export default {
 
 <style scoped>
 .tree-node {
-  font-size: 12px;
+  font-size: 14px;
 }
 .leaf {
   color: blue;
