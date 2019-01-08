@@ -88,7 +88,6 @@ export default {
         this.tasks.data[0].cpltQty = totalCpltQty
         this.tasks.data[0].progress = totalCpltQty / this.tasks.data[0].qty
         this.tasks.data[0].progressText = `${parseInt(totalCpltQty / this.tasks.data[0].qty * 100)}%`
-
       })
     }, 3000)
   }

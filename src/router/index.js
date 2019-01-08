@@ -127,6 +127,10 @@ const editors = [
   {
     path: 'userRole',
     component: () => import('@/pages/System/UserRoleEditor')
+  },
+  {
+    path: 'menu',
+    component: () => import('@/pages/MenuEditor')
   }
 
 ]

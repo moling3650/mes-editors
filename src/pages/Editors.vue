@@ -14,6 +14,7 @@
             <el-menu-item index="/editors/role">角色管理</el-menu-item>
             <el-menu-item index="/editors/line">线别管理</el-menu-item>
             <el-menu-item index="/editors/userRole">用户权限</el-menu-item>
+            <el-menu-item index="/editors/menu">菜单管理</el-menu-item>
           </el-submenu>
           <el-submenu index="product">
             <template slot="title">
