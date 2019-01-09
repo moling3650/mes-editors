@@ -159,6 +159,10 @@ export default new Router({
     {
       path: '/reports/production',
       component: () => import('@/pages/Reports/Production')
+    },
+    {
+      path: '/reports/machine',
+      component: () => import('@/pages/Reports/Machine')
     }
   ]
 })
