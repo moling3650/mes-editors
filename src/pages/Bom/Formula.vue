@@ -4,12 +4,13 @@
     <!-- BOM -->
     <el-row :gutter="10" class="row">
       <!-- Formula -->
-      <el-col :span="10">
+      <el-col :span="8">
         <FormulaCard :bomCode="bomCode" @change="handleFormulaChange"></FormulaCard>
       </el-col>
       <!-- FormulaDetail -->
-      <el-col :span="14">
-        <FormulaDetailCard :formulaCode="formulaCode"></FormulaDetailCard>
+      <el-col :span="16">
+        <!-- <FormulaDetailCard :formulaCode="formulaCode"></FormulaDetailCard> -->
+        <ExTable :model="formulaSteps" :immediate="false" ref="fs"></ExTable>
       </el-col>
     </el-row>
 
@@ -18,13 +19,14 @@
 
 <script>
 import FormulaCard from '@/components/Cards/FormulaCard'
-import FormulaDetailCard from '@/components/Cards/FormulaDetailCard'
+// import FormulaDetailCard from '@/components/Cards/FormulaDetailCard'
+import formulaSteps from '@/models/System/FormulaSteps'
 
 export default {
   name: 'Formula',
   components: {
-    FormulaCard,
-    FormulaDetailCard
+    FormulaCard
+    // FormulaDetailCard
   },
   props: {
     bomCode: {
@@ -34,17 +36,20 @@ export default {
   },
   data () {
     return {
-      formulaCode: ''
+      formulaCode: '',
+      formulaSteps: formulaSteps
     }
   },
   watch: {
     bomCode (value) {
       this.formulaCode = ''
+      this.$refs.fs.clear()
     }
   },
   methods: {
-    handleFormulaChange (formula) {
-      this.formulaCode = formula.formulaCode
+    handleFormulaChange ({ formulaCode }) {
+      this.formulaCode = formulaCode
+      this.$refs.fs.search({ formulaCode })
     }
   }
 }
