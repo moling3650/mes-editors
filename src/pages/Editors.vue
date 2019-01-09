@@ -73,6 +73,14 @@
             </template>
             <el-menu-item index="/editors/bom">物料清单</el-menu-item>
           </el-submenu>
+          <el-submenu index="reports">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>看板</span>
+            </template>
+            <el-menu-item index="/reports/production">生产看板</el-menu-item>
+            <el-menu-item index="/reports/machine">设备看板</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
