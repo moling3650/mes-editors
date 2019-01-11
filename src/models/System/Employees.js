@@ -30,7 +30,7 @@ export default {
     {field: 'phoneNum', title: '联系电话', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'address', title: '联系地址', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'sex', title: '性别', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'departCode', title: '部门名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'departCode', title: '部门名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
     {field: 'isStaff', title: '用户类型', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'entryDate', title: '入职时间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'enable', title: '状态', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},

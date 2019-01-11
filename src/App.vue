@@ -11,6 +11,10 @@ export default {
     this.$store.dispatch('products/getAllProducts')
     this.$store.dispatch('WorkShops/getAllWorkShops')
     this.$store.dispatch('WorkGroups/getAllWorkGroups')
+    this.$store.dispatch('Drives/getAllDrives')
+    this.$store.dispatch('DriveTypes/getAllDriveTypes')
+    this.$store.dispatch('Materials/getAllMaterials')
+    this.$store.dispatch('Departments/getAllDepartments')
   }
 }
 </script>

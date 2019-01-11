@@ -3,6 +3,10 @@ import Vuex from 'vuex'
 import products from './modules/products'
 import WorkShops from './modules/ProcessFlow/WorkShops'
 import WorkGroups from './modules/ProcessFlow/WorkGroups'
+import Drives from './modules/Drives'
+import DriveTypes from './modules/DriveTypes'
+import Materials from './modules/Materials'
+import Departments from './modules/Departments'
 
 Vue.use(Vuex)
 
@@ -13,20 +17,32 @@ export default new Vuex.Store({
     opts (state, getters) {
       return {
         wsid: getters['WorkShops/options'],
-        groupCode: getters['WorkGroups/options']
+        groupCode: getters['WorkGroups/options'],
+        driveCode: getters['Drives/options'],
+        typeId: getters['DriveTypes/options'],
+        matCode: getters['Materials/options'],
+        departCode: getters['Departments/options']
       }
     },
     dictMap (state, getters) {
       return {
         wsid: getters['WorkShops/dict'],
-        groupCode: getters['WorkGroups/dict']
+        groupCode: getters['WorkGroups/dict'],
+        driveCode: getters['Drives/dict'],
+        typeId: getters['DriveTypes/dict'],
+        matCode: getters['Materials/dict'],
+        departCode: getters['Departments/dict']
       }
     }
   },
   modules: {
     products,
     WorkShops,
-    WorkGroups
+    WorkGroups,
+    Drives,
+    DriveTypes,
+    Materials,
+    Departments
   },
   strict: debug
 })
