@@ -135,8 +135,23 @@ const editors = [
   {
     path: 'rolePower',
     component: () => import('@/pages/System/RolePowerEdiror')
+  },
+  {
+    path: 'ngCode',
+    component: () => import('@/pages/Quality/NGCodeEditor')
+  },
+  {
+    path: 'ngType',
+    component: () => import('@/pages/Quality/NGTypeEditor')
+  },
+  {
+    path: 'ngReason',
+    component: () => import('@/pages/Quality/NGReasonEditor')
+  },
+  {
+    path: 'productGrade',
+    component: () => import('@/pages/Quality/ProductGradeEditor')
   }
-
 ]
 
 export default new Router({

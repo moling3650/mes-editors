@@ -99,6 +99,7 @@ export default {
 
     search (query) {
       this.clear()
+      console.log(query)
       this.isLoading = true
       Api.get(this.model.name, query).then(data => {
         this.rawData = data

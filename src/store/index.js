@@ -7,6 +7,7 @@ import Drives from './modules/Drives'
 import DriveTypes from './modules/DriveTypes'
 import Materials from './modules/Materials'
 import Departments from './modules/Departments'
+import NgTypes from './modules/NgTypes'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
         driveCode: getters['Drives/options'],
         typeId: getters['DriveTypes/options'],
         matCode: getters['Materials/options'],
-        departCode: getters['Departments/options']
+        departCode: getters['Departments/options'],
+        typeCode: getters['NgTypes/options']
       }
     },
     dictMap (state, getters) {
@@ -31,7 +33,8 @@ export default new Vuex.Store({
         driveCode: getters['Drives/dict'],
         typeId: getters['DriveTypes/dict'],
         matCode: getters['Materials/dict'],
-        departCode: getters['Departments/dict']
+        departCode: getters['Departments/dict'],
+        typeCode: getters['NgTypes/dict']
       }
     }
   },
@@ -42,7 +45,8 @@ export default new Vuex.Store({
     Drives,
     DriveTypes,
     Materials,
-    Departments
+    Departments,
+    NgTypes
   },
   strict: debug
 })

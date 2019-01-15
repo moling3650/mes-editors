@@ -66,6 +66,16 @@
             <el-menu-item index="/editors/workTool">工装管理</el-menu-item>
             <el-menu-item index="/editors/mould">模具管理</el-menu-item>
           </el-submenu>
+          <el-submenu index="quality">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>品质管理</span>
+            </template>
+            <el-menu-item index="/editors/ngCode">不良现象管理</el-menu-item>
+            <el-menu-item index="/editors/ngType">不良类型管理</el-menu-item>
+            <el-menu-item index="/editors/ngReason">不良原因管理</el-menu-item>
+            <el-menu-item index="/editors/productGrade">成品等级管理</el-menu-item>
+          </el-submenu>
           <el-submenu index="material">
             <template slot="title">
               <i class="el-icon-setting"></i>

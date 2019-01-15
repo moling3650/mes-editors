@@ -15,6 +15,7 @@ export default {
     this.$store.dispatch('DriveTypes/getAllDriveTypes')
     this.$store.dispatch('Materials/getAllMaterials')
     this.$store.dispatch('Departments/getAllDepartments')
+    this.$store.dispatch('NgTypes/getAllNgTypes')
   }
 }
 </script>
