@@ -3,7 +3,7 @@
     <div slot="header" class="clearfix">
       <span class="card-header--text">角色权限</span>
     </div>
-    <el-tree :data="menus" :show-checkbox="true" node-key="id" :expand-on-click-node="false" @node-click="handleNodeClick">
+    <el-tree :data="menus" :show-checkbox="true" node-key="value" ref="tree" :expand-on-click-node="false" @node-click="handleNodeClick">
       <span slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
       </span>
@@ -29,14 +29,19 @@ export default {
       formatterMap: {},
       menus: [],
       menuCode: '',
-      checkedNode: null
+      checkedNode: null,
+      checkRoles: []
     }
   },
   watch: {
     roleId: {
       handler (value, oldValue) {
-        console.log(value)
-        console.log(oldValue)
+        Api.get('MenuDetails', { roleId: value }).then(data => {
+          this.checkRoles = data.map(item => item.id)
+        })
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys(this.checkRoles)
+        }
       },
       immediate: true
     }
