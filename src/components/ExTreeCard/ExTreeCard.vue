@@ -34,6 +34,13 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="设备类型" prop="typeId">
+                <ex-select :options="machineTypeOptions" v-model="formData.typeId" placeholder="请选择设备类型"></ex-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="设备简称" prop="simpleName">
@@ -77,8 +84,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="使用部门" prop="userdepartment">
-                <ex-select :options="departmentOptions" v-model="formData.userdepartment" placeholder="请选择部门"></ex-select>
+              <el-form-item label="使用部门" prop="department">
+                <ex-select :options="departmentOptions" v-model="formData.department" placeholder="请选择部门"></ex-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -94,10 +101,13 @@
               <el-form-item label="设备图片">
                 <el-upload
                   class="upload-demo"
-                  action="../static/img/"
-                  list-type="picture">
-                  <el-button size="small" type="primary">点击上传</el-button>
-                  <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                  ref="upload"
+                  action="../static/img"
+                  :file-list="fileList"
+                  :auto-upload="false">
+                  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                 </el-upload>
               </el-form-item>
             </el-col>
@@ -105,7 +115,7 @@
         </el-form>
       <div class="btnDiv">
         <el-button type="info">重置</el-button>
-        <el-button type="success" @click="btnAdd">提交</el-button>
+        <el-button type="success" @click="btnAddMachine">提交</el-button>
       </div>
       </el-dialog>
     </div>
@@ -156,6 +166,7 @@ export default {
       })
     }
     return {
+      fileList: [{name: 'pic1.jpeg', url: 'W:/image/pic1.jpg'}],
       currentNode: null,
       treeData: [],
       props: {
@@ -167,20 +178,26 @@ export default {
       formData: {
         machineCode: '',
         machineName: '',
+        typeId: '',
+        modelCode: '',
         state: -1,
         useState: '',
         simpleName: '',
         manufacturer: '',
         arrivaldate: new Date(),
         expectNexttime: new Date(),
-        userdepartment: '',
+        department: '',
         wsCode: '',
+        img: '',
         description: ''
       },
+      node: null,
+      machineModelCode: '',
       stateOptions: machineState.map((label, index) => ({value: index - 1, label})),
       useStateOptions: useState.map((label, index) => ({value: index, label})),
       departmentOptions: [],
       wsCodeOptions: [],
+      machineTypeOptions: [],
       rules: {
         machineCode: [{ required: true, validator: checkMachineCode, trigger: 'blur' }],
         machineName: [{ required: true, message: '请输入设备名称', trigger: 'blur' }]
@@ -201,6 +218,10 @@ export default {
     }
   },
   methods: {
+    submitUpload () {
+      this.$refs.upload.submit()
+    },
+
     _getModel (level) {
       const modelTypes = ['Type', 'Kind', 'Model', '']
       return `${this.model}${modelTypes[level]}s`
@@ -263,6 +284,8 @@ export default {
       const modelType = this._getModel(node.level)
       // 新增设备窗口，提交功能待完善
       if (modelType === 'Machines') {
+        this.formData.modelCode = node.data.modelCode
+        this.node = node
         this.addMachineForm = true
       } else {
         const data = {}
@@ -340,16 +363,24 @@ export default {
     },
 
     // 设备提交按钮待完善
-    btnAdd () {
-
+    btnAddMachine () {
+      Api.post('Machines', this.formData).then(newItem => {
+        console.log(this.node)
+        console.log(newItem)
+        this._updateChildNodes(this.node, newItem)
+        this.$message.success('添加成功!')
+        this.addMachineForm = false
+        close()
+      })
     }
   },
 
   created () {
-    axios.all([Api.get('Departments'), Api.get('WorkShops')])
-      .then(([departments, workShops]) => {
+    axios.all([Api.get('Departments'), Api.get('WorkShops'), Api.get('MachineTypes')])
+      .then(([departments, workShops, machineTypes]) => {
         this.departmentOptions = toOptions(departments, 'departCode', 'departName')
         this.wsCodeOptions = toOptions(workShops, 'wsCode', 'wsName')
+        this.machineTypeOptions = toOptions(machineTypes, 'typeId', 'typeName')
       })
   }
 }
