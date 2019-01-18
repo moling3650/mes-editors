@@ -39,7 +39,6 @@ export default {
   methods: {
     handleRoleChange (data) {
       this.roleId = data.roleId
-      console.log(this.roleId)
     }
   },
   created () {
