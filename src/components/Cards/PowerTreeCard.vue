@@ -57,7 +57,16 @@ export default {
 
   methods: {
     submit () {
-      this.$refs.tree.getCheckedNodes().map(node => node.data.moduleCode)
+      const formData = this.$refs.tree.getCheckedNodes().filter(node => node.data.moduleCode !== 1).map(node => {
+        return {
+          roleId: this.roleId,
+          moduleCode: node.data.moduleCode
+        }
+      })
+      Api.put('ModuleInRoles', formData).then(data => {
+        this.$message.success('添加成功')
+        close()
+      })
     },
 
     handleNodeClick (data, node) {
