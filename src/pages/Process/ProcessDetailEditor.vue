@@ -2,8 +2,8 @@
   <div id="ProcessDetailEditor">
 
     <el-row :gutter="20" class="row">
-      <el-col :span="5">
-        <el-menu background-color="darkcyan" text-color="#fff" active-text-color="#ffd04b">
+      <el-col :span="5" class="col">
+        <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2">
           <el-menu-item v-for="item in ProcessGroupList" @click="groupCode = item.groupCode" :key="item.id" :index="item.groupCode">
             <i class="el-icon-arrow-right"></i>
             <span slot="title">{{ item.groupName }}</span>
@@ -63,5 +63,10 @@ export default {
 <style scoped>
 #ProcessDetailEditor {
   margin: 5px;
+}
+
+.col {
+  height: 500px;
+  overflow-y: auto;
 }
 </style>

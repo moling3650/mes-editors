@@ -182,4 +182,11 @@ html, body, #app {
 #ExTable td > div{
   padding-left: 5px;
 }
+#app .el-transfer-panel {
+  width: 280px;
+  height: 520px;
+}
+#app .el-transfer-panel__list.is-filterable {
+  height: 400px;
+}
 </style>
