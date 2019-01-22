@@ -123,11 +123,15 @@ export default {
 
     pageChange (pageIndex) {
       this.pageIndex = pageIndex
+      this.currentIndex = 0
+      this.currentRow = null
     },
 
     pageSizeChange (pageSize) {
       this.pageIndex = 1
       this.pageSize = pageSize
+      this.currentIndex = 0
+      this.currentRow = null
     },
 
     rowClick (rowIndex, rowData) {
