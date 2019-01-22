@@ -4,7 +4,7 @@
     <el-row :gutter="20" class="row">
       <el-col :span="5" class="col">
         <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2">
-          <el-menu-item v-for="item in MaterialTypeList" @click="typeId = item.typeId" :key="item.typeId" :index="item.typeName">
+          <el-menu-item v-for="item in MaterialTypeList" @click="handleTypeChange(item)" :key="item.typeId" :index="item.typeName">
             <i class="el-icon-arrow-right"></i>
             <span slot="title">{{ item.typeName }}</span>
           </el-menu-item>
@@ -12,7 +12,7 @@
       </el-col>
 
       <el-col :span="19">
-        <MaterialDetailCard :typeId="typeId"/>
+        <ExTable :model="material" ref="table" :immediate="false" :defaultForm="defaultForm"></ExTable>
       </el-col>
     </el-row>
 
@@ -20,24 +20,25 @@
 </template>
 
 <script>
-import MaterialDetailCard from '@/components/Cards/MaterialDetailCard'
 import Api from '@/utils/Api'
+import material from '@/models/System/Materials'
 export default {
   name: 'MaterialDetailEditor',
   components: {
-    MaterialDetailCard
   },
   data () {
     return {
       MaterialTypeList: [],
-      typeId: 0
+      defaultForm: {},
+      material: material
     }
   },
   computed: {
   },
   methods: {
-    handleProcessFlowChange (data) {
-      this.typeId = data.typeId
+    handleTypeChange (data) {
+      this.defaultForm.typeId = data.typeId
+      this.$refs.table.search({ typeId: data.typeId })
     }
   },
   created () {

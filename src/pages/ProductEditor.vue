@@ -7,7 +7,7 @@
       </el-col>
 
       <el-col :span="18">
-        <ProductDetailCard :pedigree="pedigree"/>
+        <ExTable :model="products" ref="table" :immediate="false" :defaultForm="defaultForm"></ExTable>
       </el-col>
     </el-row>
 
@@ -16,24 +16,25 @@
 
 <script>
 import ProductTypeTreeCard from '@/components/Cards/ProductTypeTreeCard'
-import ProductDetailCard from '@/components/Cards/ProductDetailCard'
+import products from '@/models/Product/Products'
 
 export default {
   name: 'ProductEditor',
   components: {
-    ProductTypeTreeCard,
-    ProductDetailCard
+    ProductTypeTreeCard
   },
   data () {
     return {
-      pedigree: {}
+      defaultForm: {},
+      products: products
     }
   },
   computed: {
   },
   methods: {
     handleDriveTypeChange (data) {
-      this.pedigree = data
+      this.defaultForm.typeCode = data.typeCode
+      this.$refs.table.search({ productType: data.typeCode })
     }
   }
 }
