@@ -167,7 +167,7 @@ html, body, #app {
   background-color: #f56c6c;
   border-color: #f56c6c;
 }
-.thcell .cell {
+#app .thcell .cell {
   color: #04408c;
   font-size: 12px;
 }
@@ -175,8 +175,11 @@ html, body, #app {
   background-color: #efefef;
 }
 #ExTable .v-table-title-cell {
-  background: #ebf3fe;
-  font-weight: bold;
+  background: #efeeec;
   font-size: 14px;
+  color: #015ea2;
+}
+#ExTable td > div{
+  padding-left: 5px;
 }
 </style>

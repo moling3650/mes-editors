@@ -1,7 +1,11 @@
 <template>
   <div id="ExTable">
     <div class="button-group">
-      <el-button type="primary" size="mini" plain icon="el-icon-plus" @click="add" :disabled="needDefault && !defaultForm">添加</el-button>
+      <el-button-group class="toolbar-left">
+        <el-button size="mini" plain icon="el-icon-plus" @click="add" :disabled="needDefault && !defaultForm">添加</el-button>
+        <el-button size="mini" plain icon="el-icon-edit" @click="edit" :disabled="!currentRow">修改</el-button>
+        <el-button size="mini" plain icon="el-icon-delete" @click="del" :disabled="!currentRow">删除</el-button>
+      </el-button-group>
       <slot :rowData="currentRow"></slot>
     </div>
     <v-table
@@ -14,11 +18,12 @@
       :vertical-resize-offset="60"
       :multiple-sort="false"
       :min-height="450"
-      :row-height="32"
+      :title-row-height="36"
+      :row-height="29"
       even-bg-color="#fcfcfc"
       :columns="columns"
       :table-data="tableData"
-      row-hover-color="#eee"
+      row-hover-color="#edf7ff"
       row-click-color="#edf7ff"
       :paging-index="(pageIndex - 1) * pageSize"
       :row-click="rowClick"
@@ -71,7 +76,8 @@ export default {
       pageIndex: 1,
       pageSize: 10,
       rawData: [],
-      currentRow: null
+      currentRow: null,
+      currentIndex: 0
     }
   },
   computed: {
@@ -83,8 +89,8 @@ export default {
             col.formatter = this.formatter
           }
           return col
-        }),
-        {field: 'operation', title: '操作', width: 80, titleAlign: 'center', columnAlign: 'center', componentName: 'ExTableOperation'}
+        })
+        // {field: 'operation', title: '操作', width: 80, titleAlign: 'center', columnAlign: 'center', componentName: 'ExTableOperation'}
       ]
     },
     tableData () {
@@ -126,6 +132,7 @@ export default {
 
     rowClick (rowIndex, rowData) {
       this.currentRow = rowData
+      this.currentIndex = rowIndex
       this.$emit('row-click', rowData)
     },
 
@@ -158,20 +165,25 @@ export default {
       }))
     },
 
-    edit (row, index) {
+    edit () {
+      const row = this.currentRow
+      const index = this.currentIndex
       this.model.getForm(row, 'edit', this.opts).then(form => this.$showForm(form).$on('submit', (formData, close) => {
         if (this.model.beforeSubmit) {
           formData = this.model.beforeSubmit(formData)
         }
         Api.put(`${this.model.name}/${row[this.model.pk]}`, formData).then(_ => {
           this.rawData.splice(this.getRowIndex(index), 1, formData)
+          this.currentRow = formData
           this.$message.success('更新成功!')
           close()
         })
       }))
     },
 
-    delete (row, index) {
+    del () {
+      const row = this.currentRow
+      const index = this.currentIndex
       this.$confirm('此操作将永久删除该行的数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -202,5 +214,9 @@ export default {
 .v-table {
   margin: 10px auto;
   font-size: 13px;
+}
+
+.v-table .v-table-header td {
+  padding-left: 10px;
 }
 </style>
