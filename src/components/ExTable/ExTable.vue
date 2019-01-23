@@ -86,7 +86,7 @@ export default {
       return [
         ...this.model.cols.map(col => {
           if (col.formatter) {
-            col.formatter = this.formatter
+            col.formatter = (rowData, index, pagingIndex, field) => this.dictMap[col.formatter][rowData[field]] || ''
           }
           return col
         })
@@ -113,9 +113,9 @@ export default {
       })
     },
 
-    formatter (rowData, index, pagingIndex, field) {
-      return this.dictMap[field][rowData[field]]
-    },
+    // formatter (rowData, index, pagingIndex, field) {
+    //   return this.dictMap[field][rowData[field]]
+    // },
 
     getRowIndex (index) {
       return (this.pageIndex - 1) * this.pageSize + index
