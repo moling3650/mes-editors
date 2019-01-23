@@ -7,7 +7,7 @@ export default {
   cols: [
     {field: 'classCode', title: '班别编号', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'className', title: '班别名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'groupCode', title: '工序组', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'groupCode', title: '工序组', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['WorkGroups/groupCode']},
     {field: 'dayStart', title: '开始日期', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'timeStart', title: '开始时间', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'dayEnd', title: '结束日期', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
@@ -22,7 +22,7 @@ export default {
       formItems: [
         {value: 'classCode', label: '班别编号', component: 'el-input', disabled: type === 'edit'},
         {value: 'className', label: '班别名称', component: 'el-input'},
-        {value: 'groupCode', label: '工序组', component: 'ex-select', options: opts.groupCode, disabled: true},
+        {value: 'groupCode', label: '工序组', component: 'ex-select', options: opts['WorkGroups/groupCode'], disabled: true},
         {value: 'dayStart', label: '开始日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},
         {value: 'timeStart', label: '开始时间', span: 12, component: 'el-time-select', pickerOptions: {start: '00:00', step: '01:00', end: '23:00'}},
         {value: 'dayEnd', label: '结束日期', span: 12, component: 'ex-select', options: [{value: 0, label: '今日'}, {value: 1, label: '次日'}]},

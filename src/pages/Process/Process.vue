@@ -13,15 +13,15 @@
 
 <script>
 import ProcessDetail from '@/pages/Process/ProcessDetailEditor'
-import ProcessStation from '@/pages/Process/ProcessStationEditor'
-import ProcessControlItem from '@/pages/Process/ProcessControlItemEditor'
+import ProcessStationSkip from '@/pages/Process/ProcessStationSkipEditor'
+import ProcessControlItemSkip from '@/pages/Process/ProcessControlItemSkipEditor'
 
 export default {
   name: 'Process',
   components: {
     ProcessDetail,
-    ProcessStation,
-    ProcessControlItem
+    ProcessStationSkip,
+    ProcessControlItemSkip
   },
   data () {
     return {

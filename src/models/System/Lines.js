@@ -26,7 +26,7 @@ export default {
   cols: [
     {field: 'lineCode', title: '线别编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'lineName', title: '线别名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'wsid', title: '车间名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'wsid', title: '车间名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['WorkShops/wsid']},
     {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
@@ -38,7 +38,7 @@ export default {
       formItems: [
         {value: 'lineCode', label: '线别编号', span: 12, component: 'el-input', disabled: type === 'edit'},
         {value: 'lineName', label: '线别名称', span: 12, component: 'el-input'},
-        {value: 'wsid', label: '车间名称', span: 12, component: 'ex-select', options: opts.wsid},
+        {value: 'wsid', label: '车间名称', span: 12, component: 'ex-select', options: opts['WorkShops/wsid']},
         {value: 'description', label: '说明', component: 'el-input'}
       ],
       // 表单内容

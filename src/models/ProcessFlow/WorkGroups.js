@@ -26,7 +26,7 @@ export default {
   cols: [
     {field: 'groupCode', title: '工序组编号', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'groupName', title: '工序组名称', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
-    {field: 'wsid', title: '车间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'wsid', title: '车间', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['WorkShops/wsid']},
     {field: 'description', title: '说明', width: 250, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
@@ -38,7 +38,7 @@ export default {
       formItems: [
         {value: 'groupCode', label: '工序组编号', component: 'el-input', disabled: type === 'edit'},
         {value: 'groupName', label: '工序组名称', component: 'el-input'},
-        {value: 'wsid', label: '车间', component: 'ex-select', options: opts.wsid},
+        {value: 'wsid', label: '车间', component: 'ex-select', options: opts['WorkShops/wsid']},
         {value: 'description', label: '说明', component: 'el-input'}
       ],
       // 表单内容

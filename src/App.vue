@@ -17,6 +17,8 @@ export default {
     this.$store.dispatch('Departments/getAllDepartments')
     this.$store.dispatch('NgTypes/getAllNgTypes')
     this.$store.dispatch('ProductModels/getAllProductModels')
+    this.$store.dispatch('ProcessTypes/getAllProcessTypes')
+    this.$store.dispatch('Lines/getAllLines')
   }
 }
 </script>

@@ -34,7 +34,7 @@ export default {
     {field: 'mbm', title: '是否拆分', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'printBind', title: '是否打印', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'spt', title: '标准生产用时', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'modelCode', title: '型号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'modelCode', title: '型号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['ProductModels/modelCode']},
     {field: 'wipValid', title: 'wip有效时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'stationValid', title: '工位有效时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'manageType', title: '管理类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
@@ -61,7 +61,7 @@ export default {
         {value: 'printBind', label: '是否打印', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]},
         {value: 'wipValid', label: 'wip有效时间', span: 12, component: 'ex-input-number'},
         {value: 'stationValid', label: '工位有效时间', span: 12, component: 'ex-input-number'},
-        {value: 'modelCode', label: '成品型号', span: 12, component: 'ex-select', options: opts.modelCode},
+        {value: 'modelCode', label: '成品型号', span: 12, component: 'ex-select', options: opts['ProductModels/modelCode']},
         {value: 'manageType', label: '管理类型', span: 12, component: 'ex-select', options: [{value: 1, label: '配方管理'}, {value: 2, label: 'BOM管理'}]},
         {value: 'lvl', label: '排序', span: 12, component: 'el-input'},
         {value: 'description', label: '说明', component: 'el-input'}

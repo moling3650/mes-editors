@@ -26,7 +26,7 @@ export default {
   cols: [
     {field: 'groupCode', title: '工序组编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'groupName', title: '工序组名称', width: 150, titleAlign: 'left', columnAlign: 'left'},
-    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'left', columnAlign: 'left', formatter: true},
+    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'left', columnAlign: 'left', formatter: ['WorkShops/wsid']},
     {field: 'timeIncrement', title: '位移时间（小时）', width: 150, titleAlign: 'left', columnAlign: 'left'},
     {field: 'description', title: '说明', width: 450, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
@@ -39,7 +39,7 @@ export default {
       formItems: [
         {value: 'groupCode', label: '工序组编号', span: 12, component: 'el-input', disabled: type === 'edit'},
         {value: 'groupName', label: '工序组名称', span: 12, component: 'el-input'},
-        {value: 'wsid', label: '车间名称', span: 12, component: 'ex-select', options: opts.wsid},
+        {value: 'wsid', label: '车间名称', span: 12, component: 'ex-select', options: opts['WorkShops/wsid']},
         {value: 'idx', label: '排序', span: 12, component: 'ex-input-number'},
         {value: 'timeIncrement', label: '位移时间', span: 12, component: 'ex-input-number'},
         {value: 'description', label: '说明', component: 'el-input'}

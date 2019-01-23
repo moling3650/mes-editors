@@ -7,7 +7,7 @@
       </el-col>
 
       <el-col :span="18">
-        <DriveDetailCard :typeId="typeId"/>
+        <ExTable :model="drive" ref="table" :immediate="false" :defaultForm="defaultForm"></ExTable>
       </el-col>
     </el-row>
 
@@ -16,24 +16,25 @@
 
 <script>
 import DriveTypeTreeCard from '@/components/Cards/DriveTypeTreeCard'
-import DriveDetailCard from '@/components/Cards/DriveDetailCard'
-
+import drive from '@/models/System/Drives'
 export default {
   name: 'DriveEditor',
   components: {
-    DriveTypeTreeCard,
-    DriveDetailCard
+    DriveTypeTreeCard
   },
   data () {
     return {
-      typeId: 0
+      typeId: 0,
+      defaultForm: {},
+      drive: drive
     }
   },
   computed: {
   },
   methods: {
     handleDriveTypeChange (data) {
-      this.typeId = data.typeId
+      this.defaultForm.typeId = data.typeId
+      this.$refs.table.search({ typeId: data.typeId })
     }
   }
 }

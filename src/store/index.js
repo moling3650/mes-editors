@@ -9,6 +9,8 @@ import Materials from './modules/Materials'
 import Departments from './modules/Departments'
 import NgTypes from './modules/NgTypes'
 import ProductModels from './modules/ProductModels'
+import ProcessTypes from './modules/ProcessTypes'
+import Lines from './modules/Lines'
 
 Vue.use(Vuex)
 
@@ -18,26 +20,32 @@ export default new Vuex.Store({
   getters: {
     opts (state, getters) {
       return {
-        wsid: getters['WorkShops/options'],
-        groupCode: getters['WorkGroups/options'],
-        driveCode: getters['Drives/options'],
-        typeId: getters['DriveTypes/options'],
-        matCode: getters['Materials/options'],
-        departCode: getters['Departments/options'],
-        typeCode: getters['NgTypes/options'],
-        modelCode: getters['ProductModels/options']
+        'WorkShops/wsid': getters['WorkShops/options'],
+        'WorkGroups/groupCode': getters['WorkGroups/options'],
+        'Drives/driveCode': getters['Drives/options'],
+        'DriveTypes/typeId': getters['DriveTypes/options'],
+        'Materials/matCode': getters['Materials/options'],
+        'Departments/departCode': getters['Departments/options'],
+        'NgTypes/typeCode': getters['NgTypes/options'],
+        'ProductModels/modelCode': getters['ProductModels/options'],
+        'ProcessTypes/typeId': getters['ProcessTypes/options'],
+        'products/productCode': getters['products/options'],
+        'Lines/lineId': getters['Lines/options']
       }
     },
     dictMap (state, getters) {
       return {
-        wsid: getters['WorkShops/dict'],
-        groupCode: getters['WorkGroups/dict'],
-        driveCode: getters['Drives/dict'],
-        typeId: getters['DriveTypes/dict'],
-        matCode: getters['Materials/dict'],
-        departCode: getters['Departments/dict'],
-        typeCode: getters['NgTypes/dict'],
-        modelCode: getters['ProductModels/dict']
+        'WorkShops/wsid': getters['WorkShops/dict'],
+        'WorkGroups/groupCode': getters['WorkGroups/dict'],
+        'Drives/driveCode': getters['Drives/dict'],
+        'DriveTypes/typeId': getters['DriveTypes/dict'],
+        'Materials/matCode': getters['Materials/dict'],
+        'Departments/departCode': getters['Departments/dict'],
+        'NgTypes/typeCode': getters['NgTypes/dict'],
+        'ProductModels/modelCode': getters['ProductModels/dict'],
+        'ProcessTypes/typeId': getters['ProcessTypes/dict'],
+        'products/productCode': getters['products/dict'],
+        'Lines/lineId': getters['Lines/dict']
       }
     }
   },
@@ -50,7 +58,9 @@ export default new Vuex.Store({
     Materials,
     Departments,
     NgTypes,
-    ProductModels
+    ProductModels,
+    ProcessTypes,
+    Lines
   },
   strict: debug
 })

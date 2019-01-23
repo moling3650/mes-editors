@@ -4,7 +4,7 @@
     <el-row :gutter="20" class="row">
       <el-col :span="5" class="col">
         <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2">
-          <el-menu-item v-for="item in ProcessGroupList" @click="groupCode = item.groupCode" :key="item.id" :index="item.groupCode">
+          <el-menu-item v-for="item in ProcessGroupList" @click="handleProcessGroupChange(item)" :key="item.id" :index="item.groupCode">
             <i class="el-icon-arrow-right"></i>
             <span slot="title">{{ item.groupName }}</span>
           </el-menu-item>
@@ -12,7 +12,12 @@
       </el-col>
 
       <el-col :span="19">
-        <ProcessDetailCard :groupCode="groupCode" @skip="handleSkip"/>
+        <ExTable :model="ProcessLists" :immediate="false" needDefault :defaultForm="groupCode" ref="wgc">
+          <template slot-scope="{ rowData }">
+            <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('ProcessStationSkip', rowData)" :disabled="!rowData">工位管理</el-button>
+            <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('ProcessControlItemSkip', rowData)" :disabled="!rowData">工位管控项</el-button>
+          </template>
+        </ExTable>
       </el-col>
     </el-row>
 
@@ -20,29 +25,31 @@
 </template>
 
 <script>
-import ProcessDetailCard from '@/components/Cards/process/ProcessDetailCard'
 import Api from '@/utils/Api'
+import ProcessLists from '@/models/Process/ProcessLists'
 export default {
   name: 'ProcessDetailEditor',
   components: {
-    ProcessDetailCard
   },
   data () {
     return {
       ProcessGroupList: [],
-      groupCode: ''
+      groupCode: null,
+      ProcessLists
     }
   },
   computed: {
   },
   methods: {
-    handleProcessFlowChange (data) {
-      this.groupCode = data.groupCode
+    handleProcessGroupChange (data) {
+      this.groupCode = { groupCode: data.groupCode }
+      this.$refs.wgc.search(this.groupCode)
     },
+
     handleSkip (name, item) {
       const labels = {
-        ProcessStation: '工位',
-        ProcessControlItem: '管控项'
+        ProcessStationSkip: '工位',
+        ProcessControlItemSkip: '管控项'
       }
       const tab = {
         name,

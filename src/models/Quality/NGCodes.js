@@ -27,7 +27,7 @@ export default {
     {field: 'idx', title: '排序', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'ngCode', title: '不良代码', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'ngName', title: '不良名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'typeCode', title: '不良类型', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: true},
+    {field: 'typeCode', title: '不良类型', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['NgTypes/typeCode']},
     {field: 'execProc', title: '执行处理', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'decription', title: '说明', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
@@ -41,7 +41,7 @@ export default {
       formItems: [
         {value: 'ngCode', label: '不良代码', span: 12, component: 'el-input', disabled: type === 'edit'},
         {value: 'ngName', label: '不良名称', span: 12, component: 'el-input'},
-        {value: 'typeCode', label: '不良类型', span: 12, component: 'ex-select', options: opts.typeCode},
+        {value: 'typeCode', label: '不良类型', span: 12, component: 'ex-select', options: opts['NgTypes/typeCode']},
         {value: 'execProc', label: '执行处理', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]},
         {value: 'idx', label: '排序', span: 12, component: 'ex-input-number'},
         {value: 'decription', label: '说明', component: 'el-input'}
