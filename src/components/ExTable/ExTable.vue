@@ -87,11 +87,13 @@ export default {
         ...this.model.cols.map(col => {
           if (col.formatter) {
             const key = col.formatter
-            col.formatter = (rowData, index, pagingIndex, field) => {
-              if (!this.dictMap[key]) {
-                throw Error(`找不到[${key}]的转译器`)
+            if (typeof key === 'string') {
+              col.formatter = (rowData, index, pagingIndex, field) => {
+                if (!this.dictMap[key]) {
+                  throw Error(`找不到[${key}]的转译器`)
+                }
+                return this.dictMap[key][rowData[field]] || ''
               }
-              return this.dictMap[key][rowData[field]] || ''
             }
           }
           return col
