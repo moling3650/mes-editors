@@ -5,13 +5,13 @@ export default {
   pk: 'cid',
   // 表格列配置
   cols: [
-    {field: 'classCode', title: '班别编号', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'className', title: '班别名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'groupCode', title: '工序组', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['WorkGroups/groupCode']},
-    {field: 'dayStart', title: '开始日期', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'timeStart', title: '开始时间', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'dayEnd', title: '结束日期', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'timeEnd', title: '结束时间', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true}
+    {field: 'classCode', title: '班别编号', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'className', title: '班别名称', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'groupCode', title: '工序组', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'WorkGroups/groupCode'},
+    {field: 'dayStart', title: '开始日期', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'timeStart', title: '开始时间', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'dayEnd', title: '结束日期', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'timeEnd', title: '结束时间', width: 140, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置
   getForm (form = null, type = 'add', opts) {

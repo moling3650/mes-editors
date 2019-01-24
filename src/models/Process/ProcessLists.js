@@ -28,7 +28,7 @@ export default {
     {field: 'processCode', title: '工序编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'processName', title: '工序名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'groupCode', title: '工序组编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'typeId', title: '工序类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['ProcessTypes/typeId']},
+    {field: 'typeId', title: '工序类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'ProcessTypes/typeId'},
     {field: 'sectionName', title: '工段名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'routeType', title: '工段类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'allowPack', title: '允许打包', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},

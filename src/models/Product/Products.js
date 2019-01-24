@@ -34,7 +34,7 @@ export default {
     {field: 'mbm', title: '是否拆分', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'printBind', title: '是否打印', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'spt', title: '标准生产用时', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'modelCode', title: '型号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['ProductModels/modelCode']},
+    {field: 'modelCode', title: '型号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'ProductModels/modelCode'},
     {field: 'wipValid', title: 'wip有效时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'stationValid', title: '工位有效时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'manageType', title: '管理类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},

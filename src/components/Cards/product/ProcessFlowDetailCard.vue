@@ -2,6 +2,7 @@
   <el-card>
     <div slot="header" class="clearfix">
       <span class="card-header--text">工艺流程管理</span>
+      <el-button :disabled="disabled" class="fl-r p3-0" icon="el-icon-plus" type="text" @click="addProcessFlowDetail">添加步骤</el-button>
     </div>
     <div class="fl-r" style="margin: 10px 5px;float: left;">
       <el-button :disabled="workDisabled" size="mini" round @click="$emit('skip', 'ProcessStep', item)">后工序步骤管理</el-button>
@@ -173,7 +174,7 @@ export default {
       if (scope.row.processResult === 'OK') {
         getOkForm(scope.row, 'edit', this.processGroupOptions, this.processOptions)
           .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-            Api.put(`ProcessFlowDetails/${formData.id}`, formData).then(_ => {
+            Api.put(`ProcessFlowDetails/${formData.pid}`, formData).then(_ => {
               this.processFlowDetailList.splice(scope.$index, 1, formData)
               this.$emit('change', formData)
               this.$message.success('修改成功')
@@ -184,7 +185,7 @@ export default {
       } else {
         getNGForm(scope.row, 'edit', this.processGroupOptions, this.disposalOptions, this.processOptions)
           .then(form => this.$showForm(form).$on('submit', (formData, close) => {
-            Api.put(`ProcessFlowDetails/${formData.id}`, formData).then(_ => {
+            Api.put(`ProcessFlowDetails/${formData.pid}`, formData).then(_ => {
               this.processFlowDetailList.splice(scope.$index, 1, formData)
               this.$emit('change', formData)
               this.$message.success('修改成功')
@@ -200,7 +201,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(_ => {
-        Api.delete(`ProcessFlowDetails/${scope.row.id}`).then(_ => {
+        console.log(scope)
+        Api.delete(`ProcessFlowDetails/${scope.row.pid}`).then(_ => {
           this.processFlowDetailList.splice(scope.$index, 1)
           this.$message.success('删除成功!')
         })

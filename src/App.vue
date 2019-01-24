@@ -8,7 +8,7 @@
 export default {
   name: 'App',
   created () {
-    this.$store.dispatch('products/getAllProducts')
+    this.$store.dispatch('Products/getAllProducts')
     this.$store.dispatch('WorkShops/getAllWorkShops')
     this.$store.dispatch('WorkGroups/getAllWorkGroups')
     this.$store.dispatch('Drives/getAllDrives')
@@ -19,6 +19,7 @@ export default {
     this.$store.dispatch('ProductModels/getAllProductModels')
     this.$store.dispatch('ProcessTypes/getAllProcessTypes')
     this.$store.dispatch('Lines/getAllLines')
+    this.$store.dispatch('ProcessControlItems/getAllProcessControlItems')
   }
 }
 </script>
@@ -191,5 +192,8 @@ html, body, #app {
 }
 #app .el-transfer-panel__list.is-filterable {
   height: 400px;
+}
+#app .el-tree-node__content {
+  height: 32px;
 }
 </style>

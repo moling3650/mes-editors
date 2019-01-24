@@ -6,15 +6,15 @@
       </div>
       <!-- Card-body -->
       <el-row :gutter="20" class="row">
-        <el-col :span="6">
-          <el-tree :data="treeData" accordion @node-click="handleNodeClick">
+        <el-col :span="4">
+          <el-tree :data="treeData" accordion @node-click="handleNodeClick" class="treeStyle">
             <span class="tree-node" slot-scope="{ node, data }">
               <i :class="['fa', ['', 'fa-folder-o', 'fa-file-text-o'][node.level]]"></i>
               <span>{{data.label}}</span>
             </span>
           </el-tree>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="20">
           <ExTable :model="WorkGroupClasses" :immediate="false" needDefault :defaultForm="group" ref="wgc">
             <template slot-scope="{ rowData }">
               <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="restTime(rowData)" :disabled="!rowData">休息时间</el-button>
@@ -77,5 +77,12 @@ export default {
 }
 #WorkGroupClassEditor {
   margin: 15px;
+}
+.treeStyle {
+  border-right: solid 1px #e6e6e6;
+}
+
+.treeNode {
+  height: 32px;
 }
 </style>

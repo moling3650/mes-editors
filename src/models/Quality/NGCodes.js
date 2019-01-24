@@ -27,7 +27,7 @@ export default {
     {field: 'idx', title: '排序', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'ngCode', title: '不良代码', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'ngName', title: '不良名称', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'typeCode', title: '不良类型', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['NgTypes/typeCode']},
+    {field: 'typeCode', title: '不良类型', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'NgTypes/typeCode'},
     {field: 'execProc', title: '执行处理', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'decription', title: '说明', width: 100, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],

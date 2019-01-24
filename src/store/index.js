@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import products from './modules/products'
+import Products from './modules/Products'
 import WorkShops from './modules/ProcessFlow/WorkShops'
 import WorkGroups from './modules/ProcessFlow/WorkGroups'
 import Drives from './modules/Drives'
@@ -11,6 +11,7 @@ import NgTypes from './modules/NgTypes'
 import ProductModels from './modules/ProductModels'
 import ProcessTypes from './modules/ProcessTypes'
 import Lines from './modules/Lines'
+import ProcessControlItems from './modules/ProcessControlItems'
 
 Vue.use(Vuex)
 
@@ -29,8 +30,9 @@ export default new Vuex.Store({
         'NgTypes/typeCode': getters['NgTypes/options'],
         'ProductModels/modelCode': getters['ProductModels/options'],
         'ProcessTypes/typeId': getters['ProcessTypes/options'],
-        'products/productCode': getters['products/options'],
-        'Lines/lineId': getters['Lines/options']
+        'Products/productCode': getters['Products/options'],
+        'Lines/lineId': getters['Lines/options'],
+        'ProcessControlItems/id': getters['ProcessControlItems/options']
       }
     },
     dictMap (state, getters) {
@@ -44,13 +46,14 @@ export default new Vuex.Store({
         'NgTypes/typeCode': getters['NgTypes/dict'],
         'ProductModels/modelCode': getters['ProductModels/dict'],
         'ProcessTypes/typeId': getters['ProcessTypes/dict'],
-        'products/productCode': getters['products/dict'],
-        'Lines/lineId': getters['Lines/dict']
+        'Products/productCode': getters['Products/dict'],
+        'Lines/lineId': getters['Lines/dict'],
+        'ProcessControlItems/id': getters['ProcessControlItems/dict']
       }
     }
   },
   modules: {
-    products,
+    Products,
     WorkShops,
     WorkGroups,
     Drives,
@@ -60,7 +63,8 @@ export default new Vuex.Store({
     NgTypes,
     ProductModels,
     ProcessTypes,
-    Lines
+    Lines,
+    ProcessControlItems
   },
   strict: debug
 })

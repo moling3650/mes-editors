@@ -4,7 +4,7 @@
       <el-col :span="18">
         <ExTable :model="processStation" ref="table" @row-click="stationChange" :immediate="false" :defaultForm="defaultForm"></ExTable>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" class="stationMachine">
         <StationMachineBindCard :stationCode="stationCode"/>
       </el-col>
     </el-row>
@@ -64,5 +64,9 @@ export default {
 .col {
   height: 500px;
   overflow-y: auto;
+}
+
+.stationMachine {
+  margin-top: 40px;
 }
 </style>

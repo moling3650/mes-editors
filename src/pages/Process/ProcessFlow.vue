@@ -5,7 +5,7 @@
         <ProcessFlowDetail @addTab="addTab"/>
       </el-tab-pane>
       <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.name" :key="tab.name" :closable="true">
-        <component :is="tab.name" :pId="tab.pId" :processFrom="tab.processFrom" :flowCode="tab.flowCode"/>
+        <component :is="tab.name" :pid="tab.pid"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -13,15 +13,15 @@
 
 <script>
 import ProcessFlowDetail from '@/pages/Process/ProcessFlowDetailEditor'
-import ProcessStep from '@/pages/Process/ProcessStepEditor'
-import ProcessControlItemDetail from '@/pages/Process/ProcessControlItemDetailEditor'
+import ProcessStepSkip from '@/pages/Process/ProcessStepSkipEditor'
+import ProcessControlItemDetailSkip from '@/pages/Process/ProcessControlItemDetailSkipEditor'
 
 export default {
   name: 'ProcessFlow',
   components: {
     ProcessFlowDetail,
-    ProcessStep,
-    ProcessControlItemDetail
+    ProcessStepSkip,
+    ProcessControlItemDetailSkip
   },
   data () {
     return {

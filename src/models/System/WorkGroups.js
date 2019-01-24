@@ -26,7 +26,7 @@ export default {
   cols: [
     {field: 'groupCode', title: '工序组编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
     {field: 'groupName', title: '工序组名称', width: 150, titleAlign: 'left', columnAlign: 'left'},
-    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'left', columnAlign: 'left', formatter: ['WorkShops/wsid']},
+    {field: 'wsid', title: '车间名称', width: 150, titleAlign: 'left', columnAlign: 'left', formatter: 'WorkShops/wsid'},
     {field: 'timeIncrement', title: '位移时间（小时）', width: 150, titleAlign: 'left', columnAlign: 'left'},
     {field: 'description', title: '说明', width: 450, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],

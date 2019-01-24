@@ -27,10 +27,10 @@ export default {
     {field: 'stationCode', title: '工位编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'stationName', title: '工位名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     // {field: 'processCode', title: '所属工序', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'lineId', title: '线别名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: ['Lines/lineId']},
+    {field: 'lineId', title: '线别名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'Lines/lineId'},
     {field: 'ipAddress', title: 'IP地址', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'macAddress', title: 'MAC地址', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'isFormal', title: '是否正式工位', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'isFormal', title: '是否正式工位', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true}
     // {field: 'discription', title: '备注信息', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true}
   ],
   // 表单配置

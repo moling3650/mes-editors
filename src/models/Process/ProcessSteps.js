@@ -6,41 +6,43 @@ function stepCodeValidate (rule, stepCode, callback) {
     return callback()
   }
   if (!stepCode) {
-    return callback(new Error('配方步骤编号不能为空'))
+    return callback(new Error('步骤编号不能为空'))
   }
-  Api.get('FormulaSteps/Validate', { stepCode }).then(valid => {
+  Api.get('ProcessSteps/Validate', { stepCode }).then(valid => {
     if (valid) {
       callback()
     } else {
-      callback(new Error('配方步骤编号已存在'))
+      callback(new Error('步骤编号已存在'))
     }
   })
 }
 
 export default {
   // 模型名称
-  name: 'FormulaSteps',
+  name: 'ProcessSteps',
   // 主键
   pk: 'stepId',
   // 表格列配置
   cols: [
     {field: 'idx', title: '排序', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'stepCode', title: '步骤编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
-    {field: 'stepName', title: '步骤名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, isEdit: true},
+    {field: 'processCode', title: '工序编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'stepCode', title: '步骤编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'stepName', title: '步骤名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'stepType', title: '步骤类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'flowCode', title: '工艺编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'consumeType', title: '消耗类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'isRecord', title: '是否记录', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'consumePercent', title: '耗料比例(分)', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'ctrlType', title: '控制类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'typeId', title: '驱动类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'DriveTypes/typeId'},
-    {field: 'driveCode', title: '驱动名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'Drives/driveCode'},
-    {field: 'consumePercent', title: '消耗比列', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'consumeType', title: '消耗类型', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'driveCode', title: '驱动编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'Drives/driveCode'},
     {field: 'parameter', title: '参数', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'isRecord', title: '是否记录', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'matCode', title: '物料名称', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'Materials/matCode'},
+    {field: 'matCode', title: '物料编号', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true, formatter: 'Materials/matCode'},
+    {field: 'timeOut', title: '响应时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'unit', title: '单位', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'format', title: '格式', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'timeOut', title: '响应时间', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'allowReuse', title: '重复利用', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
-    {field: 'autorun', title: '自动运行', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
+    {field: 'autorun', title: '自动启动', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'autoRestart', title: '自动重启', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'triger', title: '触发事件', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true},
     {field: 'parameter2', title: '触发参数', width: 150, titleAlign: 'left', columnAlign: 'left', isResize: true}
@@ -49,21 +51,22 @@ export default {
   getForm (form = null, type = 'add', opts) {
     return Promise.resolve({
       // 表单标题
-      title: `配方步骤维护`,
+      title: `工艺流程[OK]表单`,
       // 表单元素
       formItems: [
-        {value: 'idx', label: '顺序编号', span: 12, component: 'ex-input-number'},
-        {value: 'stepCode', label: '步骤编号', span: 12, component: 'el-input', disabled: type === 'edit'},
+        {value: 'processCode', label: '工序编号', span: 24, component: 'el-input', disabled: true},
+        {value: 'stepCode', label: '步骤编号', span: 12, component: 'el-input'},
         {value: 'stepName', label: '步骤名称', span: 12, component: 'el-input'},
         {value: 'stepType', label: '步骤类型', span: 12, component: 'ex-select', options: [{value: '人'}, {value: '机'}, {value: '料'}, {value: '法'}, {value: '环'}, {value: '判断'}, {value: '驱动'}]},
         {value: 'ctrlType', label: '控制类型', span: 12, component: 'ex-select', options: [{value: 1, label: '自动消耗'}, {value: 2, label: '手动消耗'}, {value: 3, label: '装料并手动消耗'}, {value: 4, label: '只判断掩码'}]},
-        {value: 'typeId', label: '驱动类型', span: 12, component: 'ex-select', options: opts['DriveTypes/typeId']},
-        {value: 'driveCode', label: '驱动名称', span: 12, component: 'ex-select', options: opts['Drives/driveCode']},
-        {value: 'consumePercent', label: '耗料比例', span: 12, component: 'ex-input-number'},
+        {value: 'typeId', label: '驱动类型', span: 12, component: 'ex-select', options: ['DriveTypes/typeId']},
+        {value: 'driveCode', label: '驱动名称', span: 12, component: 'ex-select', options: ['Drives/driveCode']},
+        {value: 'consumePercent', label: '耗料比列', span: 12, component: 'ex-input-number'},
         {value: 'consumeType', label: '消耗类型', span: 12, component: 'ex-select', options: [{value: 1, label: '平均消耗'}, {value: 2, label: '顺序消耗'}]},
         {value: 'parameter', label: '参数', span: 12, component: 'el-input'},
+        {value: 'idx', label: '顺序编号', span: 12, component: 'ex-input-number'},
         {value: 'isRecord', label: '是否记录', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]},
-        {value: 'matCode', label: '物料编号', span: 12, component: 'ex-select', options: opts['Materials/matCode']},
+        {value: 'matCode', label: '物料名称', span: 12, component: 'ex-select', options: ['Materials/matCode']},
         {value: 'unit', label: '单位', span: 12, component: 'el-input'},
         {value: 'format', label: '格式', span: 12, component: 'el-input'},
         {value: 'timeOut', label: '响应时间', span: 12, component: 'ex-input-number'},
