@@ -16,6 +16,20 @@
             <el-menu-item index="/editors/menu">菜单管理</el-menu-item>
             <el-menu-item index="/editors/rolePower">角色权限管理</el-menu-item>
           </el-submenu>
+          <el-submenu index="dataModel">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>数据建模</span>
+            </template>
+            <el-menu-item index="/editors/productModel">成品型号管理</el-menu-item>
+            <el-menu-item index="/editors/product">成品管理</el-menu-item>
+            <el-menu-item index="/editors/material">物料管理</el-menu-item>
+            <el-menu-item index="/editors/materialType">物料类型管理</el-menu-item>
+            <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
+            <el-menu-item index="/editors/line">线别管理</el-menu-item>
+            <el-menu-item index="/editors/drive">驱动管理</el-menu-item>
+            <el-menu-item index="/editors/dataTranslation">转译字典管理</el-menu-item>
+          </el-submenu>
           <el-submenu index="product">
             <template slot="title">
               <i class="el-icon-setting"></i>
@@ -36,27 +50,13 @@
             </template>
             <el-menu-item index="/editors/workOrder">工单管理</el-menu-item>
           </el-submenu>
-          <el-submenu index="dataModel">
-            <template slot="title">
-              <i class="el-icon-setting"></i>
-              <span>数据建模</span>
-            </template>
-            <el-menu-item index="/editors/productModel">成品型号管理</el-menu-item>
-            <el-menu-item index="/editors/product">成品管理</el-menu-item>
-            <el-menu-item index="/editors/material">物料管理</el-menu-item>
-            <el-menu-item index="/editors/materialType">物料类型管理</el-menu-item>
-            <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
-            <el-menu-item index="/editors/line">线别管理</el-menu-item>
-            <el-menu-item index="/editors/dataTranslation">转译字典管理</el-menu-item>
-            <el-menu-item index="/editors/drive">驱动管理</el-menu-item>
-          </el-submenu>
           <el-submenu index="machine">
             <template slot="title">
               <i class="el-icon-setting"></i>
               <span>设备管理</span>
             </template>
             <el-menu-item index="/editors/machine">设备管理</el-menu-item>
-            <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item>
+            <!-- <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item> -->
           </el-submenu>
           <el-submenu index="workTool">
             <template slot="title">

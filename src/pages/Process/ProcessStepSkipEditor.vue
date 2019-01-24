@@ -45,6 +45,7 @@ export default {
 <style scoped>
 #ProcessStepSkipEditor {
   margin-top: 15px;
+  margin-left: 5px;
 }
 
 .col {

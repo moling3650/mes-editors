@@ -4,7 +4,7 @@
       <el-tab-pane label="成品等级管理">
         <el-row :gutter="20" class="row">
           <el-col :span="5" class="col">
-            <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2">
+            <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2" class="elmenu">
               <el-menu-item v-for="item in ProductTypeList" @click="handleTypeChange(item)" :key="item.typeCode" :index="item.typeName">
                 <i class="el-icon-arrow-right"></i>
                 <span slot="title">{{ item.typeName }}</span>
@@ -53,10 +53,15 @@ export default {
 <style scoped>
 #ProductGradeEditor {
   margin-top: 15px;
+  margin-left: 5px;
 }
 
 .col {
   height: 500px;
   overflow-y: auto;
+}
+
+.elmenu {
+  height: 500px;
 }
 </style>

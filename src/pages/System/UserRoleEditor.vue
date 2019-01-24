@@ -29,5 +29,6 @@ export default {
 <style scoped>
 #UserRole {
   margin-top: 15px;
+  margin-left: 5px;
 }
 </style>

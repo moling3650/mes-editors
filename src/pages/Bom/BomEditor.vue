@@ -50,4 +50,8 @@ export default {
 </script>
 
 <style scoped>
+#BomEditor {
+  margin-top: 15px;
+  margin-left: 5px;
+}
 </style>

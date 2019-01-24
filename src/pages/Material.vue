@@ -29,5 +29,6 @@ export default {
 <style scoped>
 #Material {
   margin-top: 15px;
+  margin-left: 5px;
 }
 </style>

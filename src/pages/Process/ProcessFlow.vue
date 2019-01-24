@@ -54,5 +54,6 @@ export default {
 <style scoped>
 #ProcessFlow {
   margin-top: 15px;
+  margin-left: 5px;
 }
 </style>

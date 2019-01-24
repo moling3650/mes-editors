@@ -46,5 +46,6 @@ export default {
 <style scoped>
 #WorkToolEditor {
   margin-top: 15px;
+  margin-left: 5px;
 }
 </style>

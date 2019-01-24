@@ -6,8 +6,8 @@
       </div>
       <!-- Card-body -->
       <el-row :gutter="20" class="row">
-        <el-col :span="4">
-          <el-tree :data="treeData" accordion @node-click="handleNodeClick" class="treeStyle">
+        <el-col :span="4" class="col">
+          <el-tree :data="treeData" accordion @node-click="handleNodeClick">
             <span class="tree-node" slot-scope="{ node, data }">
               <i :class="['fa', ['', 'fa-folder-o', 'fa-file-text-o'][node.level]]"></i>
               <span>{{data.label}}</span>
@@ -76,13 +76,11 @@ export default {
   height: 500px;
 }
 #WorkGroupClassEditor {
-  margin: 15px;
+  margin-top: 15px;
+  margin-left: 5px;
 }
-.treeStyle {
+.col {
+  height: 500px;
   border-right: solid 1px #e6e6e6;
-}
-
-.treeNode {
-  height: 32px;
 }
 </style>

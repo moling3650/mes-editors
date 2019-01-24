@@ -3,7 +3,7 @@
 
     <el-row :gutter="20" class="row">
       <el-col :span="5" class="col">
-        <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2">
+        <el-menu background-color="#ffffff" text-color="black" active-text-color="#015ea2" class="elmenu">
           <el-menu-item v-for="item in MaterialTypeList" @click="handleTypeChange(item)" :key="item.typeId" :index="item.typeName">
             <i class="el-icon-arrow-right"></i>
             <span slot="title">{{ item.typeName }}</span>
@@ -57,5 +57,8 @@ export default {
 .col {
   height: 500px;
   overflow-y: auto;
+}
+.elmenu {
+  height: 500px;
 }
 </style>

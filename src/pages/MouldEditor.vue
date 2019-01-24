@@ -46,5 +46,6 @@ export default {
 <style scoped>
 #MouldEditor {
   margin-top: 15px;
+  margin-left: 5px;
 }
 </style>
