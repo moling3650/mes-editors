@@ -27,6 +27,9 @@
             <el-menu-item index="/editors/materialType">物料类型管理</el-menu-item>
             <el-menu-item index="/editors/workshop">车间管理</el-menu-item>
             <el-menu-item index="/editors/line">线别管理</el-menu-item>
+            <el-menu-item index="/editors/processType">工序类型管理</el-menu-item>
+            <el-menu-item index="/editors/process">工序管理</el-menu-item>
+            <el-menu-item index="/editors/workGroup">工序组管理</el-menu-item>
             <el-menu-item index="/editors/drive">驱动管理</el-menu-item>
             <el-menu-item index="/editors/dataTranslation">转译字典管理</el-menu-item>
           </el-submenu>
@@ -35,13 +38,10 @@
               <i class="el-icon-setting"></i>
               <span>生产管理</span>
             </template>
-            <el-menu-item index="/editors/processType">工序类型管理</el-menu-item>
-            <el-menu-item index="/editors/workGroup">工序组管理</el-menu-item>
             <el-menu-item index="/editors/workGroupClass">工序组班别管理</el-menu-item>
             <el-menu-item index="/editors/WorkCalendar">工作日历</el-menu-item>
             <el-menu-item index="/editors/processFlow">工艺流程管理</el-menu-item>
             <el-menu-item index="/editors/processStepDetail">工艺步骤管理</el-menu-item>
-            <el-menu-item index="/editors/process">工序管理</el-menu-item>
           </el-submenu>
           <el-submenu index="workOrder">
             <template slot="title">
