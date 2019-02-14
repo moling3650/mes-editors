@@ -45,7 +45,7 @@ export default {
         {value: 'description', label: '说明', span: 22, component: 'el-input'},
         {value: 'isPublic', label: '是否公用', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]},
         {value: 'enable', label: '状态', span: 12, component: 'ex-select', options: [{value: 0, label: '停用'}, {value: 1, label: '正常'}]},
-        {value: 'property', label: '属性', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]}
+        {value: 'property', label: '属性', span: 12, component: 'ex-select', options: [{value: 0, label: '前工步'}, {value: 1, label: '后工步'}]}
       ],
       // 表单内容
       formData: Object.assign({

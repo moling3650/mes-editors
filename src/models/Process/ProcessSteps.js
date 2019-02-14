@@ -1,4 +1,5 @@
 import Api from '@/utils/Api'
+import store from '@/store'
 
 // 表单自定义校验方法
 function stepCodeValidate (rule, stepCode, callback) {
@@ -59,14 +60,14 @@ export default {
         {value: 'stepName', label: '步骤名称', span: 12, component: 'el-input'},
         {value: 'stepType', label: '步骤类型', span: 12, component: 'ex-select', options: [{value: '人'}, {value: '机'}, {value: '料'}, {value: '法'}, {value: '环'}, {value: '判断'}, {value: '驱动'}]},
         {value: 'ctrlType', label: '控制类型', span: 12, component: 'ex-select', options: [{value: 1, label: '自动消耗'}, {value: 2, label: '手动消耗'}, {value: 3, label: '装料并手动消耗'}, {value: 4, label: '只判断掩码'}]},
-        {value: 'typeId', label: '驱动类型', span: 12, component: 'ex-select', options: ['DriveTypes/typeId']},
-        {value: 'driveCode', label: '驱动名称', span: 12, component: 'ex-select', options: ['Drives/driveCode']},
+        {value: 'typeId', label: '驱动类型', span: 12, component: 'ex-select', options: store.getters['DriveTypes/options']},
+        {value: 'driveCode', label: '驱动名称', span: 12, component: 'ex-select', options: store.getters['Drives/options']},
         {value: 'consumePercent', label: '耗料比列', span: 12, component: 'ex-input-number'},
         {value: 'consumeType', label: '消耗类型', span: 12, component: 'ex-select', options: [{value: 1, label: '平均消耗'}, {value: 2, label: '顺序消耗'}]},
         {value: 'parameter', label: '参数', span: 12, component: 'el-input'},
         {value: 'idx', label: '顺序编号', span: 12, component: 'ex-input-number'},
         {value: 'isRecord', label: '是否记录', span: 12, component: 'ex-select', options: [{value: 0, label: '否'}, {value: 1, label: '是'}]},
-        {value: 'matCode', label: '物料名称', span: 12, component: 'ex-select', options: ['Materials/matCode']},
+        {value: 'matCode', label: '物料名称', span: 12, component: 'ex-select', options: store.getters['Materials/options']},
         {value: 'unit', label: '单位', span: 12, component: 'el-input'},
         {value: 'format', label: '格式', span: 12, component: 'el-input'},
         {value: 'timeOut', label: '响应时间', span: 12, component: 'ex-input-number'},

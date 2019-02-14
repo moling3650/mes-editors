@@ -56,6 +56,7 @@
               <span>设备管理</span>
             </template>
             <el-menu-item index="/editors/machine">设备管理</el-menu-item>
+            <el-menu-item index="/editors/newMachine">新版设备管理</el-menu-item>
             <!-- <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item> -->
           </el-submenu>
           <el-submenu index="workTool">

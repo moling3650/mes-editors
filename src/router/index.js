@@ -151,6 +151,10 @@ const editors = [
   {
     path: 'productGrade',
     component: () => import('@/pages/Quality/ProductGradeEditor')
+  },
+  {
+    path: 'newMachine',
+    component: () => import('@/pages/NewMachine/Machine')
   }
 ]
 

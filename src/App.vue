@@ -20,6 +20,7 @@ export default {
     this.$store.dispatch('ProcessTypes/getAllProcessTypes')
     this.$store.dispatch('Lines/getAllLines')
     this.$store.dispatch('ProcessControlItems/getAllProcessControlItems')
+    this.$store.dispatch('MachineTypes/getAllMachineTypes')
   }
 }
 </script>
