@@ -13,17 +13,17 @@
 
 <script>
 import MachineManagement from '@/pages/NewMachine/MachineManagement'
-import MachineAnalogPoint from '@/pages/NewMachine/MachineAnalogPoint'
-import MachineStandardPoint from '@/pages/NewMachine/MachineStandardPoint'
-import MachineDataPoint from '@/pages/NewMachine/MachineDataPoint'
+import MachineDataPointSkip from '@/pages/NewMachine/MachineDataPointSkipEditor'
+import MachineAnalogPointSkip from '@/pages/NewMachine/MachineAnalogPointSkipEditor'
+import MachineStandardPointSkip from '@/pages/NewMachine/MachineStandardPointSkipEditor'
 
 export default {
   name: 'Machine',
   components: {
     MachineManagement,
-    MachineAnalogPoint,
-    MachineStandardPoint,
-    MachineDataPoint
+    MachineDataPointSkip,
+    MachineAnalogPointSkip,
+    MachineStandardPointSkip
   },
   data () {
     return {

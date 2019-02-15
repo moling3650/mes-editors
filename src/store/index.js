@@ -13,6 +13,8 @@ import ProcessTypes from './modules/ProcessTypes'
 import Lines from './modules/Lines'
 import ProcessControlItems from './modules/ProcessControlItems'
 import MachineTypes from './modules/MachineTypes'
+import PointTypes from './modules/PointTypes'
+import MachineDataPoints from './modules/MachineDataPoints'
 
 Vue.use(Vuex)
 
@@ -34,7 +36,9 @@ export default new Vuex.Store({
         'Products/productCode': getters['Products/options'],
         'Lines/lineId': getters['Lines/options'],
         'ProcessControlItems/id': getters['ProcessControlItems/options'],
-        'MachineTypes/typeId': getters['MachineTypes/options']
+        'MachineTypes/typeId': getters['MachineTypes/options'],
+        'PointTypes/typeId': getters['PointTypes/options'],
+        'MachineDataPoints/pointId': getters['MachineDataPoints/options']
       }
     },
     dictMap (state, getters) {
@@ -51,7 +55,9 @@ export default new Vuex.Store({
         'Products/productCode': getters['Products/dict'],
         'Lines/lineId': getters['Lines/dict'],
         'ProcessControlItems/id': getters['ProcessControlItems/dict'],
-        'MachineTypes/typeId': getters['MachineTypes/dict']
+        'MachineTypes/typeId': getters['MachineTypes/dict'],
+        'PointTypes/typeId': getters['PointTypes/dict'],
+        'MachineDataPoints/pointId': getters['MachineDataPoints/dict']
       }
     }
   },
@@ -68,7 +74,9 @@ export default new Vuex.Store({
     ProcessTypes,
     Lines,
     ProcessControlItems,
-    MachineTypes
+    MachineTypes,
+    PointTypes,
+    MachineDataPoints
   },
   strict: debug
 })

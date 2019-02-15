@@ -7,7 +7,7 @@
 
       <el-col :span="16">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="设备明细" name="second">
+            <el-tab-pane label="设备明细" name="machineDetail">
               <el-select v-model="value" placeholder="请选择" @change="modelChange" style="margin-bottom: 5px">
                 <el-option
                   v-for="item in options"
@@ -18,14 +18,14 @@
               </el-select>
               <ExTable :model="machines" ref="table" :immediate="false" :defaultForm="defaultForm">
                 <template slot-scope="{ rowData }">
-                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineDataPoint', rowData)" :disabled="!rowData">数据点</el-button>
-                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineAnalogPoint', rowData)" :disabled="!rowData">过程点位</el-button>
-                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineStandardPoint', rowData)" :disabled="!rowData">标准点位</el-button>
+                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineDataPointSkip', rowData)" :disabled="!rowData">数据点</el-button>
+                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineAnalogPointSkip', rowData)" :disabled="!rowData">过程点位</el-button>
+                  <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineStandardPointSkip', rowData)" :disabled="!rowData">标准点位</el-button>
                   <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('MachineProp', rowData)" :disabled="!rowData">属性明细</el-button>
                 </template>
               </ExTable>
             </el-tab-pane>
-            <el-tab-pane label="类别属性" name="first">
+            <el-tab-pane label="类别属性" name="propDetail">
               <ExTable :model="machineKinds" ref="kind" :immediate="false" :defaultForm="defaultForm"></ExTable>
               <ExTable :model="machineKindProperties" ref="prop" :immediate="false" :defaultForm="defaultForm"></ExTable>
             </el-tab-pane>
@@ -59,7 +59,7 @@ export default {
       machines: machines,
       machineKinds: machineKinds,
       machineKindProperties: machineKindProperties,
-      activeName: 'second',
+      activeName: 'machineDetail',
       options: [],
       value: '',
       kindId: 0
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     _fetchData () {
-      if (this.activeName === 'first' && this.kindId) {
+      if (this.activeName === 'propDetail' && this.kindId) {
         this.defaultForm.kindId = this.kindId
         this.$refs.kind.search({ kindId: this.kindId })
         this.$refs.prop.search({ kindId: this.kindId })
@@ -115,9 +115,9 @@ export default {
 
     handleSkip (name, machine) {
       const labels = {
-        MachineDataPoint: '数据点',
-        MachineAnalogPoint: '过程点位',
-        MachineStandardPoint: '标准点位'
+        MachineDataPointSkip: '数据点',
+        MachineAnalogPointSkip: '过程点位',
+        MachineStandardPointSkip: '标准点位'
       }
       const tab = {
         name,

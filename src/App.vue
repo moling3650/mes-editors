@@ -21,6 +21,8 @@ export default {
     this.$store.dispatch('Lines/getAllLines')
     this.$store.dispatch('ProcessControlItems/getAllProcessControlItems')
     this.$store.dispatch('MachineTypes/getAllMachineTypes')
+    this.$store.dispatch('PointTypes/getAllPointTypes')
+    this.$store.dispatch('MachineDataPoints/getAllMachineDataPoints')
   }
 }
 </script>
