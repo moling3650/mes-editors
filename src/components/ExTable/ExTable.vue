@@ -3,8 +3,8 @@
     <div class="button-group">
       <el-button-group class="toolbar-left">
         <el-button size="mini" plain icon="el-icon-plus" @click="add" :disabled="needDefault && !defaultForm">添加</el-button>
-        <el-button size="mini" plain icon="el-icon-edit" @click="edit" :disabled="!currentRow">修改</el-button>
-        <el-button size="mini" plain icon="el-icon-delete" @click="del" :disabled="!currentRow">删除</el-button>
+        <el-button size="mini" plain icon="el-icon-edit" @click="edit" :disabled="!(currentRow || selection.length)">修改</el-button>
+        <el-button size="mini" plain icon="el-icon-delete" @click="del" :disabled="!(currentRow || selection.length)">删除</el-button>
       </el-button-group>
       <slot :rowData="currentRow"></slot>
     </div>
@@ -27,6 +27,8 @@
       row-click-color="#edf7ff"
       :paging-index="(pageIndex - 1) * pageSize"
       :row-click="rowClick"
+      :select-change="selectChange"
+      :select-all="selectAll"
       @on-custom-comp="rowOperation"
       @sort-change="sortChange"
     />
@@ -77,7 +79,8 @@ export default {
       pageSize: 10,
       rawData: [],
       currentRow: null,
-      currentIndex: 0
+      currentIndex: 0,
+      selection: []
     }
   },
   computed: {
@@ -106,6 +109,22 @@ export default {
     }
   },
   methods: {
+    getSelection () {
+      return JSON.parse(JSON.stringify(this.selection))
+    },
+
+    selectAll (selection) {
+      this.selection = selection
+    },
+
+    selectChange (selection) {
+      this.selection = selection
+    },
+
+    pushData (...rowsData) {
+      this.rawData.push(...rowsData)
+    },
+
     clear () {
       this.rawData = []
       this.currentRow = null
