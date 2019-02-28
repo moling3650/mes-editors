@@ -41,7 +41,7 @@ export default {
     const triggerType = (form && form.triggerType) ? 1 : 0
     return Promise.resolve({
       // 表单标题
-      title: `设备过程点位表单`,
+      title: `设备标准点位表单`,
       // 表单元素
       formItems: [
         {value: 'machineCode', label: '设备编号', span: 24, component: 'el-input', disabled: true},

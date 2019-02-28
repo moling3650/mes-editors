@@ -155,6 +155,14 @@ const editors = [
   {
     path: 'newMachine',
     component: () => import('@/pages/NewMachine/Machine')
+  },
+  {
+    path: 'register',
+    component: () => import('@/pages/Product/RegistrationEditor')
+  },
+  {
+    path: 'repair',
+    component: () => import('@/pages/Product/RepairEditor')
   }
 ]
 

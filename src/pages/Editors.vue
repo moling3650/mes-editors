@@ -57,7 +57,7 @@
             </template>
             <el-menu-item index="/editors/machine">设备管理</el-menu-item>
             <el-menu-item index="/editors/newMachine">新版设备管理</el-menu-item>
-            <!-- <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item> -->
+            <el-menu-item index="/editors/repair_tool">设备维修</el-menu-item>
           </el-submenu>
           <el-submenu index="workTool">
             <template slot="title">
@@ -83,6 +83,14 @@
               <span>物料管理</span>
             </template>
             <el-menu-item index="/editors/bom">物料清单</el-menu-item>
+          </el-submenu>
+          <el-submenu index="Registra">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>维修登记</span>
+            </template>
+            <el-menu-item index="/editors/register">登记管理</el-menu-item>
+            <el-menu-item index="/editors/repair">维修管理</el-menu-item>
           </el-submenu>
           <el-submenu index="reports">
             <template slot="title">

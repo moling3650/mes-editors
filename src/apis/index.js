@@ -20,7 +20,7 @@ export default {
   },
 
   fetchIP () {
-    return Promise.resolve('192.168.0.36')
+    return Promise.resolve('192.168.1.55')
   },
 
   // 根据SFC，查询工单、数量、不良工序、产品类型
