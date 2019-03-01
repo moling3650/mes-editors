@@ -50,20 +50,27 @@
       </el-col>
     </el-row>
 
-<!--     <el-dialog title="批次拆分" :visible.sync="splitSFCForm">
-      <el-form :inline="true">
-        <el-form-item label="新批次号">
-          <el-input v-model="newSFC"></el-input>
+    <el-dialog title="登记" :visible.sync="addRegForm">
+      <el-form>
+        <el-form-item label="现象代码">
+          <el-select v-model="regNgCodes" placeholder="请选择" multiple collapse-tags>
+            <el-option
+              v-for="item in regNgCodeOpts"
+              :key="item.value"
+              :label="item.label"
+              :value="item">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="拆分数量">
-          <el-input v-model="splitNumber"></el-input>
+        <el-form-item v-for="ng in regNgCodes" :label="ng.label" :key="ng.value">
+          <el-input v-model="ng.qty"></el-input>
         </el-form-item>
       </el-form>
       <div class="btnDiv">
         <el-button type="info">取消</el-button>
-        <el-button type="success" @click="btnSplit">提交</el-button>
+        <el-button type="success" @click="btnRegistration">确定</el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
 
   </div>
 </template>
@@ -77,24 +84,28 @@ export default {
   name: 'RegistrationEditor',
   data () {
     return {
+      addRegForm: false,
       splitSFCForm: false,
       ngCodeModel: ngCodeModel,
-      sfc: '',
+      sfc: '0414-1VZ17D10SB-09-05-ZJFQ',
       workOrder: '',
       value: '',
       processOpts: [],
       productName: '',
       ngNumber: '',
       repairNumber: '',
-      newSFC: '',
-      splitNumber: '',
-      ngList: []
+      ngList: [],
+      regNgCodes: [],
+      regNgCodeOpts: [],
+      qtys: []
     }
   },
 
   methods: {
     searchSFC (sfc) {
-      // SFC  取 orderNo, qty，productCode, productType,productName,failTimes
+      if (!this.sfc) {
+        return void this.$message.info('请输入批次号!')
+      }
       Api.get('SfcStates/detail', { sfc }).then(data => {
         this.workOrder = data.orderNo
         this.ngNumber = data.qty
@@ -107,6 +118,14 @@ export default {
         })
         Api.get('NgCodes', { productType: data.productType }).then(data => {
           this.ngList = data.sort((a, b) => a.index - b.index)
+          this.regNgCodeOpts = this.ngList.map(ng => {
+            return {
+              value: ng.ngCode,
+              label: ng.ngName,
+              typeCode: ng.typeCode,
+              execProc: ng.execProc
+            }
+          })
         })
       })
 
@@ -129,10 +148,12 @@ export default {
         },
         // 表单校验细则
         rules: {
-          sfc: [{ required: true, message: '请输入批次', trigger: 'blur' }]
+          sfc: [{ required: true, message: '请输入新批次号', trigger: 'blur' }],
+          qty: [{ required: true, message: '请输入数量', trigger: 'blur' }]
         }
       }).$on('submit', (formData, close) => {
         console.log(formData)
+        this.$message.success('批次拆分成功')
         close()
       })
     },
@@ -144,21 +165,25 @@ export default {
 
     },
 
-    btnSplit () {
-
+    btnRegistration () {
+      this.$refs.ng.pushData(...JSON.parse(JSON.stringify(this.regNgCodes)))
+      this.regNgCodes = []
+      this.addRegForm = false
     },
     add () {
-      this.$refs.ng.pushData({
-        ngCode: 'AA',
-        ngName: 'AA',
-        execProc: 1,
-        qty: 1.52
-      }, {
-        ngCode: 'BB',
-        ngName: 'AA',
-        execProc: 1,
-        qty: 1.52
-      })
+      this.addRegForm = true
+
+      // this.$refs.ng.pushData({
+      //   ngCode: 'AA',
+      //   ngName: 'AA',
+      //   execProc: 1,
+      //   qty: 1.52
+      // }, {
+      //   ngCode: 'BB',
+      //   ngName: 'AA',
+      //   execProc: 1,
+      //   qty: 1.52
+      // })
     },
     edit () {
       const selection = this.$refs.ng.getSelection()
