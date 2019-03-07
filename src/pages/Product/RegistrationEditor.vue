@@ -152,7 +152,6 @@ export default {
           qty: [{ required: true, message: '请输入数量', trigger: 'blur' }]
         }
       }).$on('submit', (formData, close) => {
-        console.log(formData)
         this.$message.success('批次拆分成功')
         close()
       })
@@ -172,22 +171,9 @@ export default {
     },
     add () {
       this.addRegForm = true
-
-      // this.$refs.ng.pushData({
-      //   ngCode: 'AA',
-      //   ngName: 'AA',
-      //   execProc: 1,
-      //   qty: 1.52
-      // }, {
-      //   ngCode: 'BB',
-      //   ngName: 'AA',
-      //   execProc: 1,
-      //   qty: 1.52
-      // })
     },
     edit () {
-      const selection = this.$refs.ng.getSelection()
-      console.log(selection)
+      // const selection = this.$refs.ng.getSelection()
     },
     del () {
       const selection = this.$refs.ng.getSelection()

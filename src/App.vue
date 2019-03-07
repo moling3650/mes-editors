@@ -23,6 +23,9 @@ export default {
     this.$store.dispatch('MachineTypes/getAllMachineTypes')
     this.$store.dispatch('PointTypes/getAllPointTypes')
     this.$store.dispatch('MachineDataPoints/getAllMachineDataPoints')
+    this.$store.dispatch('NgCodes/getAllNgCodes')
+    this.$store.dispatch('NgReasons/getAllNgReasons')
+    this.$store.dispatch('NgReasonTypes/getAllNgReasonTypes')
   }
 }
 </script>

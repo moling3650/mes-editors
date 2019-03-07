@@ -9,7 +9,6 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="searchSFC(sfc)">查询</el-button>
-            <el-button type="primary" @click="repairSFC(sfc)">开始维修</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -18,12 +17,14 @@
           <div slot="header" class="clearfix">
             <span class="card-header--text">维修管理</span>
           </div>
-          <ExTable :model="failLogs" ref="table" :immediate="false" :defaultForm="defaultForm"></ExTable>
+          <ExTable :model="failLogs" ref="table" :immediate="false" :defaultForm="defaultForm">
+            <template slot-scope="{ rowData }">
+              <el-button type="primary" size="mini" plain icon="el-icon-edit" @click="handleSkip('BeginRepairSkip', rowData)" :disabled="!rowData">开始维修</el-button>
+            </template>
+          </ExTable>
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog title="维修" :visible.sync="repairForm">
-    </el-dialog>
   </div>
 </template>
 
@@ -34,10 +35,9 @@ export default {
   name: 'RepairEditor',
   data () {
     return {
-      repairForm: false,
       defaultForm: {},
       failLogs: failLogs,
-      sfc: '',
+      sfc: '1019-1VP17J18SA-06-10-FJZP-TFJL-S-ZP-1',
       workOrder: '',
       value: '',
       options: [],
@@ -55,8 +55,18 @@ export default {
       this.defaultForm.sfc = this.sfc
       this.$refs.table.search({ sfc: this.sfc })
     },
-    repairSFC (sfc) {
-      this.repairForm = true
+
+    handleSkip (name, item) {
+      const labels = {
+        BeginRepairSkip: '维修'
+      }
+      const tab = {
+        name,
+        label: labels[name],
+        sfc: item.sfc,
+        orderNo: item.orderNo
+      }
+      this.$emit('addTab', tab)
     },
 
     ngProcessChange (value) {

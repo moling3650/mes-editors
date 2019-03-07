@@ -162,7 +162,7 @@ const editors = [
   },
   {
     path: 'repair',
-    component: () => import('@/pages/Product/RepairEditor')
+    component: () => import('@/pages/Product/Repair')
   }
 ]
 

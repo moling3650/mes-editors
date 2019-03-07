@@ -15,6 +15,9 @@ import ProcessControlItems from './modules/ProcessControlItems'
 import MachineTypes from './modules/MachineTypes'
 import PointTypes from './modules/PointTypes'
 import MachineDataPoints from './modules/MachineDataPoints'
+import NgCodes from './modules/NgCodes'
+import NgReasons from './modules/NgReasons'
+import NgReasonTypes from './modules/NgReasonTypes'
 
 Vue.use(Vuex)
 
@@ -38,7 +41,10 @@ export default new Vuex.Store({
         'ProcessControlItems/id': getters['ProcessControlItems/options'],
         'MachineTypes/typeId': getters['MachineTypes/options'],
         'PointTypes/typeId': getters['PointTypes/options'],
-        'MachineDataPoints/pointId': getters['MachineDataPoints/options']
+        'MachineDataPoints/pointId': getters['MachineDataPoints/options'],
+        'NgCodes/ngCode': getters['NgCodes/options'],
+        'NgReasons/reasonCode': getters['NgReasons/options'],
+        'NgReasonTypes/reasontypeCode': getters['NgReasonTypes/options']
       }
     },
     dictMap (state, getters) {
@@ -57,7 +63,10 @@ export default new Vuex.Store({
         'ProcessControlItems/id': getters['ProcessControlItems/dict'],
         'MachineTypes/typeId': getters['MachineTypes/dict'],
         'PointTypes/typeId': getters['PointTypes/dict'],
-        'MachineDataPoints/pointId': getters['MachineDataPoints/dict']
+        'MachineDataPoints/pointId': getters['MachineDataPoints/dict'],
+        'NgCodes/ngCode': getters['NgCodes/dict'],
+        'NgReasons/reasonCode': getters['NgReasons/dict'],
+        'NgReasonTypes/reasontypeCode': getters['NgReasonTypes/dict']
       }
     }
   },
@@ -76,7 +85,10 @@ export default new Vuex.Store({
     ProcessControlItems,
     MachineTypes,
     PointTypes,
-    MachineDataPoints
+    MachineDataPoints,
+    NgCodes,
+    NgReasons,
+    NgReasonTypes
   },
   strict: debug
 })
