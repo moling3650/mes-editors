@@ -152,12 +152,29 @@ export default {
           qty: [{ required: true, message: '请输入数量', trigger: 'blur' }]
         }
       }).$on('submit', (formData, close) => {
+        if (formData.sfc === this.sfc) {
+          return void this.$message.info('新批次号不能与当前批次号相同，请检查!')
+        }
+        if (formData.qty >= this.ngNumber) {
+          return void this.$message.info('拆分批次数量不能大于或等于总数量，请检查!')
+        }
         this.$message.success('批次拆分成功')
         close()
       })
     },
-    submit () {
 
+    // 提交登记接口待完善
+    submit () {
+      console.log(11111)
+      if (!this.sfc) {
+        return void this.$message.info('SFC 信息为空，请检查!')
+      }
+      if (!this.workOrder) {
+        return void this.$message.info('工单号 信息为空，请检查!')
+      }
+      if (!this.value) {
+        return void this.$message.info('请选择不良工序!')
+      }
     },
 
     ngProcessChange (value) {
